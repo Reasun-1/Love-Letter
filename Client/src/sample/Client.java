@@ -87,7 +87,10 @@ public class Client{
         }).start();
         //wait for messages from ViewModel passed on by the inputstream, stop if the connection is terminated
         while(!client.socket.isClosed()){
-            client.sendMessage(client.reader.readLine());
+            String msg = client.reader.readLine();
+            if(!msg.equals("")){
+                client.sendMessage(msg);
+            }
         }
     }
 }

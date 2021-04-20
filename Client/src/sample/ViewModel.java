@@ -1,10 +1,11 @@
 package src.sample;
 
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class ViewModel {
 
-    private InputStream stream;
+    private InputStream stream = System.in;
 
     //This will be the Viewmodel class for the client
     //Needs implementation of:
