@@ -1,4 +1,6 @@
-import sample.Client;
+package src.main.server;
+
+import src.sample.Client;
 
 import java.io.IOException;
 import java.io.IOException;

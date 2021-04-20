@@ -1,3 +1,5 @@
+package src.main.server;
+
 import java.io.BufferedReader;
 import java.io.BufferedReader;
 import java.io.IOException;
