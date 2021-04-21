@@ -1,4 +1,4 @@
-package sample;
+package src.sample;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,14 +38,15 @@ public class Client {
         boolean flag = true;
 
         while (flag) {
-            if (in.readLine().equals("user existed!")) {
+            String answer = in.readLine();
+            if (answer.equals("user existed!")) {
                 viewmodel.errorMessage("The chosen name already exists. Please choose another name.");
                 String nameTry = viewmodel.getName();
                 out.println(nameTry);
 
             } else {
                 flag = false;
-                viewmodel.welcomeMessage(in.readLine());
+                viewmodel.welcomeMessage(answer);
             }
         }
 
@@ -71,8 +72,8 @@ public class Client {
 
          */
         // send welcome message with the accepted name
-        viewmodel.welcomeMessage(name);
-        System.out.println(in.readLine());
+        // viewmodel.welcomeMessage(name);
+        //System.out.println(in.readLine());
 
 
     }

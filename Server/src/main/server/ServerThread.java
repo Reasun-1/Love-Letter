@@ -1,3 +1,5 @@
+package src.main.server;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -94,10 +96,11 @@ public class ServerThread extends Server implements Runnable {
         PrintWriter out = null;
         //synchronized (sockets) {
             for (Socket sc : sockets) {
-
-                out = new PrintWriter(sc.getOutputStream());
-                out.println(clientName + " has joined the chat.");
-                out.flush();
+                if(!sc.equals(socket)) {
+                    out = new PrintWriter(sc.getOutputStream());
+                    out.println(clientName + " has joined the chat.");
+                    out.flush();
+                }
             }
         //}
     }
@@ -106,12 +109,12 @@ public class ServerThread extends Server implements Runnable {
      * close socket connection
      */
     public void closeConnect() throws IOException {
-        System.out.println("Client " + clientName + " has left the room.");
-        sendMessage("Client " + clientName + " has left the room.");
         //remove the socket from the set
         synchronized (sockets) {
             sockets.remove(socket);
         }
+        System.out.println("Client " + clientName + " has left the room.");
+        sendMessage("Client " + clientName + " has left the room.");
         socket.close();
     }
 }
