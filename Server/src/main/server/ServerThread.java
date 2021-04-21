@@ -18,13 +18,21 @@ public class ServerThread implements Runnable {
     Socket socket;
     String clientName;
 
-    HashSet<String> clientList = Server.getClientList();
-    List<Socket> sockets = Server.getSockets();
+    //HashSet<String> threadList = Server.getClientList();
+    List<ServerThread> threads = Server.getThreads();
 
 
     // combine the client socket to the serverThread Constructor
     public ServerThread(Socket socket) {
         this.socket = socket;
+    }
+
+    public Socket getSocket(){
+        return socket;
+    }
+
+    public String getClientName(){
+        return clientName;
     }
 
     @Override
@@ -82,11 +90,13 @@ public class ServerThread implements Runnable {
      */
     private void sendMessage(String msg) throws IOException {
         PrintWriter out = null;
-        synchronized (sockets) {
-            for (Socket sc : sockets) {
-                out = new PrintWriter(sc.getOutputStream());
-                out.println(msg);
-                out.flush();
+        synchronized (threads) {
+            for (ServerThread st : threads) {
+                if(!st.getClientName().equals("")){
+                    out = new PrintWriter(st.getSocket().getOutputStream());
+                    out.println(msg);
+                    out.flush();
+                }
             }
         }
     }
@@ -97,9 +107,9 @@ public class ServerThread implements Runnable {
 
         PrintWriter out = null;
         //synchronized (sockets) {
-            for (Socket sc : sockets) {
-                if(!sc.equals(socket)) {
-                    out = new PrintWriter(sc.getOutputStream());
+            for (ServerThread st : threads) {
+                if(!st.equals(this)) {
+                    out = new PrintWriter(st.getSocket().getOutputStream());
                     out.println(clientName + " has joined the chat.");
                     out.flush();
                 }
@@ -112,10 +122,10 @@ public class ServerThread implements Runnable {
      */
     public void closeConnect() throws IOException {
         //remove the socket from the set
-        synchronized (sockets) {
-            sockets.remove(socket);
+        synchronized (threads) {
+            threads.remove(this);
         }
-        clientList.remove(clientName);
+        Server.clientList.remove(clientName);
         System.out.println(clientName + " has left the room.");
         sendMessage(clientName + " has left the room.");
         socket.close();

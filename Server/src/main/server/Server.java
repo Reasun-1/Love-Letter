@@ -11,7 +11,7 @@ public class Server {
 
     private volatile static Server server;
     // a set (here is a vector type) for the accepted sockets
-    protected static List<Socket> sockets = new Vector<>();
+    protected static List<ServerThread> threads = new Vector<>();
     // a set for checking clients´ name
     protected static HashSet<String> clientList = new HashSet<>();
 
@@ -30,13 +30,13 @@ public class Server {
         return server;
     }
 
-    public static List<Socket> getSockets() {
-        return sockets;
+    public static List<ServerThread> getThreads() {
+        return threads;
     }
 
-    public static HashSet<String> getClientList() {
+    /*public static HashSet<String> getClientList() {
         return clientList;
-    }
+    }*/
 
     public void start() throws IOException {
         // create the server and define the port nr.
@@ -48,13 +48,14 @@ public class Server {
                 // when new client comes, will be put into the sockets-set
                 // with synchronized, there is only one thread at one time
                 Socket clientSocket = server.accept();
-                synchronized (sockets) {
-                    sockets.add(clientSocket);
+                synchronized (threads) {
+                    ServerThread thread = new ServerThread(clientSocket);
+                    threads.add(thread);
+                    new Thread(thread).start();
 
                 }
                 // several server threads will respond to the client requests
-                Thread thread = new Thread(new ServerThread(clientSocket));
-                thread.start();
+
                 //catch the exception
             } catch (Exception e) {
                 flag = false;
