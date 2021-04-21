@@ -108,7 +108,7 @@ public class ServerThread implements Runnable {
         PrintWriter out = null;
         //synchronized (sockets) {
             for (ServerThread st : threads) {
-                if(!st.equals(this)) {
+                if(!st.equals(this) && !st.getClientName().equals("")) {
                     out = new PrintWriter(st.getSocket().getOutputStream());
                     out.println(clientName + " has joined the chat.");
                     out.flush();
