@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class Client {
     private Socket socket;
@@ -13,7 +14,7 @@ public class Client {
     private BufferedReader reader;
     private ViewModel viewmodel;
 
-    public Client() throws IOException{
+    public Client() throws IOException {
         this.startConnection();
     }
 
@@ -52,32 +53,6 @@ public class Client {
             }
         }
 
-
-        // we start with an empty string as name (for the while loop)
-        /*name = "";
-        while(name.equals("")){
-            // Receive a name from the Viewmodel
-            String temp_name = viewmodel.getName();
-            // send the name to the server
-            out.println(temp_name);
-            String nn = in.readLine();
-            System.out.println(nn);
-            // if the name is accepted, the server sends the name back
-            if(nn.equals(temp_name)){
-                name = temp_name;
-            }else{
-                // if the name is not accepted, send an error message and return to the beginning of the loop
-
-                viewmodel.errorMessage("The chosen name already exists. Please choose another name.");
-            }
-        }
-
-         */
-        // send welcome message with the accepted name
-        // viewmodel.welcomeMessage(name);
-        //System.out.println(in.readLine());
-
-
     }
 
     public void sendMessage(String msg) throws IOException {
@@ -86,9 +61,14 @@ public class Client {
             out.println(msg);
         } else {
             // stop the connection
-            in.close();
-            out.close();
-            socket.close();
+            if(out != null){
+                try {
+                    out.close();
+                    System.out.println("You left the room.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

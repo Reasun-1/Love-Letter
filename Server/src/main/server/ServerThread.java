@@ -58,6 +58,7 @@ public class ServerThread extends Server implements Runnable {
                     flag = false;
                     continue;
                 }
+
                 String msg = clientName + ":" + line;
                 //optional, for server terminal print
                 System.out.println(msg);
@@ -113,6 +114,7 @@ public class ServerThread extends Server implements Runnable {
         synchronized (sockets) {
             sockets.remove(socket);
         }
+        clientList.remove(clientName);
         System.out.println("Client " + clientName + " has left the room.");
         sendMessage("Client " + clientName + " has left the room.");
         socket.close();
