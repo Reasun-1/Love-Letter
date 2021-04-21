@@ -5,15 +5,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.HashSet;
 
 public class Client {
-    private String name;
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
     private BufferedReader reader;
     private ViewModel viewmodel;
+
+    public Client() throws IOException{
+        this.startConnection();
+    }
 
     public void startConnection() throws IOException {
         // Always connect to localhost and fixed port (evtl. noch ändern)
@@ -93,7 +95,6 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
         Client client = new Client();
-        client.startConnection();
 
         //create a client thread to read and write from the server
         new Thread(new Runnable() {
