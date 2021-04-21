@@ -1,13 +1,13 @@
-package src.sample;
+package sample;
 
-import java.io.BufferedReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashSet;
 
-public class Client{
+public class Client {
     private String name;
     private Socket socket;
     private PrintWriter out;
@@ -17,7 +17,7 @@ public class Client{
 
     public void startConnection() throws IOException {
         // Always connect to localhost and fixed port (evtl. noch ändern)
-        socket = new Socket("127.0.0.1",5200);
+        socket = new Socket("127.0.0.1", 5200);
         // Create Writer to send messages to server
         out = new PrintWriter(socket.getOutputStream(), true);
         // Create Reader to receive messages from server
@@ -32,32 +32,56 @@ public class Client{
 
     public void login() throws IOException {
 
+        String temp_name = viewmodel.getName();
+        out.println(temp_name);
+
+        boolean flag = true;
+
+        while (flag) {
+            if (in.readLine().equals("user existed!")) {
+                viewmodel.errorMessage("The chosen name already exists. Please choose another name.");
+                String nameTry = viewmodel.getName();
+                out.println(nameTry);
+
+            } else {
+                flag = false;
+                viewmodel.welcomeMessage(in.readLine());
+            }
+        }
+
+
         // we start with an empty string as name (for the while loop)
-        name = "";
+        /*name = "";
         while(name.equals("")){
             // Receive a name from the Viewmodel
             String temp_name = viewmodel.getName();
             // send the name to the server
             out.println(temp_name);
+            String nn = in.readLine();
+            System.out.println(nn);
             // if the name is accepted, the server sends the name back
-            if(in.readLine().equals(temp_name)){
+            if(nn.equals(temp_name)){
                 name = temp_name;
-            }
-            else{
+            }else{
                 // if the name is not accepted, send an error message and return to the beginning of the loop
+
                 viewmodel.errorMessage("The chosen name already exists. Please choose another name.");
             }
         }
+
+         */
         // send welcome message with the accepted name
         viewmodel.welcomeMessage(name);
+        System.out.println(in.readLine());
+
+
     }
 
     public void sendMessage(String msg) throws IOException {
         // check logout condition
-        if(!msg.equals("bye")){
-            out.println(name + ": " + msg);
-        }
-        else{
+        if (!msg.equals("bye")) {
+            out.println(msg);
+        } else {
             // stop the connection
             in.close();
             out.close();
@@ -75,10 +99,11 @@ public class Client{
             @Override
             public void run() {
                 try {
-                    while (true){
+                    while (true) {
                         //client socket waits for the input from the server
                         //if there is input,
-                        client.viewmodel.receiveMessage(client.in.readLine());
+                        //client.viewmodel.receiveMessage(client.in.readLine());
+                        System.out.println(client.in.readLine());
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -86,9 +111,9 @@ public class Client{
             }
         }).start();
         //wait for messages from ViewModel passed on by the inputstream, stop if the connection is terminated
-        while(!client.socket.isClosed()){
+        while (!client.socket.isClosed()) {
             String msg = client.reader.readLine();
-            if(!msg.equals("")){
+            if (!msg.equals("")) {
                 client.sendMessage(msg);
             }
         }

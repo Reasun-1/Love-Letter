@@ -1,7 +1,10 @@
-package src.sample;
+package sample;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class ViewModel {
 
@@ -16,22 +19,30 @@ public class ViewModel {
     // - getInputStream(): Hand over the InputStream (must be a variable, messages which should be sent can be handed over into this stream)
 
     public void errorMessage(String msg){
-
+        System.out.println(msg);
     }
 
     public void welcomeMessage(String name){
-
+        System.out.println("Welcome " + name);
     }
 
     public String getName(){
-        return "Fluffige_Flugenten";
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String name = null;
+        try {
+            name = reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return name;
     }
+
 
     public void receiveMessage(String msg){
 
     }
 
     public InputStream getInputStream(){
-        return stream;
+        return System.in;
     }
 }
