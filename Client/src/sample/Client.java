@@ -63,7 +63,10 @@ public class Client {
             // stop the connection
             if(out != null){
                 try {
+                    in.close();
                     out.close();
+                    reader.close();
+                    socket.close();
                     System.out.println("You left the room.");
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -93,15 +96,11 @@ public class Client {
             }
         }).start();
         //wait for messages from ViewModel passed on by the inputstream, stop if the connection is terminated
-        try{
-            while (!client.socket.isClosed()) {
-                String msg = client.reader.readLine();
-                if (!msg.equals("")) {
-                    client.sendMessage(msg);
-                }
+        while (!client.socket.isClosed()) {
+            String msg = client.reader.readLine();
+            if (!msg.equals("")) {
+                client.sendMessage(msg);
             }
-        } catch (IOException e) {
-            client.socket.close();
         }
     }
 }
