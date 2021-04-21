@@ -6,15 +6,20 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashSet;
+import java.util.List;
+
+import static src.main.server.Server.clientList;
 
 /**
  * server thread for several client request
  */
-public class ServerThread extends Server implements Runnable {
+public class ServerThread implements Runnable {
 
     Socket socket;
-    //String socketAdress;
     String clientName;
+
+    HashSet<String> clientList = Server.getClientList();
+    List<Socket> sockets = Server.getSockets();
 
 
     // combine the client socket to the serverThread Constructor
@@ -26,28 +31,24 @@ public class ServerThread extends Server implements Runnable {
     public void run() {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(socket.getOutputStream());
+            PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
 
             // check the name with client list
             clientName = "";
 
             while (clientName.equals("")) {
                 String temp_name = in.readLine();
-                if (clientList.contains(temp_name)) {
+                if (Server.clientList.contains(temp_name)) {
                     out.println("user existed!");
-                    out.flush();
                 } else {
                     clientName = temp_name;
-                    clientList.add(clientName);
+                    Server.clientList.add(clientName);
                     out.println(clientName);
-                    out.flush();
                 }
             }
 
             welcomeMessage(clientName);
-            System.out.println(clientList);
-
-            //socketAdress = socket.getRemoteSocketAddress().toString();
+            System.out.println(Server.clientList);
 
             boolean flag = true;
             while (flag) {
@@ -115,8 +116,8 @@ public class ServerThread extends Server implements Runnable {
             sockets.remove(socket);
         }
         clientList.remove(clientName);
-        System.out.println("Client " + clientName + " has left the room.");
-        sendMessage("Client " + clientName + " has left the room.");
+        System.out.println(clientName + " has left the room.");
+        sendMessage(clientName + " has left the room.");
         socket.close();
     }
 }
