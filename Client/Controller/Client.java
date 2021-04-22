@@ -67,11 +67,11 @@ public class Client {
         if (msg.equals("bye")) {
             // stop the connection
             try {
-                if(out != null){
-                    out.close();
+                if(socket != null){
+                    socket.close();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                // e.printStackTrace();
             }
             // Confirm logout (currently via terminal)
             System.out.println("You left the room.");
@@ -88,14 +88,12 @@ public class Client {
             // Create a client thread to read messages from the server
             new Thread(() -> {
                 try {
-                    while (true) {
-                        // Client socket waits for the input from the server
-                        // If there is input, display the message (currently via terminal)
-                        System.out.println(client.in.readLine());
-                        // Soon: Pass the message to the chat window
-                    }
+                    // Client socket waits for the input from the server
+                    // If there is input, display the message (currently via terminal)
+                    System.out.println(client.in.readLine());
+                    // Soon: Pass the message to the chat window
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
                 }
             }).start();
             // Wait for messages from the user passed on by the InputStream, stop if the connection is terminated
