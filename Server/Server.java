@@ -8,9 +8,9 @@ import java.util.Vector;
 public class Server {
 
     private volatile static Server server;
-    // a set (here is a vector type) for the accepted sockets
+    // a set (here is a vector type) for the accepted ServerThreads
     protected static List<ServerThread> threads = new Vector<>();
-    // a set for checking clients´ name
+    // a set for checking clients´ names
     protected static HashSet<String> clientList = new HashSet<>();
 
     private Server() {
@@ -32,10 +32,6 @@ public class Server {
         return threads;
     }
 
-    /*public static HashSet<String> getClientList() {
-        return clientList;
-    }*/
-
     public void start() throws IOException {
         // create the server and define the port nr.
         ServerSocket server = new ServerSocket(5200);
@@ -43,7 +39,7 @@ public class Server {
         // accept the client request
         while (flag) {
             try {
-                // when new client comes, will be put into the sockets-set
+                // when new client comes, will be put into the thread-set
                 // with synchronized, there is only one thread at one time
                 Socket clientSocket = server.accept();
                 synchronized (threads) {
@@ -64,9 +60,12 @@ public class Server {
         server.close();
     }
 
-    public static void main(String[] args) throws IOException {
-        Server server = new Server();
-        server.start();
+    public static void main(String[] args) {
+        try{
+            Server server = new Server();
+            server.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
 }
