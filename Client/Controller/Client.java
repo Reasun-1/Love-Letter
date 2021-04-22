@@ -88,12 +88,14 @@ public class Client {
             // Create a client thread to read messages from the server
             new Thread(() -> {
                 try {
+                    while (!client.socket.isClosed()){
                     // Client socket waits for the input from the server
                     // If there is input, display the message (currently via terminal)
                     System.out.println(client.in.readLine());
                     // Soon: Pass the message to the chat window
+                    }
                 } catch (IOException e) {
-                    // e.printStackTrace();
+                    e.printStackTrace();
                 }
             }).start();
             // Wait for messages from the user passed on by the InputStream, stop if the connection is terminated
