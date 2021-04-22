@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class Client {
     // socket for the TCP connection
-    private final Socket socket;
+    private volatile Socket socket;
     // writer for outgoing messages
     private final PrintWriter out;
     // reader for incoming messages
@@ -65,6 +65,7 @@ public class Client {
     public void sendMessage(String msg) throws IOException {
         // check logout condition
         if (msg.equals("bye")) {
+            out.println("quit");
             // stop the connection
             try {
                 if(socket != null){
