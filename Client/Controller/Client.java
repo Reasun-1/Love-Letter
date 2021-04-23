@@ -72,7 +72,7 @@ public class Client {
                     socket.close();
                 }
             } catch (Exception e) {
-                // e.printStackTrace();
+                e.printStackTrace();
             }
             // Confirm logout (currently via terminal)
             System.out.println("You left the room.");
@@ -96,7 +96,11 @@ public class Client {
                     // Soon: Pass the message to the chat window
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    try{
+                        client.socket.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }).start();
             // Wait for messages from the user passed on by the InputStream, stop if the connection is terminated
