@@ -68,4 +68,32 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+    public Game createGame(){
+        //create a new game
+    }
+
+    public void sendTo(String clientName){
+        //send message to Client clientName
+    }
+
+    public void addPlayer(String clientName){
+        //add Player to PlayerList
+    }
+
+    public void startGame(){
+        //initiate the Gameplay
+    }
+
+    public void playCard(String cardName){
+        //play the card cardName
+    }
+
+    public String choosePlayer(){
+        //ask the active player to choose another player
+    }
+
+    public String chooseCard(){
+        //ask the active player to choose a card
+    }
 }
