@@ -108,4 +108,18 @@ public class ServerThread implements Runnable {
         sendMessage(clientName + " has left the room.");
         socket.close();
     }
+
+    //**********************new**************************
+    //send direkt Message to a or several players
+    public void sendPrivateMessage(String msg){
+
+    }
+
+    //broadcast public information (e.g. Alice is in turn)
+    //direckt with ViewModel connecetd?
+    public void sendPublicInfo(){
+
+    }
+
+    //
 }

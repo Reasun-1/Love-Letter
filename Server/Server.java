@@ -71,6 +71,7 @@ public class Server {
 
     public Game createGame(){
         //create a new game
+        return null;
     }
 
     public void sendTo(String clientName){
@@ -91,9 +92,11 @@ public class Server {
 
     public String choosePlayer(){
         //ask the active player to choose another player
+        return "";
     }
 
     public String chooseCard(){
         //ask the active player to choose a card
+        return "";
     }
 }

@@ -1,22 +1,31 @@
 import java.util.HashSet;
 import java.util.List;
+import java.util.Stack;
 
 public class Game {
-    private final static Game game;
-    private List<String> deck;
-    private HashSet<String> playerList = new HashSet<>();
-    private String activePlayer;
-    private List<String> score;
+
+    private volatile static Game game;
+
+     int countPlayer;
+     String[] playerList; // ClienstName := clientIndex für alle Arrays
+     Stack<Card> deck;
+     int[] countDiscarded;
+     Card[][] discardedCard;
+     int[] status; // 0=game over, 1=in game, 2=protected
+     Card[] handCard;
+     int[] scores;
+     int[] seenCard;
+
 
     private Game(){
 
     }
 
-    public Game getInstance(){
+    public static Game getInstance(){
         if (game == null) {
             synchronized (Game.class) {
                 if (game == null) {
-                    game = new Server();
+                    game = new Game();
                 }
             }
         }
