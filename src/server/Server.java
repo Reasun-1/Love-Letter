@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Hashtable;
+import java.util.List;
 
 public class Server {
 
@@ -104,4 +105,11 @@ public class Server {
         return clientList.get(playerList.get(playerID)).receiveOrder("3");
     }
 
+    public void updatePlayerIndex(List<String> updatedList){
+
+        for (int i = 0; i < updatedList.size(); i++) {
+            playerList.clear();
+            playerList.put(i, updatedList.get(i));
+        }
+    }
 }
