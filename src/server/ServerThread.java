@@ -1,10 +1,11 @@
+package server;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Enumeration;
-import java.util.List;
 
 /**
  * server thread for several client request
@@ -14,8 +15,8 @@ public class ServerThread implements Runnable {
     private final Socket socket;
     private String clientName;
 
-    //HashSet<String> threadList = Server.getClientList();
-    //protected List<ServerThread> threads = Server.getThreads();
+    //HashSet<String> threadList = server.Server.getClientList();
+    //protected List<server.ServerThread> threads = server.Server.getThreads();
 
 
     // combine the client socket to the serverThread Constructor
@@ -99,8 +100,9 @@ public class ServerThread implements Runnable {
         }
     }
 
-    public void receiveOrder(String order) throws IOException{
+    public String receiveOrder(String order) throws IOException{
         new PrintWriter(socket.getOutputStream(),true).println("/" + order);
+        return new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
     }
 
     //close socket connection
@@ -109,7 +111,7 @@ public class ServerThread implements Runnable {
         synchronized (Server.clientList) {
             Server.clientList.remove(clientName);
         }
-        //Server.clientList.remove(clientName);
+        //server.Server.clientList.remove(clientName);
         // inform the other clients
         sendMessage(clientName + " has left the room.");
         socket.close();

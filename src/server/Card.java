@@ -1,7 +1,9 @@
-/**
- * @author can ren
- * @create $(YEAR)-$(MONTH)-$(DAY)
- */
+package server;
+
+
+import java.util.Random;
+import java.util.Stack;
+
 public enum Card {
 
     //status of a player: 0=out, 1=in game, 2= protected
@@ -40,7 +42,7 @@ public enum Card {
                 Game.getInstance().handCard[myIndex] = tempCard;
                 Game.getInstance().handCard[targetIndex] = Card.KING;
             }else if(Game.getInstance().status[targetIndex] == 2){
-                System.out.println("The chosen player is protected."); // soon: in Exception Window in View
+                System.out.println("The chosen player is protected."); // soon: in Exception Window in client.Controller.View
             }else{
                 System.out.println("The chosen player is out of game.");
             }
@@ -175,5 +177,39 @@ public enum Card {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    void function(int myIndex){}
+    void function(int myIndex, int targetIndex){}
+    void function(int myIndex, int targetIndex, String guess){}
+
+    public static Stack<Card> shuffle(){
+
+        java.util.Random random = new Random();
+        Card[] deckArray = new Card[16];
+        int j = 0;
+
+        //put the cards in the deck according to the count of each type of cards
+        for(Card card : Card.values()){
+            for (int i = 0; i < card.count; i++) {
+                deckArray[j] = card;
+                j++;
+            }
+        }
+        //schuffle the deck : change two cards of the deck for 100 times randomly
+        for (int i = 0; i < 100; i++) {
+            int indexCard1 = random.nextInt(16);
+            int indexCard2 = random.nextInt(16);
+            Card card = deckArray[indexCard1];
+            deckArray[indexCard1] = deckArray[indexCard2];
+            deckArray[indexCard2] = card;
+        }
+
+        //put the cards from array to stack:
+        Stack<Card> deck = new Stack<>();
+        for (int i = 0; i < 16; i++) {
+            deck.push(deckArray[i]);
+        }
+        return deck;
     }
 }

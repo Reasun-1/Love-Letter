@@ -1,10 +1,10 @@
+package server;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Vector;
 
 public class Server {
 
@@ -29,7 +29,7 @@ public class Server {
         return server;
     }
 
-    //public static List<ServerThread> getThreads() {
+    //public static List<server.ServerThread> getThreads() {
       //  return threads;
     //}
 
@@ -90,14 +90,26 @@ public class Server {
         //play the card cardName
     }
 
-    public String choosePlayer(){
+    public String choosePlayer(int playerID) throws IOException{
         //ask the active player to choose another player
-        return "";
+        String chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2");
+        while (!playerList.contains(chosenPlayer)){
+            clientList.get(playerList.get(playerID)).receiveOrder("1The chosen player doesn't exist!");
+            chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2");
+        }
+        return chosenPlayer;
     }
 
-    public String chooseCard(){
-        //ask the active player to choose a card
-        return "";
+    public String chooseCard(int playerID) throws IOException{
+        //ask the active player to choose a card (no error handling yet)
+        return clientList.get(playerList.get(playerID)).receiveOrder("3");
     }
 
+    public void updatePlayerIndex(List<String> updatedList){
+
+        for (int i = 0; i < updatedList.size(); i++) {
+            playerList.clear();
+            playerList.put(i, updatedList.get(i));
+        }
+    }
 }
