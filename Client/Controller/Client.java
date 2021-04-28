@@ -55,7 +55,7 @@ public class Client {
         // Ask for the clients name (currently via terminal)
         System.out.println("Please enter your name:"); // Soon: Open Login-Window
         String temp_name = reader.readLine();
-        while(temp_name.contains('/')){
+        while(temp_name.contains("/")){
             System.out.println("The name must not contain the symbol '/'!");
             temp_name = reader.readLine();
         }
@@ -103,13 +103,22 @@ public class Client {
     public void executeOrder(String order) throws IOException{
         switch (order.charAt(0)){
             case '0':
+                out.println("done");
                 socket.close();
                 break;
             case '1':
                 // open errorWindow with errorMessage = order.substring(1)
+                out.println("done");
                 break;
             case '2':
-                // do something
+                String name = "";
+                // String name = ask the user to choose another player
+                out.println(name);
+                break;
+            case '3':
+                String cardname = "";
+                // String cardname = ask the user to choose a card
+                out.println(cardname);
                 break;
         }
     }

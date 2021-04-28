@@ -90,14 +90,19 @@ public class Server {
         //play the card cardName
     }
 
-    public String choosePlayer(){
+    public String choosePlayer(int playerID) throws IOException{
         //ask the active player to choose another player
-        return "";
+        String chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2");
+        while (!playerList.contains(chosenPlayer)){
+            clientList.get(playerList.get(playerID)).receiveOrder("1The chosen player doesn't exist!");
+            chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2");
+        }
+        return chosenPlayer;
     }
 
-    public String chooseCard(){
-        //ask the active player to choose a card
-        return "";
+    public String chooseCard(int playerID) throws IOException{
+        //ask the active player to choose a card (no error handling yet)
+        return clientList.get(playerList.get(playerID)).receiveOrder("3");
     }
 
 }
