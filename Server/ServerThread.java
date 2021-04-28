@@ -27,9 +27,9 @@ public class ServerThread implements Runnable {
         return socket;
     }
 
-    public String getClientName(){
-        return clientName;
-    }
+    //public String getClientName(){
+        //return clientName;
+    //}
 
     @Override
     public void run() {
@@ -69,10 +69,13 @@ public class ServerThread implements Runnable {
                     flag = false;
                     continue;
                 }
-
-                String msg = clientName + ": " + line;
-                // give the message to all clients online
-                sendMessage(msg);
+                if (line.charAt(0) == '/'){
+                    executeOrder(line.substring(1));
+                } else {
+                    String msg = "$" + clientName + ": " + line.substring(1);
+                    // give the message to all clients online
+                    sendMessage(msg);
+                }
             }
             // close the connection
             closeConnect();
@@ -96,6 +99,10 @@ public class ServerThread implements Runnable {
         }
     }
 
+    public void receiveOrder(String order) throws IOException{
+        new PrintWriter(socket.getOutputStream(),true).println("/" + order);
+    }
+
     //close socket connection
     public void closeConnect() throws IOException {
         //remove the socket from the set
@@ -112,6 +119,28 @@ public class ServerThread implements Runnable {
     //send direkt Message to a or several players
     public void sendPrivateMessage(String name, String msg) throws IOException{
         new PrintWriter(Server.clientList.get(name).getSocket().getOutputStream(), true).println(msg);
+    }
+
+    public void executeOrder(String order) throws IOException{
+        switch (order.charAt(0)){
+            case '0':
+                closeConnect();
+                break;
+            case '1':
+                String name = order.substring(1,order.indexOf('/'));
+                String msg = order.substring(order.indexOf('/'));
+                sendPrivateMessage(name, "$" + clientName + "[private]: " + msg);
+                break;
+            case '2':
+                Server.getServer().addPlayer(clientName);
+                break;
+            case '3':
+                Server.getServer().startGame();
+                break;
+            case '4':
+                Server.getServer().playCard(order.substring(1));
+                break;
+        }
     }
 
 }
