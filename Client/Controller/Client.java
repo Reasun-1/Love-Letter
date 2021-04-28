@@ -16,6 +16,24 @@ public class Client {
     // reader for outgoing messages
     private final BufferedReader reader;
 
+    private Card[] handCards;
+
+    private Card[] discardedCards;
+
+    private int score;
+
+    public int getScore(){
+        return score;
+    }
+
+    public Card[] getHandCards(){
+        return handCards;
+    }
+
+    public Card[] getDiscardedCards(){
+        return discardedCards;
+    }
+
     public Client() throws IOException {
         // Always connect to localhost and fixed port (maybe ask for ip and port?)
         socket = new Socket("127.0.0.1", 5200);
