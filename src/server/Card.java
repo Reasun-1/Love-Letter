@@ -15,6 +15,7 @@ public enum Card {
             int countDiscarded = Game.getInstance().countDiscarded[myIndex]++;
             Game.getInstance().discardedCard[myIndex][countDiscarded] = Card.PRINCESS;
             Game.getInstance().status[myIndex] = 0;
+            Server.getServer().sendMessageToAll(Game.getInstance().playerNames.get(myIndex) + " is out of game.");
         }
 
     },
@@ -42,9 +43,9 @@ public enum Card {
                 Game.getInstance().handCard[myIndex] = tempCard;
                 Game.getInstance().handCard[targetIndex] = Card.KING;
             }else if(Game.getInstance().status[targetIndex] == 2){
-                System.out.println("The chosen player is protected."); // soon: in Exception Window in client.Controller.View
+                Server.getServer().sendTo(Game.getInstance().playerNames.get(myIndex), "The chosen player is protected.");
             }else{
-                System.out.println("The chosen player is out of game.");
+                Server.getServer().sendTo(Game.getInstance().playerNames.get(myIndex), "The chosen player is out of game.");
             }
         }
 

@@ -18,7 +18,11 @@ public class Client {
     // reader for outgoing messages
     private final BufferedReader reader;
 
-    private Card[] handCards;
+    private Card handCard; // **************Card handCard => there is only at one time*********
+
+    private Card drawnCard;
+
+    private Card playedCard;
 
     private Card[] discardedCards;
 
@@ -28,8 +32,8 @@ public class Client {
         return score;
     }
 
-    public Card[] getHandCards(){
-        return handCards;
+    public Card getHandCards(){
+        return handCard;
     }
 
     public Card[] getDiscardedCards(){

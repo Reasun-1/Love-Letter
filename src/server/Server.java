@@ -8,6 +8,10 @@ import java.util.List;
 
 public class Server {
 
+    //*********UPDATE THE INFO FROM GAME AND FURTHER TO CLIENTS!!*****************
+    //option: new attributes in server class:
+    //Card[] handCard; Card[] drawnCard; Card[][] discardedCards; Card[] playedCard;
+
     private volatile static Server server;
     // a set (here is a vector type) for the accepted ServerThreads
     protected static Hashtable<Integer, String> playerList = new Hashtable<Integer, String>();
@@ -73,7 +77,7 @@ public class Server {
         return null;
     }
 
-    public void sendTo(String clientName){
+    public void sendTo(String clientName, String message){
         //send message to Client clientName
     }
 
@@ -105,11 +109,27 @@ public class Server {
         return clientList.get(playerList.get(playerID)).receiveOrder("3");
     }
 
+    //***********************zu ergänzen****************
+
     public void updatePlayerIndex(List<String> updatedList){
 
         for (int i = 0; i < updatedList.size(); i++) {
             playerList.clear();
             playerList.put(i, updatedList.get(i));
         }
+    }
+
+    public String guessCardType(int playerID){
+        return ""; // zu implementieren..
+    }
+
+    // update the played Cards infos and the result after each play => for the server and client
+    public void updatePlay(){
+
+    }
+
+    //server sends message to all clients
+    public void sendMessageToAll(String message){
+
     }
 }
