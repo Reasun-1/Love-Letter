@@ -1,4 +1,6 @@
-package Controller;
+package client.Controller;
+
+import server.Card;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,10 +1,9 @@
+package server;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.List;
-import java.util.Vector;
 
 public class Server {
 
@@ -29,7 +28,7 @@ public class Server {
         return server;
     }
 
-    //public static List<ServerThread> getThreads() {
+    //public static List<server.ServerThread> getThreads() {
       //  return threads;
     //}
 

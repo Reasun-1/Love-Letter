@@ -1,3 +1,5 @@
+package server;
+
 /**
  * @author can ren
  * @create $(YEAR)-$(MONTH)-$(DAY)
@@ -40,7 +42,7 @@ public enum Card {
                 Game.getInstance().handCard[myIndex] = tempCard;
                 Game.getInstance().handCard[targetIndex] = Card.KING;
             }else if(Game.getInstance().status[targetIndex] == 2){
-                System.out.println("The chosen player is protected."); // soon: in Exception Window in View
+                System.out.println("The chosen player is protected."); // soon: in Exception Window in client.Controller.View
             }else{
                 System.out.println("The chosen player is out of game.");
             }

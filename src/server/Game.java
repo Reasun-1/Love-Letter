@@ -1,5 +1,5 @@
-import java.util.HashSet;
-import java.util.List;
+package server;
+
 import java.util.Stack;
 
 public class Game {
