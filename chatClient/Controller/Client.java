@@ -55,6 +55,10 @@ public class Client {
         // Ask for the clients name (currently via terminal)
         System.out.println("Please enter your name:"); // Soon: Open Login-Window
         String temp_name = reader.readLine();
+        while(temp_name.contains('/')){
+            System.out.println("The name must not contain the symbol '/'!");
+            temp_name = reader.readLine();
+        }
 
         // Send the name to the server
         out.println(temp_name);
@@ -80,10 +84,41 @@ public class Client {
         }
     }
 
+    public void sendPersonalMessage(String name, String msg) throws IOException {
+        out.println("/1" + name + "/" + msg);
+    }
+
+    public void joinGame() throws IOException{
+        out.println("/2");
+    }
+
+    public void startGame() throws IOException{
+        out.println("/3");
+    }
+
+    public void playCard(Card card) throws IOException {
+        out.println("/4" + card.getType());
+    }
+
+    public void executeOrder(String order) throws IOException{
+        switch (order.charAt(0)){
+            case '0':
+                socket.close();
+                break;
+            case '1':
+                // open errorWindow with errorMessage = order.substring(1)
+                break;
+            case '2':
+                // do something
+                break;
+        }
+    }
+
+
     public void sendMessage(String msg) throws IOException {
         // check logout condition
         if (msg.equals("bye")) {
-            out.println("quit");
+            out.println("/0quit");
             // stop the connection
             try {
                 if(socket != null){
@@ -97,7 +132,7 @@ public class Client {
             // Soon: Logout-Window
         } else {
             // send message to server
-            out.println(msg);
+            out.println("$" + msg);
         }
     }
 
@@ -110,7 +145,12 @@ public class Client {
                     while (!client.socket.isClosed()){
                     // Client socket waits for the input from the server
                     // If there is input, display the message (currently via terminal)
-                    System.out.println(client.in.readLine());
+                        String line = client.in.readLine();
+                        if (line.charAt(0) == '/'){
+                            client.executeOrder(line.substring(1));
+                        } else {
+                            System.out.println(line.substring(1));
+                        }
                     // Soon: Pass the message to the chat window
                     }
                 } catch (IOException e) {

@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public class ServerThread implements Runnable {
     private String clientName;
 
     //HashSet<String> threadList = Server.getClientList();
-    protected List<ServerThread> threads = Server.getThreads();
+    //protected List<ServerThread> threads = Server.getThreads();
 
 
     // combine the client socket to the serverThread Constructor
@@ -26,9 +27,9 @@ public class ServerThread implements Runnable {
         return socket;
     }
 
-    public String getClientName(){
-        return clientName;
-    }
+    //public String getClientName(){
+        //return clientName;
+    //}
 
     @Override
     public void run() {
@@ -42,14 +43,14 @@ public class ServerThread implements Runnable {
             clientName = "";
             while (clientName.isEmpty()) {
                 String temp_name = in.readLine();
-                if (Server.clientList.contains(temp_name)) {
+                if (Server.clientList.containsKey(temp_name)) {
                     out.println("user existed!");
                 } else {
                     // introduce the new client
                     sendMessage(temp_name + " has joined the chat.");
                     // Store the client name and add it to the name list
                     clientName = temp_name;
-                    Server.clientList.add(clientName);
+                    Server.clientList.put(clientName, this);
                     // send client name as a confirmation
                     out.println(clientName);
                 }
@@ -68,10 +69,13 @@ public class ServerThread implements Runnable {
                     flag = false;
                     continue;
                 }
-
-                String msg = clientName + ": " + line;
-                // give the message to all clients online
-                sendMessage(msg);
+                if (line.charAt(0) == '/'){
+                    executeOrder(line.substring(1));
+                } else {
+                    String msg = "$" + clientName + ": " + line.substring(1);
+                    // give the message to all clients online
+                    sendMessage(msg);
+                }
             }
             // close the connection
             closeConnect();
@@ -88,22 +92,24 @@ public class ServerThread implements Runnable {
     private void sendMessage(String msg) throws IOException {
         //optional, for server terminal print
         System.out.println(msg);
-        synchronized (threads) {
-            for (ServerThread st : threads) {
-                if(!st.getClientName().isEmpty()){
-                    new PrintWriter(st.getSocket().getOutputStream(), true).println(msg);
-                }
+        synchronized (Server.clientList) {
+            for (Enumeration<ServerThread> e = Server.clientList.elements(); e.hasMoreElements();) {
+                new PrintWriter(e.nextElement().getSocket().getOutputStream(), true).println(msg);
             }
         }
+    }
+
+    public void receiveOrder(String order) throws IOException{
+        new PrintWriter(socket.getOutputStream(),true).println("/" + order);
     }
 
     //close socket connection
     public void closeConnect() throws IOException {
         //remove the socket from the set
-        synchronized (threads) {
-            threads.remove(this);
+        synchronized (Server.clientList) {
+            Server.clientList.remove(clientName);
         }
-        Server.clientList.remove(clientName);
+        //Server.clientList.remove(clientName);
         // inform the other clients
         sendMessage(clientName + " has left the room.");
         socket.close();
@@ -111,15 +117,30 @@ public class ServerThread implements Runnable {
 
     //**********************new**************************
     //send direkt Message to a or several players
-    public void sendPrivateMessage(String msg){
-
+    public void sendPrivateMessage(String name, String msg) throws IOException{
+        new PrintWriter(Server.clientList.get(name).getSocket().getOutputStream(), true).println(msg);
     }
 
-    //broadcast public information (e.g. Alice is in turn)
-    //direckt with ViewModel connecetd?
-    public void sendPublicInfo(){
-
+    public void executeOrder(String order) throws IOException{
+        switch (order.charAt(0)){
+            case '0':
+                closeConnect();
+                break;
+            case '1':
+                String name = order.substring(1,order.indexOf('/'));
+                String msg = order.substring(order.indexOf('/'));
+                sendPrivateMessage(name, "$" + clientName + "[private]: " + msg);
+                break;
+            case '2':
+                Server.getServer().addPlayer(clientName);
+                break;
+            case '3':
+                Server.getServer().startGame();
+                break;
+            case '4':
+                Server.getServer().playCard(order.substring(1));
+                break;
+        }
     }
 
-    //
 }

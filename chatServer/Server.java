@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
@@ -9,9 +10,9 @@ public class Server {
 
     private volatile static Server server;
     // a set (here is a vector type) for the accepted ServerThreads
-    protected static List<ServerThread> threads = new Vector<>();
+    protected static Hashtable<Integer, String> playerList = new Hashtable<Integer, String>();
     // a set for checking clients´ names
-    protected static HashSet<String> clientList = new HashSet<>();
+    protected static Hashtable<String, ServerThread> clientList = new Hashtable<String, ServerThread>();
 
     private Server() {
     }
@@ -28,9 +29,9 @@ public class Server {
         return server;
     }
 
-    public static List<ServerThread> getThreads() {
-        return threads;
-    }
+    //public static List<ServerThread> getThreads() {
+      //  return threads;
+    //}
 
     public void start() throws IOException {
         // create the server and define the port nr.
@@ -42,11 +43,9 @@ public class Server {
                 // when new client comes, will be put into the thread-set
                 // with synchronized, there is only one thread at one time
                 Socket clientSocket = server.accept();
-                synchronized (threads) {
+                synchronized (clientList) {
                     ServerThread thread = new ServerThread(clientSocket);
-                    threads.add(thread);
                     new Thread(thread).start();
-
                 }
                 // several server threads will respond to the client requests
 
@@ -80,6 +79,7 @@ public class Server {
 
     public void addPlayer(String clientName){
         //add Player to PlayerList
+        playerList.put(playerList.size(), clientName);
     }
 
     public void startGame(){
@@ -99,4 +99,5 @@ public class Server {
         //ask the active player to choose a card
         return "";
     }
+
 }
