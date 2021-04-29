@@ -130,8 +130,12 @@ public class ServerThread implements Runnable {
                 break;
             case '1':
                 String name = order.substring(1,order.indexOf('/'));
-                String msg = order.substring(order.indexOf('/'));
-                sendPrivateMessage(name, "$" + clientName + "[private]: " + msg);
+                if (clientList.contains(name)) {
+                    String msg = order.substring(order.indexOf('/'));
+                    sendPrivateMessage(name, "$" + clientName + "[private]: " + msg);
+                } else {
+                    receiveOrder("1There is no client with this name!");
+                }
                 break;
             case '2':
                 Server.getServer().addPlayer(clientName);

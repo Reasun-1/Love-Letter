@@ -101,6 +101,12 @@ public class Client {
     }
 
     public void playCard(Card card) throws IOException {
+        if (card.equals(handCard)){
+            handCard = drawnCard;
+            drawnCard = null;
+        } else{
+            drawnCard = null;
+        }
         out.println("/4" + card.getType());
     }
 
@@ -139,7 +145,11 @@ public class Client {
             case '5':
                 for (Card card : Card.values()) {
                     if (card.getType().equals(order.substring(1))) {
-                        drawnCard = card;
+                        if (handCard == null) {
+                            handCard = card;
+                        } else {
+                            drawnCard = card;
+                        }
                     }
                 }
                 out.println("done");
