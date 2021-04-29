@@ -22,6 +22,7 @@ public class Game {
     boolean gameOver;
     boolean roundOver;
     int playerInTurn;
+    boolean waitingForCard;
 
     public static Game getInstance() {
         if (game == null) {
@@ -124,17 +125,20 @@ public class Game {
     }
 
 
+    public void cardPlayed(Card card){
+        playedCard[playerInTurn] = card;
+        waitingForCard = false;
+    }
+
     public void playCard() throws IOException {
 
-        handCard[playerInTurn] = deck.pop();
+        handCard[playerInTurn] = deck.pop();//evtl drawnCard statt handCard?
         // **********tell server and client(in turn)**************
+        Server.getServer().drawnCard(playerInTurn, drawnCard);
+        waitingForCard = true;
         // **********server waits for the chosen played card from client**********
-        String cardType = Server.getServer().chooseCard(playerInTurn);
-
-        for (Card card : Card.values()) {
-            if (card.getType().equals(cardType)) {
-                playedCard[playerInTurn] = card;
-            }
+        while (waitingForCard){
+            continue;
         }
 
         Card cardInTurn = playedCard[playerInTurn];

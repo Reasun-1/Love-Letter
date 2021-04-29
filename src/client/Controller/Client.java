@@ -18,27 +18,25 @@ public class Client {
     // reader for outgoing messages
     private final BufferedReader reader;
 
+    private String[] playerList;
+
     private Card handCard; // **************Card handCard => there is only at one time*********
 
     private Card drawnCard;
 
     private Card playedCard;
 
-    private Card[] discardedCards;
+    private Card[][] discardedCards;
 
-    private int score;
-
-    public int getScore(){
-        return score;
-    }
+    private int[] score;
 
     public Card getHandCards(){
         return handCard;
     }
 
-    public Card[] getDiscardedCards(){
-        return discardedCards;
-    }
+    //public Card[] getDiscardedCards(){
+        //return discardedCards;
+    //}
 
     public Client() throws IOException {
         // Always connect to localhost and fixed port (maybe ask for ip and port?)
@@ -123,9 +121,68 @@ public class Client {
                 break;
             case '3':
                 String cardname = "";
-                // String cardname = ask the user to choose a card
+                // String cardname = ask the user to guess a card
                 out.println(cardname);
                 break;
+            case '4':
+                int numberOfPlayers = order.charAt(1);
+                playerList = new String[numberOfPlayers]
+                String rest = order.substring(1);
+                for(int i=0;i<numberOfPlayers;i++){
+                    playerList[i] = order.substring(1,indexOf('/'));
+                    rest = rest.substring(indexOf('/'));
+                }
+                discardedCards = new Card[numberOfPlayers][5];
+                score = new int[numberOfPlayers];
+                out.println("done");
+                break;
+            case '5':
+                for (Card card : Card.values()) {
+                    if (card.getType().equals(order.substring(1))) {
+                        drawnCard = card;
+                    }
+                }
+                out.println("done");
+                break;
+            case '6':
+                String player = order.substring(1,order.indexOf('/'));
+                for (Card card : Card.values()) {
+                    if (card.getType().equals(order.substring(order.indexOf('/')))) {
+                        playedCard = card;
+                    }
+                }
+                for(int i=0;i<5;i++) {
+                    if(discardedCards[find(playerList, player)][i] == null){
+                        discardedCards[find(playerList, player)][i] = playedCard;
+                        break;
+                    }
+                }
+                String nextPlayer = playerList[(find(playerList, player) + 1) % playerList.size()];
+                out.println("done");
+                break;
+            case '7':
+                Arrays.fill(discardedCard, null);
+                Arrays.fill(handCard, null);
+                for(int i=0;i<playerList.length();i++){
+                    score[i] = order.charAt(i+1);
+                }
+                out.println("done");
+                break;
+            case '8':
+                for(int i=0;i<playerList.length();i++){
+                    score[i] = order.charAt(i+1);
+                }
+                // End-Of-Game-Window
+                out.println("done");
+                break;
+        }
+    }
+
+    public int find(Array<T> array, T element){
+        for(int i=0;i<array.length();i++){
+            if(array[i] == element){
+                return i;
+            }
         }
     }
 

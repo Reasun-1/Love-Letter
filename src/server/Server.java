@@ -91,7 +91,11 @@ public class Server {
     }
 
     public void playCard(String cardName){
-        //play the card cardName
+        for (Card card : Card.values()) {
+            if (card.getType().equals(cardName)) {
+                Game.getInstance().cardPlayed(card);
+            }
+        }
     }
 
     public String choosePlayer(int playerID) throws IOException{
@@ -104,7 +108,7 @@ public class Server {
         return chosenPlayer;
     }
 
-    public String chooseCard(int playerID) throws IOException{
+    public String guessCardType(int playerID) throws IOException{
         //ask the active player to choose a card (no error handling yet)
         return clientList.get(playerList.get(playerID)).receiveOrder("3");
     }
@@ -119,13 +123,53 @@ public class Server {
         }
     }
 
-    public String guessCardType(int playerID){
-        return ""; // zu implementieren..
+    //public String guessCardType(int playerID){
+      //  return ""; // zu implementieren..
+    //}
+
+    // Tell the players how many players will participate and what are the names
+    public void startGameInfo(){
+        for(int i=0;i<playerList.size();i++) {
+            String startInfo = "4" + playerList.size();
+            for (int j = 0; j < playerList.size(); j++) {
+                startInfo = startInfo + playerList.get((i + j) % 4) + "/";
+            }
+            clientList.get(playerList.get(i)).receiveOrder(startInfo);
+        }
     }
 
-    // update the played Cards infos and the result after each play => for the server and client
-    public void updatePlay(){
+    // tells the active player which card was drawn
+    public void drawnCard(int playerID, Card card){
+        clientList.get(playerList.get(playerID)).receiveOrder("5" + card.getType());
+    }
 
+    // inform the players about the card played by playerName
+    public void playedCard(String playerName, Card card){
+        for(int i=0;i<playerList.size();i++) {
+            clientList.get(playerList.get(i)).receiveOrder("6" + playerName + "/" + card.getType());
+        }
+    }
+
+    // inform the players about a new round and transmit the current score
+    public void newRound(HashMap<String, Integer> scores){
+        for(int i=0;i<playerList.size();i++){
+            String scoreString = "7";
+            for (int j = 0; j < playerList.size(); j++) {
+                scoreString = scoreString + score.get(playerList.get((i + j) % playerList.size())).toString();
+            }
+            clientList.get(playerList.get(i)).receiveOrder(scoreString);
+        }
+    }
+
+    // inform the players about the end of the game and transmit the final score
+    public void gameOver(HashMap<String, Integer> scores){
+        for(int i=0;i<playerList.size();i++){
+            String scoreString = "8";
+            for (int j = 0; j < playerList.size(); j++) {
+                scoreString = scoreString + score.get(playerList.get((i + j) % playerList.size())).toString();
+            }
+            clientList.get(playerList.get(i)).receiveOrder(scoreString);
+        }
     }
 
     //server sends message to all clients
