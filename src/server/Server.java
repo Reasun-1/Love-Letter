@@ -18,6 +18,8 @@ public class Server {
     // a set for checking clients´ names
     protected static Hashtable<String, ServerThread> clientList = new Hashtable<String, ServerThread>();
 
+    private boolean gameRunning;
+
     private Server() {
     }
 
@@ -72,10 +74,10 @@ public class Server {
         }
     }
 
-    public Game createGame(){
+    //public Game createGame(){
         //create a new game
-        return null;
-    }
+      //  return null;
+    //}
 
     public void sendTo(String clientName, String message){
         //send message to Client clientName
@@ -83,11 +85,28 @@ public class Server {
 
     public void addPlayer(String clientName){
         //add Player to PlayerList
-        playerList.put(playerList.size(), clientName);
+        if(gameRunning){
+            clientList.get(clientName).receiveOrder("1There is already a game running!");
+        } else {
+            if (playerList.size() < 4) {
+                playerList.put(playerList.size(), clientName);
+            } else {
+                clientList.get(clientName).receiveOrder("1Too many players!");
+            }
+        }
     }
 
-    public void startGame(){
+    public void startGame(String clientName){
         //initiate the Gameplay
+        if(gameRunning){
+            clientList.get(clientName).receiveOrder("1There is already a game running!");
+        } else {
+            if (playerList.size() < 2) {
+                clientList.get(clientName).receiveOrder("1Not enough players!");
+            } else {
+                Game.getInstance().startGame();
+            }
+        }
     }
 
     public void playCard(String cardName){
