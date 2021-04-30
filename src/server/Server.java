@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -108,7 +109,8 @@ public class Server {
             }
         }
     }
-
+    //************sollte der Server den User fragen, welche Karte zu geben?*******************
+    //******public Card chooseCardToPlay(int playerID){}****und ein Card zurück zu Game geben*******
     public void playCard(String cardName){
         for (Card card : Card.values()) {
             if (card.getType().equals(cardName)) {
@@ -132,7 +134,8 @@ public class Server {
         return clientList.get(playerList.get(playerID)).receiveOrder("3");
     }
 
-    //***********************zu ergänzen****************
+
+
 
     public void updatePlayerIndex(List<String> updatedList){
 
@@ -170,22 +173,24 @@ public class Server {
     }
 
     // inform the players about a new round and transmit the current score
+    //*********meinst du hier tokens or scores?************
+    //*********brauchen wir eine roundOver Funktion wie gameOver? über den Winner dieser Runder zu informieren?***************
     public void newRound(HashMap<String, Integer> scores){
         for(int i=0;i<playerList.size();i++){
             String scoreString = "7";
             for (int j = 0; j < playerList.size(); j++) {
-                scoreString = scoreString + score.get(playerList.get((i + j) % playerList.size())).toString();
+                scoreString = scoreString + scores.get(playerList.get((i + j) % playerList.size())).toString();
             }
             clientList.get(playerList.get(i)).receiveOrder(scoreString);
         }
     }
 
     // inform the players about the end of the game and transmit the final score
-    public void gameOver(HashMap<String, Integer> scores){
+    public void gameOver(HashMap<String, Integer> tokens){
         for(int i=0;i<playerList.size();i++){
             String scoreString = "8";
             for (int j = 0; j < playerList.size(); j++) {
-                scoreString = scoreString + score.get(playerList.get((i + j) % playerList.size())).toString();
+                scoreString = scoreString + tokens.get(playerList.get((i + j) % playerList.size())).toString();
             }
             clientList.get(playerList.get(i)).receiveOrder(scoreString);
         }
