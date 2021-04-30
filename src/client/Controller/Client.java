@@ -87,7 +87,7 @@ public class Client {
             }
         }
     }
-/*
+
     public void sendPersonalMessage(String name, String msg) throws IOException {
         out.println("/1" + name + "/" + msg);
     }
@@ -195,7 +195,7 @@ public class Client {
             }
         }
     }
-*/
+
 
     public void sendMessage(String msg) throws IOException {
         // check logout condition
