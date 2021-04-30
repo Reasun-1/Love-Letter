@@ -87,7 +87,7 @@ public class Client {
             }
         }
     }
-
+/*
     public void sendPersonalMessage(String name, String msg) throws IOException {
         out.println("/1" + name + "/" + msg);
     }
@@ -195,7 +195,7 @@ public class Client {
             }
         }
     }
-
+*/
 
     public void sendMessage(String msg) throws IOException {
         // check logout condition
@@ -229,7 +229,7 @@ public class Client {
                     // If there is input, display the message (currently via terminal)
                         String line = client.in.readLine();
                         if (line.charAt(0) == '/'){
-                            client.executeOrder(line.substring(1));
+                         //   client.executeOrder(line.substring(1));
                         } else {
                             System.out.println(line.substring(1));
                         }

@@ -3,8 +3,8 @@ package client.View;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import client.Client;
-import ViewModel.ChatRoomViewModel;
+import client.Controller.Client;
+import client.ViewModel.ChatRoomViewModel;
 
 // Controller Class for the Chat Window connected with the fxml file via data binding
 
@@ -48,7 +48,7 @@ public class ChatRoomViewController {
 
     // Method for setting Client messages in the List View.
 
-    public void setClient(Client client) {
+    public <Client> void setClient(Client client) {
 
         ViewModel.setClient(client);
         chatView.setItems(ViewModel.getClient().chatMessages);
