@@ -1,6 +1,7 @@
 package client.Controller;
 
 import server.Card;
+import client.ViewModel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +18,8 @@ public class Client {
     private final BufferedReader in;
     // reader for outgoing messages
     private final BufferedReader reader;
+
+    private final MainLauncher launcher;
 
     private String[] playerList;
 
@@ -38,7 +41,8 @@ public class Client {
         //return discardedCards;
     //}
 
-    public Client() throws IOException {
+    public Client(MainLauncher launcher) throws IOException {
+        this.launcher = launcher;
         // Always connect to localhost and fixed port (maybe ask for ip and port?)
         socket = new Socket("127.0.0.1", 5200);
 
@@ -49,7 +53,7 @@ public class Client {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         // Create reader for user input (currently via terminal)
-        reader = new BufferedReader(new InputStreamReader(System.in));
+        //reader = new BufferedReader(new InputStreamReader(System.in));
         // start login process
         login();
     }
@@ -57,11 +61,11 @@ public class Client {
     public void login() throws IOException {
 
         // Ask for the clients name (currently via terminal)
-        System.out.println("Please enter your name:"); // Soon: Open Login-Window
-        String temp_name = reader.readLine();
+        //System.out.println("Please enter your name:"); // Soon: Open Login-Window
+        String temp_name = launcher.launchLogin();
         while(temp_name.contains("/")){
-            System.out.println("The name must not contain the symbol '/'!");
-            temp_name = reader.readLine();
+            System.out.println("The name must not contain the symbol '/'!");//errorMessage
+            temp_name = launcher.launchLogin();
         }
 
         // Send the name to the server
@@ -73,9 +77,9 @@ public class Client {
             String answer = in.readLine();
             if (answer.equals("user existed!")) {
                 // Ask for a different name (currently via terminal)
-                System.out.println("The chosen name already exists. Please choose another name:");
+                System.out.println("The chosen name already exists. Please choose another name:");// errorMessage
                 // Soon: errorMessage("The chosen name already exists. Please choose another name:");
-                temp_name = reader.readLine();
+                temp_name = launcher.launchLogin();
                 // Soon: Open Login-Window
                 out.println(temp_name);
             } else {

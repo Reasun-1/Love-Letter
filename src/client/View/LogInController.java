@@ -1,4 +1,4 @@
-package client.Controller;
+package client.View;
 
 import client.ViewModel.logInViewModel;
 import javafx.fxml.FXML;
@@ -28,5 +28,11 @@ public class LogInController {
          property changes, the other property is automatically changed as well */
         name.textProperty().bindBidirectional(logInVM.heroNameProperty());
         //heroNameProperty() is a method declared on the LogInViewModel that returns the username required on the TextField
+    }
+
+    @FXML
+    private void loginButton(ActionEvent event) {
+        logInVM.nameEntered();
+        Platform.exit();
     }
 }

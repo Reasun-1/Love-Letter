@@ -9,11 +9,16 @@ public class logInViewModel {
 
     private StringProperty username;
 
-    private Client client;
+    private PrintWriter out;
 
-    public logInViewModel(Client client){
-        this.client = client;
+    public logInViewModel(PipedInputStream instream){
+        out = new PrintWriter(new PipedOutputStream(instream), true);
         username = new SimpleStringProperty();
+
+    }
+
+    public void nameEntered(){
+        out.println(username.get());
     }
 
     public String getUserName() {
