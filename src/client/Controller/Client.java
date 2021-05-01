@@ -65,6 +65,8 @@ public class Client {
             // Create reader to receive messages from server via the TCP-socket
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+            name = "";
+
         // Create reader for user input (currently via terminal)
         //reader = new BufferedReader(new InputStreamReader(System.in));
         // start login process
