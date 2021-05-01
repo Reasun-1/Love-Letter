@@ -1,7 +1,10 @@
 package client.View;
 
-import client.ViewModel.logInViewModel;
+import client.ViewModel.*;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
@@ -21,9 +24,10 @@ public class LogInController {
 
     private logInViewModel logInVM;
 
+
     // a method to initialize the logIn View (window) based on the FXML designed file
-    public void initialize(logInViewModel logInVM){
-        this.logInVM = logInVM;
+    public void init(logInViewModel logIn){
+        logInVM = logIn;
         /*With bidirectional binding, the two property values are synchronized so that if either
          property changes, the other property is automatically changed as well */
         name.textProperty().bindBidirectional(logInVM.heroNameProperty());

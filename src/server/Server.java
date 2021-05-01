@@ -1,8 +1,10 @@
 package server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -82,10 +84,14 @@ public class Server {
 
     public void sendTo(String clientName, String message){
         //send message to Client clientName
-        new PrintWriter(clientList.get(name).getSocket().getOutputStream(), true).println("$Server: " + msg);
+        try{
+            new PrintWriter(clientList.get(clientName).getSocket().getOutputStream(), true).println("$Server: " + message);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
-    public void addPlayer(String clientName){
+    public void addPlayer(String clientName) throws IOException{
         //add Player to PlayerList
         if(gameRunning){
             exception(clientName, "There is already a game running!");
@@ -98,7 +104,7 @@ public class Server {
         }
     }
 
-    public void startGame(String clientName){
+    public void startGame(String clientName) throws IOException{
         //initiate the Gameplay
         if(gameRunning){
             exception(clientName, "There is already a game running!");
@@ -155,7 +161,7 @@ public class Server {
     //}
 
     // Tell the players how many players will participate and what are the names
-    public void startGameInfo(){
+    public void startGameInfo() throws IOException{
         for(int i=0;i<playerList.size();i++) {
             String startInfo = "4" + playerList.size();
             for (int j = 0; j < playerList.size(); j++) {
@@ -167,13 +173,21 @@ public class Server {
 
     // tells the active player which card was drawn
     public void drawnCard(int playerID, Card card){
-        clientList.get(playerList.get(playerID)).receiveOrder("5" + card.getType());
+        try{
+            clientList.get(playerList.get(playerID)).receiveOrder("5" + card.getType());
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     // inform the players about the card played by playerName
     public void playedCard(String playerName, Card card){
-        for(int i=0;i<playerList.size();i++) {
-            clientList.get(playerList.get(i)).receiveOrder("6" + playerName + "/" + card.getType());
+        try{
+            for(int i=0;i<playerList.size();i++) {
+                clientList.get(playerList.get(i)).receiveOrder("6" + playerName + "/" + card.getType());
+            }
+        } catch (IOException e){
+            e.printStackTrace();
         }
     }
 
@@ -181,7 +195,7 @@ public class Server {
     //*********meinst du hier tokens or scores?************
     //*********brauchen wir eine roundOver Funktion wie gameOver? über den Winner dieser Runder zu informieren?***************
     // ++++++++ habe auf tokens umgestellt +++++
-    public void roundOver(HashMap<String, Integer> tokens, String winner){
+    public void roundOver(HashMap<String, Integer> tokens, String winner) throws IOException{
         for(int i=0;i<playerList.size();i++){
             String scoreString = "7";
             for (int j = 0; j < playerList.size(); j++) {
@@ -192,7 +206,7 @@ public class Server {
     }
 
     // inform the players about the end of the game and transmit the final score
-    public void gameOver(HashMap<String, Integer> tokens){
+    public void gameOver(HashMap<String, Integer> tokens) throws IOException{
         for(int i=0;i<playerList.size();i++){
             String scoreString = "8";
             for (int j = 0; j < playerList.size(); j++) {
@@ -204,10 +218,14 @@ public class Server {
 
     //server sends message to all clients
     public void sendMessageToAll(String message){
-        synchronized (clientList) {
-            for (Enumeration<ServerThread> e = clientList.elements(); e.hasMoreElements();) {
-                new PrintWriter(e.nextElement().getSocket().getOutputStream(), true).println("$Server: " + message);
+        try{
+            synchronized (clientList) {
+                for (Enumeration<ServerThread> e = clientList.elements(); e.hasMoreElements();) {
+                    new PrintWriter(e.nextElement().getSocket().getOutputStream(), true).println("$Server: " + message);
+                }
             }
+        } catch (IOException e){
+            e.printStackTrace();
         }
     }
 }

@@ -159,7 +159,7 @@ public class Game {
         updateScoresAndTokensAndWinnersForThisRound();
         //**********Server function optional: roundOver?*************
         //++++++++++++ enter winner name (how do i get it from the list winners?? ++++++++++
-        Server.getServer().roundOver(tokens, winner);
+        //Server.getServer().roundOver(tokens, winner);
     }
 
 
@@ -186,7 +186,7 @@ public class Game {
         while (waitingForCard) {
             // **********need a chooseCard functon from Server**********
             // ++++++++++++++action von server oder client aus?? ++++++++++
-            cardInTurn = Server.getServer().chooseCardToPlay(playerInTurn);
+            //cardInTurn = Server.getServer().chooseCardToPlay(playerInTurn);
             if (cardInTurn == null) {
                 continue;
             } else {

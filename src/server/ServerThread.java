@@ -130,7 +130,7 @@ public class ServerThread implements Runnable {
                 break;
             case '1':
                 String name = order.substring(1,order.indexOf('/'));
-                if (clientList.contains(name)) {
+                if (Server.clientList.contains(name)) {
                     String msg = order.substring(order.indexOf('/'));
                     sendPrivateMessage(name, "$" + clientName + "[private]: " + msg);
                 } else {

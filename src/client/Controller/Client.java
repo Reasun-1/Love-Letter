@@ -1,15 +1,18 @@
 package client.Controller;
 
-import server.Card;
-import client.ViewModel;
+import client.ViewModel.ChatRoomViewModel;
+import client.ViewModel.logInViewModel;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import server.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 
-public class Client {
+public class Client extends Application{
     // socket for the TCP connection
     private volatile Socket socket;
     // writer for outgoing messages
@@ -17,7 +20,7 @@ public class Client {
     // reader for incoming messages
     private final BufferedReader in;
     // reader for outgoing messages
-    private final BufferedReader reader;
+    //private final BufferedReader reader;
 
     private final MainLauncher launcher;
 
@@ -31,63 +34,65 @@ public class Client {
 
     private Card[][] discardedCards;
 
-    private int[] score;
+    private int[] tokens;
 
-    public Card getHandCards(){
+    public Card getHandCards() {
         return handCard;
     }
 
+    private String name;
+
     //public Card[] getDiscardedCards(){
-        //return discardedCards;
+    //return discardedCards;
     //}
 
-    public Client(MainLauncher launcher) throws IOException {
-        this.launcher = launcher;
-        // Always connect to localhost and fixed port (maybe ask for ip and port?)
-        socket = new Socket("127.0.0.1", 5200);
+    public Socket getSocket() {
+        return socket;
+    }
 
-        // Create writer to send messages to server via the TCP-socket
-        out = new PrintWriter(socket.getOutputStream(), true);
+    public String getName(){
+        return name;
+    }
 
-        // Create reader to receive messages from server via the TCP-socket
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+    public Client() throws IOException{
+
+            // Always connect to localhost and fixed port (maybe ask for ip and port?)
+            socket = new Socket("127.0.0.1", 5200);
+
+            // Create writer to send messages to server via the TCP-socket
+            out = new PrintWriter(socket.getOutputStream(), true);
+
+            // Create reader to receive messages from server via the TCP-socket
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            launcher = new MainLauncher();
 
         // Create reader for user input (currently via terminal)
         //reader = new BufferedReader(new InputStreamReader(System.in));
         // start login process
-        login();
     }
 
-    public void login() throws IOException {
+    public String checkName(String temp_name) throws IOException {
 
         // Ask for the clients name (currently via terminal)
         //System.out.println("Please enter your name:"); // Soon: Open Login-Window
-        String temp_name = launcher.launchLogin();
-        while(temp_name.contains("/")){
-            System.out.println("The name must not contain the symbol '/'!");//errorMessage
-            temp_name = launcher.launchLogin();
-        }
-
-        // Send the name to the server
-        out.println(temp_name);
+        if (temp_name.contains("/")) {
+            return "The name must not contain the symbol '/'!";//errorMessage
+        } else {
+            out.println(temp_name);
 
         // Check whether the name is still available (if not, ask again)
-        boolean flag = true;
-        while (flag) {
             String answer = in.readLine();
             if (answer.equals("user existed!")) {
                 // Ask for a different name (currently via terminal)
-                System.out.println("The chosen name already exists. Please choose another name:");// errorMessage
-                // Soon: errorMessage("The chosen name already exists. Please choose another name:");
-                temp_name = launcher.launchLogin();
-                // Soon: Open Login-Window
-                out.println(temp_name);
+                return "The chosen name already exists. Please choose another name:";// errorMessage
             } else {
-                // If the name is available, break the loop
-                flag = false;
                 // Print welcome-message (currently via terminal)
-                System.out.println("Welcome " + answer);
+                name = answer;
+                return "";
                 // Soon: Open Chat-Window and print welcome-message
+                //launcher.launchChat();
             }
         }
     }
@@ -96,26 +101,26 @@ public class Client {
         out.println("/1" + name + "/" + msg);
     }
 
-    public void joinGame() throws IOException{
+    public void joinGame() throws IOException {
         out.println("/2");
     }
 
-    public void startGame() throws IOException{
+    public void startGame() throws IOException {
         out.println("/3");
     }
 
     public void playCard(Card card) throws IOException {
-        if (card.equals(handCard)){
+        if (card.equals(handCard)) {
             handCard = drawnCard;
             drawnCard = null;
-        } else{
+        } else {
             drawnCard = null;
         }
         out.println("/4" + card.getType());
     }
 
-    public void executeOrder(String order) throws IOException{
-        switch (order.charAt(0)){
+    public void executeOrder(String order) throws IOException {
+        switch (order.charAt(0)) {
             case '0':
                 out.println("done");
                 socket.close();
@@ -136,15 +141,15 @@ public class Client {
                 break;
             case '4':
                 int numberOfPlayers = order.charAt(1);
-                playerList = new String[numberOfPlayers]
+                playerList = new String[numberOfPlayers];
                 String rest = order.substring(1);
-                for(int i=0;i<numberOfPlayers;i++){
-                    playerList[i] = order.substring(1,indexOf('/'));
-                    rest = rest.substring(indexOf('/'));
+                for (int i = 0; i < numberOfPlayers; i++) {
+                    playerList[i] = order.substring(1, order.indexOf('/'));
+                    rest = rest.substring(order.indexOf('/'));
                 }
                 discardedCards = new Card[numberOfPlayers][5];
                 tokens = new int[numberOfPlayers];
-                Arrays.fill(discardedCard, null);
+                Arrays.fill(discardedCards, null);
                 handCard = null;
                 out.println("done");
                 break;
@@ -161,34 +166,33 @@ public class Client {
                 out.println("done");
                 break;
             case '6':
-                String player = order.substring(1,order.indexOf('/'));
+                String player = order.substring(1, order.indexOf('/'));
                 for (Card card : Card.values()) {
                     if (card.getType().equals(order.substring(order.indexOf('/')))) {
                         playedCard = card;
                     }
                 }
-                for(int i=0;i<5;i++) {
-                    if(discardedCards[find(playerList, player)][i] == null){
-                        discardedCards[find(playerList, player)][i] = playedCard;
-                        break;
-                    }
+                int index=0;
+                while (discardedCards[find(playerList, player)][index] == null){
+                    index++;
                 }
-                String nextPlayer = playerList[(find(playerList, player) + 1) % playerList.size()];
+                discardedCards[find(playerList, player)][index] = playedCard;
+                String nextPlayer = playerList[(find(playerList, player) + 1) % playerList.length];
                 out.println("done");
                 break;
             case '7':
-                Arrays.fill(discardedCard, null);
+                Arrays.fill(discardedCards, null);
                 handCard = null;
-                for(int i=0;i<playerList.length();i++){
-                    tokens[i] = order.charAt(i+1);
+                for (int i = 0; i < playerList.length; i++) {
+                    tokens[i] = order.charAt(i + 1);
                 }
-                String winner = order.substring(playerList.length()+1);
+                String winner = order.substring(playerList.length + 1);
                 // print out the winner
                 out.println("done");
                 break;
             case '8':
-                for(int i=0;i<playerList.length();i++){
-                    tokens[i] = order.charAt(i+1);
+                for (int i = 0; i < playerList.length; i++) {
+                    tokens[i] = order.charAt(i + 1);
                 }
                 // End-Of-Game-Window
                 out.println("done");
@@ -196,12 +200,14 @@ public class Client {
         }
     }
 
-    public int find(Array<T> array, T element){
-        for(int i=0;i<array.length();i++){
-            if(array[i] == element){
-                return i;
+    public int find(String[] array, String element) {
+        int index = -1;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == element) {
+                index = i;
             }
         }
+        return index;
     }
 
 
@@ -211,7 +217,7 @@ public class Client {
             out.println("/0quit");
             // stop the connection
             try {
-                if(socket != null){
+                if (socket != null) {
                     socket.close();
                 }
             } catch (Exception e) {
@@ -225,39 +231,67 @@ public class Client {
             out.println("$" + msg);
         }
     }
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        PipedInputStream instream = new PipedInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(instream));
+
+        while(name.isEmpty()) {
+            primaryStage.setTitle("Login");
+            primaryStage.setScene(launcher.launchLogin(instream));
+            primaryStage.show();
+
+            String result = checkName(reader.readLine());
+            if(!result.isEmpty()) {
+                primaryStage.setTitle("Error");
+                primaryStage.setScene(launcher.launchError(result));
+                primaryStage.show();
+            }
+        }
+        primaryStage.setTitle("Chat: " + name);
+        ChatRoomViewModel chatVM = new ChatRoomViewModel(instream);
+        primaryStage.setScene(launcher.launchChat(chatVM));
+        primaryStage.show();
+
+        try {
+            new Thread(() -> {
+            try {
+                while (!socket.isClosed()){
+                    // Client socket waits for the input from the server
+                    // If there is input, display the message (currently via terminal)
+                    String line = in.readLine();
+                    if (line.charAt(0) == '/'){
+                        //   client.executeOrder(line.substring(1));
+                    } else {
+                        chatVM.updateChat(line.substring(1));
+                    }
+                    // Soon: Pass the message to the chat window
+                }
+            } catch (IOException e) {
+                try{
+                    socket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }).start();
+        // Wait for messages from the user passed on by the InputStream, stop if the connection is terminated
+        while (!socket.isClosed()) {
+            String msg = reader.readLine();
+            if (!msg.isEmpty()) {
+                sendMessage(msg);
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    }
 
     public static void main(String[] args) {
         try {
             Client client = new Client();
+            client.launch(args);
             // Create a client thread to read messages from the server
-            new Thread(() -> {
-                try {
-                    while (!client.socket.isClosed()){
-                    // Client socket waits for the input from the server
-                    // If there is input, display the message (currently via terminal)
-                        String line = client.in.readLine();
-                        if (line.charAt(0) == '/'){
-                         //   client.executeOrder(line.substring(1));
-                        } else {
-                            System.out.println(line.substring(1));
-                        }
-                    // Soon: Pass the message to the chat window
-                    }
-                } catch (IOException e) {
-                    try{
-                        client.socket.close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }).start();
-            // Wait for messages from the user passed on by the InputStream, stop if the connection is terminated
-            while (!client.socket.isClosed()) {
-                String msg = client.reader.readLine();
-                if (!msg.isEmpty()) {
-                    client.sendMessage(msg);
-                }
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

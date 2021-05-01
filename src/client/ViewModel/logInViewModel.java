@@ -2,7 +2,11 @@ package client.ViewModel;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import client.Controller.Client;
+
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintWriter;
 
 
 public class logInViewModel {
@@ -11,10 +15,9 @@ public class logInViewModel {
 
     private PrintWriter out;
 
-    public logInViewModel(PipedInputStream instream){
+    public logInViewModel(PipedInputStream instream) throws IOException {
         out = new PrintWriter(new PipedOutputStream(instream), true);
         username = new SimpleStringProperty();
-
     }
 
     public void nameEntered(){
@@ -30,12 +33,12 @@ public class logInViewModel {
         return username;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "LogInView{" +
                 "The next client is: =" + username +
                 ", client=" + client +
                 '}';
-    }
+    }*/
 
 }
