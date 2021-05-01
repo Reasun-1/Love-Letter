@@ -19,30 +19,27 @@ import java.io.PipedInputStream;
 public class WindowLauncher {
 
     public Scene launchLogin(PipedInputStream instream) throws IOException{
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("logInWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/logInWindow.fxml"));
+        LogInController ctrl = new LogInController(new logInViewModel(instream));
+        loader.setController(ctrl);
         Parent root = loader.load();
-        LogInController ctrl = loader.getController();
-        ctrl.init(new logInViewModel(instream));
         return new Scene(root, 600, 400);
     }
 
     public Scene launchError(String msg) throws IOException{
         // errorMessage
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ErrorWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ErrorWindow.fxml"));
+        ErrorController ctrl = new ErrorController(new ErrorViewModel(msg));
+        loader.setController(ctrl);
         Parent root = loader.load();
-        ErrorController ctrl = loader.getController();
-        ctrl.init(new ErrorViewModel(msg));
         return new Scene(root, 600, 400);
     }
 
     public Scene launchChat(ChatRoomViewModel chatVM) throws IOException{
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ChatRoomView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ChatRoomView.fxml"));
+        ChatRoomViewController ctrl = new ChatRoomViewController(chatVM);
+        loader.setController(ctrl);
         Parent root = loader.load();
-        ChatRoomViewController ctrl = loader.getController();
-        ctrl.init(chatVM);
         return new Scene(root, 600, 400);
     }
 }

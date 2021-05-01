@@ -8,10 +8,12 @@ import client.Controller.Client;
 import client.ViewModel.*;
 
 import java.awt.event.ActionEvent;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 // Controller Class for the Chat Window connected with the fxml file via data binding
 
-public class ChatRoomViewController {
+public class ChatRoomViewController implements Initializable {
 
     @FXML
     private AnchorPane chatRootPane;
@@ -33,10 +35,12 @@ public class ChatRoomViewController {
 
     private ChatRoomViewModel chatVM;
 
+    public ChatRoomViewController(ChatRoomViewModel chat){
+        chatVM = chat;
+    }
 
     //  Method for the initialization of the Button and the Text Field via bidirectional binding.
-    public void init(ChatRoomViewModel chat) {
-        chatVM = chat;
+    public void initialize(URL url, ResourceBundle rb) {
         typeField.textProperty().bindBidirectional(chatVM.getMessageOutput());
         chatView.textProperty().bindBidirectional(chatVM.getChatInput());
         //sendButton.defaultButtonProperty().bindBidirectional(ViewModel.sendButtonProperty());
