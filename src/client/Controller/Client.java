@@ -1,10 +1,7 @@
 package client.Controller;
 
 import client.ViewModel.ChatRoomViewModel;
-import client.ViewModel.logInViewModel;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import server.*;
 
@@ -12,7 +9,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Arrays;
 
-public class Client extends Application{
+public class Client {
     // socket for the TCP connection
     private volatile Socket socket;
     // writer for outgoing messages
@@ -22,7 +19,6 @@ public class Client extends Application{
     // reader for outgoing messages
     //private final BufferedReader reader;
 
-    private final MainLauncher launcher;
 
     private String[] playerList;
 
@@ -45,6 +41,9 @@ public class Client extends Application{
     //public Card[] getDiscardedCards(){
     //return discardedCards;
     //}
+    public BufferedReader getIn(){ return in; }
+
+    public PrintWriter getOut(){ return out; }
 
     public Socket getSocket() {
         return socket;
@@ -65,8 +64,6 @@ public class Client extends Application{
 
             // Create reader to receive messages from server via the TCP-socket
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            launcher = new MainLauncher();
 
         // Create reader for user input (currently via terminal)
         //reader = new BufferedReader(new InputStreamReader(System.in));
@@ -229,71 +226,6 @@ public class Client extends Application{
         } else {
             // send message to server
             out.println("$" + msg);
-        }
-    }
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        PipedInputStream instream = new PipedInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(instream));
-
-        while(name.isEmpty()) {
-            primaryStage.setTitle("Login");
-            primaryStage.setScene(launcher.launchLogin(instream));
-            primaryStage.show();
-
-            String result = checkName(reader.readLine());
-            if(!result.isEmpty()) {
-                primaryStage.setTitle("Error");
-                primaryStage.setScene(launcher.launchError(result));
-                primaryStage.show();
-            }
-        }
-        primaryStage.setTitle("Chat: " + name);
-        ChatRoomViewModel chatVM = new ChatRoomViewModel(instream);
-        primaryStage.setScene(launcher.launchChat(chatVM));
-        primaryStage.show();
-
-        try {
-            new Thread(() -> {
-            try {
-                while (!socket.isClosed()){
-                    // Client socket waits for the input from the server
-                    // If there is input, display the message (currently via terminal)
-                    String line = in.readLine();
-                    if (line.charAt(0) == '/'){
-                        //   client.executeOrder(line.substring(1));
-                    } else {
-                        chatVM.updateChat(line.substring(1));
-                    }
-                    // Soon: Pass the message to the chat window
-                }
-            } catch (IOException e) {
-                try{
-                    socket.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }).start();
-        // Wait for messages from the user passed on by the InputStream, stop if the connection is terminated
-        while (!socket.isClosed()) {
-            String msg = reader.readLine();
-            if (!msg.isEmpty()) {
-                sendMessage(msg);
-            }
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-    }
-
-    public static void main(String[] args) {
-        try {
-            Client client = new Client();
-            client.launch(args);
-            // Create a client thread to read messages from the server
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 
 //test code
-public class MainLauncher{
+public class WindowLauncher {
 
     public Scene launchLogin(PipedInputStream instream) throws IOException{
         FXMLLoader loader = new FXMLLoader();
