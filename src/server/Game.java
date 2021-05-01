@@ -93,7 +93,8 @@ public class Game {
 
     public void newRound() throws IOException {
         // inform all players about the new round
-        Server.getServer().newRound(scores); // ***********hier eg über tokens?**********
+        //Server.getServer().newRound(tokens); // ***********hier eg über tokens?********** ++++ ja ++++
+        // +++++++++++++ geändert zu roundOver am Ende (eins reicht) ++++++++++++++++++++++++++++
 
         // reset the round info
         Arrays.fill(discardedCard, null);
@@ -157,10 +158,14 @@ public class Game {
         }
         updateScoresAndTokensAndWinnersForThisRound();
         //**********Server function optional: roundOver?*************
+        //++++++++++++ enter winner name (how do i get it from the list winners?? ++++++++++
+        Server.getServer().roundOver(tokens, winner);
     }
 
 
     //*******************diese Funktion notwendig?*************************
+    //+++++++++++++ in dieser Version geht die action vom client aus, dann notwendig ++++
+    //+++++++++++++ falls action von server ausgehen soll, funktion nicht nötig (dann braucht man ein chooseCard)++++++
     public void cardPlayed(Card card) {
         playedCard[playerInTurn] = card;
         waitingForCard = false;
@@ -180,6 +185,7 @@ public class Game {
 
         while (waitingForCard) {
             // **********need a chooseCard functon from Server**********
+            // ++++++++++++++action von server oder client aus?? ++++++++++
             cardInTurn = Server.getServer().chooseCardToPlay(playerInTurn);
             if (cardInTurn == null) {
                 continue;

@@ -82,17 +82,18 @@ public class Server {
 
     public void sendTo(String clientName, String message){
         //send message to Client clientName
+        new PrintWriter(clientList.get(name).getSocket().getOutputStream(), true).println("$Server: " + msg);
     }
 
     public void addPlayer(String clientName){
         //add Player to PlayerList
         if(gameRunning){
-            clientList.get(clientName).receiveOrder("1There is already a game running!");
+            exception(clientName, "There is already a game running!");
         } else {
             if (playerList.size() < 4) {
                 playerList.put(playerList.size(), clientName);
             } else {
-                clientList.get(clientName).receiveOrder("1Too many players!");
+                exception(clientName, "Too many players!");
             }
         }
     }
@@ -100,10 +101,10 @@ public class Server {
     public void startGame(String clientName){
         //initiate the Gameplay
         if(gameRunning){
-            clientList.get(clientName).receiveOrder("1There is already a game running!");
+            exception(clientName, "There is already a game running!");
         } else {
             if (playerList.size() < 2) {
-                clientList.get(clientName).receiveOrder("1Not enough players!");
+                exception(clientName, "Not enough players!");
             } else {
                 Game.getInstance().startGame();
             }
@@ -119,11 +120,15 @@ public class Server {
         }
     }
 
+    public void exception(String name, String msg) throws IOException {
+        clientList.get(name).receiveOrder("1" + msg);
+    }
+
     public String choosePlayer(int playerID) throws IOException{
         //ask the active player to choose another player
         String chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2");
         while (!playerList.contains(chosenPlayer)){
-            clientList.get(playerList.get(playerID)).receiveOrder("1The chosen player doesn't exist!");
+            exception(playerList.get(playerID), "The chosen player doesn't exist!");
             chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2");
         }
         return chosenPlayer;
@@ -175,11 +180,12 @@ public class Server {
     // inform the players about a new round and transmit the current score
     //*********meinst du hier tokens or scores?************
     //*********brauchen wir eine roundOver Funktion wie gameOver? über den Winner dieser Runder zu informieren?***************
-    public void newRound(HashMap<String, Integer> scores){
+    // ++++++++ habe auf tokens umgestellt +++++
+    public void roundOver(HashMap<String, Integer> tokens, String winner){
         for(int i=0;i<playerList.size();i++){
             String scoreString = "7";
             for (int j = 0; j < playerList.size(); j++) {
-                scoreString = scoreString + scores.get(playerList.get((i + j) % playerList.size())).toString();
+                scoreString = scoreString + tokens.get(playerList.get((i + j) % playerList.size())).toString() + winner;
             }
             clientList.get(playerList.get(i)).receiveOrder(scoreString);
         }
@@ -198,6 +204,10 @@ public class Server {
 
     //server sends message to all clients
     public void sendMessageToAll(String message){
-
+        synchronized (clientList) {
+            for (Enumeration<ServerThread> e = clientList.elements(); e.hasMoreElements();) {
+                new PrintWriter(e.nextElement().getSocket().getOutputStream(), true).println("$Server: " + message);
+            }
+        }
     }
 }

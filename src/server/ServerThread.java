@@ -120,7 +120,7 @@ public class ServerThread implements Runnable {
     //**********************new**************************
     //send direkt Message to a or several players
     public void sendPrivateMessage(String name, String msg) throws IOException{
-        new PrintWriter(Server.clientList.get(name).getSocket().getOutputStream(), true).println(msg);
+        Server.getServer().sendTo(name, msg);
     }
 
     public void executeOrder(String order) throws IOException{

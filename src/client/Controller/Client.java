@@ -139,7 +139,9 @@ public class Client {
                     rest = rest.substring(indexOf('/'));
                 }
                 discardedCards = new Card[numberOfPlayers][5];
-                score = new int[numberOfPlayers];
+                tokens = new int[numberOfPlayers];
+                Arrays.fill(discardedCard, null);
+                handCard = null;
                 out.println("done");
                 break;
             case '5':
@@ -172,15 +174,17 @@ public class Client {
                 break;
             case '7':
                 Arrays.fill(discardedCard, null);
-                Arrays.fill(handCard, null);
+                handCard = null;
                 for(int i=0;i<playerList.length();i++){
-                    score[i] = order.charAt(i+1);
+                    tokens[i] = order.charAt(i+1);
                 }
+                String winner = order.substring(playerList.length()+1);
+                // print out the winner
                 out.println("done");
                 break;
             case '8':
                 for(int i=0;i<playerList.length();i++){
-                    score[i] = order.charAt(i+1);
+                    tokens[i] = order.charAt(i+1);
                 }
                 // End-Of-Game-Window
                 out.println("done");
