@@ -214,6 +214,9 @@ public class Game {
                 break;
 
             case COUNTESS:
+                if (handCard == Card.KING || Card.PRINCE)
+                {Card.COUNTESS.function(playerInTurn);} 
+                else 
                 Card.COUNTESS.function(playerInTurn);
                 break;
 
