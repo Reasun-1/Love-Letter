@@ -116,8 +116,7 @@ public class Server {
             }
         }
     }
-    //************sollte der Server den User fragen, welche Karte zu geben?*******************
-    //******public Card chooseCardToPlay(int playerID){}****und ein Card zurück zu Game geben*******
+
     public void playCard(String cardName){
         for (Card card : Card.values()) {
             if (card.getType().equals(cardName)) {
@@ -144,8 +143,6 @@ public class Server {
         //ask the active player to choose a card (no error handling yet)
         return clientList.get(playerList.get(playerID)).receiveOrder("3");
     }
-
-
 
 
     public void updatePlayerIndex(List<String> updatedList){
@@ -192,9 +189,7 @@ public class Server {
     }
 
     // inform the players about a new round and transmit the current score
-    //*********meinst du hier tokens or scores?************
-    //*********brauchen wir eine roundOver Funktion wie gameOver? über den Winner dieser Runder zu informieren?***************
-    // ++++++++ habe auf tokens umgestellt +++++
+    //************über scores soll mann auch wissen, laut Aufgabestellung***********
     public void roundOver(HashMap<String, Integer> tokens, String winner) throws IOException{
         for(int i=0;i<playerList.size();i++){
             String scoreString = "7";
@@ -205,7 +200,7 @@ public class Server {
         }
     }
 
-    // inform the players about the end of the game and transmit the final score
+    // inform the players about the end of the game and transmit the final tokens
     public void gameOver(HashMap<String, Integer> tokens) throws IOException{
         for(int i=0;i<playerList.size();i++){
             String scoreString = "8";

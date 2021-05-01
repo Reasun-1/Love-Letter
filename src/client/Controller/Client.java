@@ -22,7 +22,7 @@ public class Client {
 
     private String[] playerList;
 
-    private Card handCard; // **************Card handCard => there is only at one time*********
+    private Card handCard;
 
     private Card drawnCard;
 

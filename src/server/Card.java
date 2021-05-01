@@ -117,7 +117,7 @@ public enum Card {
                 Game.getInstance().seenCard[targetIndex] = targetIndex;
                 Card seenCard = Game.getInstance().handCard[targetIndex];
                 String message = Game.getInstance().playerNames.get(targetIndex) + " has a " + seenCard.getType();
-                //*******************brauchen wir hier ein besondere Funktion oder kann man so private Nachricht schicken?*************
+                //*******************brauchen wir hier ein besondere Funktion oder kann man so private Nachricht schicken? oder exception?*************
                 Server.getServer().sendTo(Game.getInstance().playerNames.get(myIndex), message);
             }
         }

@@ -18,11 +18,9 @@ public class Game {
     int[] status; // 0=game over, 1=in game, 2=protected by handmaid
     Card[] handCard; // the card in hand of each player
     Card[] drawnCard; // the drawn card of each player
-    Card[] playedCard; // ********************notwendig?************************************
+    Card[] playedCard; // temporary storage for the played card
     int[] seenCard; // clientIndex for been seen, -1 for not seen
-    // **********tokens für ganzes Spiel ergänzt*******************
     HashMap<String, Integer> tokens; // who has how many tokens in this game already
-    // **********scores mit playerIndex für jede Runde**************
     HashMap<String, Integer> scores; // score of each player in this round
     List<Integer> winners; // winners´ name of each round
     int roundNr;
@@ -46,6 +44,8 @@ public class Game {
     }
 
     public void startGame() throws IOException {
+        // ************wäre auch schön, wenn wir hier ein newGame() function hätten: wer sind im Spiel************
+
         //initialize the game info
         countPlayer = Server.playerList.size();
 
@@ -86,15 +86,11 @@ public class Game {
             break;
         }
         // tell everyone who won the game
-        //****************haben wir die Funktion hier doppelt geschrieben?********************
         Server.getServer().gameOver(tokens);
         Server.getServer().sendMessageToAll("The final winner of this game is " + finalWinner);
     }
 
     public void newRound() throws IOException {
-        // inform all players about the new round
-        //Server.getServer().newRound(tokens); // ***********hier eg über tokens?********** ++++ ja ++++
-        // +++++++++++++ geändert zu roundOver am Ende (eins reicht) ++++++++++++++++++++++++++++
 
         // reset the round info
         Arrays.fill(discardedCard, null);
@@ -113,7 +109,7 @@ public class Game {
         roundOver = false;
         playerInTurn = 0;
 
-        // update playNames for the first round
+        // update playerIndex
         if (winners.size() == 0) {
             for (int i = 0; i < countPlayer; i++) {
                 playerNames.add(Server.playerList.get(i));
@@ -156,19 +152,14 @@ public class Game {
             if (playerInTurn == countPlayer) playerInTurn = 0;
             checkRoundOver();
         }
-        updateScoresAndTokensAndWinnersForThisRound();
-        //**********Server function optional: roundOver?*************
-        //++++++++++++ enter winner name (how do i get it from the list winners?? ++++++++++
-        //Server.getServer().roundOver(tokens, winner);
+        String winnerName = updateScoresAndTokensAndWinnersForThisRound();
+        Server.getServer().roundOver(tokens, winnerName);
     }
 
-
-    //*******************diese Funktion notwendig?*************************
-    //+++++++++++++ in dieser Version geht die action vom client aus, dann notwendig ++++
-    //+++++++++++++ falls action von server ausgehen soll, funktion nicht nötig (dann braucht man ein chooseCard)++++++
+    // function for other class to invoke
     public void cardPlayed(Card card) {
         playedCard[playerInTurn] = card;
-        waitingForCard = false;
+        //waitingForCard = false; //****in while loop zu prüfen, die Umstellung hier ist vllt. gefährlich******
     }
 
     public void playCard() throws IOException {
@@ -181,43 +172,42 @@ public class Game {
         Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + "has drawn one card and is playing...");
 
         waitingForCard = true;
-        Card cardInTurn = null;
 
         while (waitingForCard) {
-            // **********need a chooseCard functon from Server**********
-            // ++++++++++++++action von server oder client aus?? ++++++++++
-            //cardInTurn = Server.getServer().chooseCardToPlay(playerInTurn);
-            if (cardInTurn == null) {
+
+            if (playedCard[playerInTurn] == null) {
                 continue;
+                // check whether the played card if one of the handCard and drawnCard
+            } else if (playedCard[playerInTurn] != handCard[playerInTurn] && playedCard[playerInTurn] != drawnCard[playerInTurn]) {
+                Server.getServer().exception(playerNames.get(playerInTurn),"You don´t have this card in your hand, choose one in hand.");
+                // if player has king or prince and also a countess in hand, countess must be played
+            } else if (playedCard[playerInTurn] == Card.COUNTESS
+                        && (((handCard[playerInTurn] == Card.PRINCE || handCard[playerInTurn] == Card.KING) && drawnCard[playerInTurn] == Card.COUNTESS)
+                        ||((drawnCard[playerInTurn] == Card.PRINCE || drawnCard[playerInTurn] == Card.KING) && handCard[playerInTurn] == Card.COUNTESS))) {
+                Server.getServer().exception(playerNames.get(playerInTurn), "You have royal member in your hand, the countess must be played.");
             } else {
-                //check the chosen card and update the handCard and drawnCard
-                if (cardInTurn.getType() == handCard[playerInTurn].getType()) {
+                // update the handCard and drawnCard
+                if (playedCard[playerInTurn] == handCard[playerInTurn]) {
                     handCard[playerInTurn] = drawnCard[playerInTurn];
                     drawnCard[playerInTurn] = null;
                     waitingForCard = false;
-                } else if (cardInTurn.getType() == drawnCard[playerInTurn].getType()) {
+                } else {
                     drawnCard[playerInTurn] = null;
                     waitingForCard = false;
-                } else {
-                    Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen card is not available, choose a card in hand");
                 }
             }
         }
 
         // inform all the players who has played which card
-        Server.getServer().playedCard(playerNames.get(playerInTurn), cardInTurn);
+        Server.getServer().playedCard(playerNames.get(playerInTurn), playedCard[playerInTurn]);
         // apply the card function
-        switch (cardInTurn) {
+        switch (playedCard[playerInTurn]) {
 
             case PRINCESS:
                 Card.PRINCESS.function(playerInTurn);
                 break;
 
             case COUNTESS:
-                //if (handCard == Card.KING || Card.PRINCE)
-                if(true)
-                {Card.COUNTESS.function(playerInTurn);} 
-                else 
                 Card.COUNTESS.function(playerInTurn);
                 break;
 
@@ -240,8 +230,10 @@ public class Game {
                         if (targetName1 == null) {
                             continue;
                         } else if (status[playerNames.indexOf(targetName1)] == 2) {
+                            //**************soll ich hier in exception schreiben?**********************
                             Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName1)] == 0) {
+                            //**************soll ich hier in exception schreiben?**********************
                             Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
                         } else {
                             targetIndex1 = playerNames.indexOf(targetName1);
@@ -271,6 +263,7 @@ public class Game {
                         if (targetName2 == null) {
                             continue;
                         } else if (status[playerNames.indexOf(targetName2)] == 2) {
+                            //**************soll ich hier in exception schreiben?**********************
                             Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName2)] == 0) {
                             Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
@@ -383,21 +376,21 @@ public class Game {
 
                     Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + " is guessing the card type");
 
-                    while (waitingForGuessTyp){
+                    while (waitingForGuessTyp) {
                         guessCardType = Server.getServer().guessCardType(playerInTurn);
                         guessCard = null;
 
-                        for(Card c : Card.values()){
-                            if(c.getType().equals(guessCardType)){
+                        for (Card c : Card.values()) {
+                            if (c.getType().equals(guessCardType)) {
                                 guessCard = c;
-                            }else{
-                                //*************exception function in Server needed**********
+                            } else {
+                                Server.getServer().exception(playerNames.get(playerInTurn), "This card type does not exist. Choose again.");
                             }
                         }
 
-                        if(guessCard == null){
+                        if (guessCard == null) {
                             continue;
-                        }else{
+                        } else {
                             waitingForGuessTyp = false;
                         }
                     }
@@ -405,46 +398,47 @@ public class Game {
                 }
                 break;
             default:
-                // ********************brauch wir in Server Class ein exception Funktion?**********
-                // **********z.B. Server.getServer().exception(msg)*****************
+                 //***********brauchen wir hier Exceptions eg.? Mir ist nichts aufgefalle********
                 break;
         }
+        // playedCard refresh to null for next round check
+        playedCard[playerInTurn] = null;
     }
 
     public void checkRoundOver() {
         int numActivePlayer = 0;
         for (int i = 0; i < countPlayer; i++) {
-            if(status[i] != 0){
+            if (status[i] != 0) {
                 numActivePlayer++;
             }
         }
-        if(numActivePlayer == 1 || deck.size() == 0){
+        if (numActivePlayer == 1 || deck.size() == 0) {
             roundOver = true;
         }
     }
 
 
-    public void updateScoresAndTokensAndWinnersForThisRound() {
+    public String updateScoresAndTokensAndWinnersForThisRound() {
         int numActivePlayer = 0;
         for (int i = 0; i < countPlayer; i++) {
-            if(status[i] != 0){
+            if (status[i] != 0) {
                 numActivePlayer++;
             }
         }
 
-        String winnerName;
+        String winnerName = null;
 
-        if(numActivePlayer == 1){ // there is only active player left
+        if (numActivePlayer == 1) { // there is only active player left
             for (int i = 0; i < countPlayer; i++) {
-                if(status[i] == 1){
+                if (status[i] == 1) {
                     winners.add(i);
                     winnerName = playerNames.get(i);
                     scores.put(winnerName, handCard[i].getValue());
-                    tokens.put(winnerName, tokens.get(winnerName)+1);
+                    tokens.put(winnerName, tokens.get(winnerName) + 1);
                     break;
                 }
             }
-        }else{ // there are several active players left when this round is over
+        } else { // there are several active players left when this round is over
             int max = 0;
             List<Integer> playerIndexWithMax = new ArrayList<>();
             // get the max. value of hand card
@@ -452,23 +446,23 @@ public class Game {
                 max = Math.max(max, handCard[i].getValue());
             }
             for (int i = 0; i < countPlayer; i++) {
-                if(handCard[i].getValue() == max){
+                if (handCard[i].getValue() == max) {
                     playerIndexWithMax.add(i);
                 }
             }
 
-            if(playerIndexWithMax.size() == 1){ // if there is only one max Value
+            if (playerIndexWithMax.size() == 1) { // if there is only one max Value
                 int winnerIndex = playerIndexWithMax.indexOf(0);
                 winnerName = playerNames.get(winnerIndex);
                 winners.add(winnerIndex);
-                tokens.put(winnerName, tokens.get(winnerName)+1);
+                tokens.put(winnerName, tokens.get(winnerName) + 1);
 
                 for (int i = 0; i < countPlayer; i++) {
                     String clientName = playerNames.get(i);
                     int score = handCard[i].getValue();
                     scores.put(clientName, score);
                 }
-            }else{ // there are several same max values
+            } else { // there are several same max values
                 for (int i = 0; i < countPlayer; i++) {
                     String clientName = playerNames.get(i);
                     int totalScore = handCard[i].getValue();
@@ -480,33 +474,34 @@ public class Game {
 
                 int maxScore = Collections.max(scores.values());
                 for (String name : playerNames) {
-                    if(scores.get(name) == maxScore){
+                    if (scores.get(name) == maxScore) {
                         winnerName = name;
                         int winnerIndex = playerNames.indexOf(winnerName);
                         winners.add(winnerIndex);
-                        tokens.put(winnerName, tokens.get(winnerName)+1);
+                        tokens.put(winnerName, tokens.get(winnerName) + 1);
                     }
                 }
             }
         }
+        return winnerName;
     }
 
     public void checkGameOver() {
         if (countPlayer == 2) {
             for (String name : playerNames) {
-                if(tokens.get(name) == 7){
+                if (tokens.get(name) == 7) {
                     gameOver = true;
                 }
             }
-        }else if(countPlayer == 3){
+        } else if (countPlayer == 3) {
             for (String name : playerNames) {
-                if(tokens.get(name) == 5){
+                if (tokens.get(name) == 5) {
                     gameOver = true;
                 }
             }
-        }else {
+        } else {
             for (String name : playerNames) {
-                if(tokens.get(name) == 4){
+                if (tokens.get(name) == 4) {
                     gameOver = true;
                 }
             }
@@ -524,8 +519,6 @@ public class Game {
         }
         return flag;
     }
-
-
 
 
 }
