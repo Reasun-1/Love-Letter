@@ -264,6 +264,8 @@ public class Game {
                             continue;
                         } else if (status[playerNames.indexOf(targetName2)] == 2) {
                             //**************soll ich hier in exception schreiben?**********************
+                            //throw new PlayerIsProtected(
+                                //"The chosen player is protected, choose another player" );
                             Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName2)] == 0) {
                             Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
