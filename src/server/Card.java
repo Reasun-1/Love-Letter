@@ -37,7 +37,7 @@ public enum Card {
             Game.getInstance().discardedCard[myIndex][countDiscarded] = Card.KING;
             Game.getInstance().status[myIndex] = 1;
 
-            // change the card with the king (the conditions have been checked in the game logic)
+            // King's card is traded with another player's card 
             Card tempCard = Game.getInstance().handCard[targetIndex];
             Game.getInstance().handCard[myIndex] = tempCard;
             Game.getInstance().handCard[targetIndex] = Card.KING;
