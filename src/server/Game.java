@@ -522,5 +522,12 @@ public class Game {
         return flag;
     }
 
+    // Player is protected exception
+    //public class PlayerIsProtected extends Exception {
+ 
+    //    public PlayerIsProtected(String message) {
+    //        super(message);
+    //    }
+
 
 }
