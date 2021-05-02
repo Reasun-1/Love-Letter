@@ -19,6 +19,8 @@ public class Client {
     // reader for outgoing messages
     //private final BufferedReader reader;
 
+    private String errorMsg;
+
 
     private String[] playerList;
 
@@ -53,6 +55,8 @@ public class Client {
         return name;
     }
 
+    public String getErrorMsg(){return errorMsg;}
+
 
     public Client() throws IOException{
 
@@ -67,32 +71,38 @@ public class Client {
 
             name = "";
 
+            errorMsg = "";
+
+
         // Create reader for user input (currently via terminal)
         //reader = new BufferedReader(new InputStreamReader(System.in));
         // start login process
     }
 
-    public String checkName(String temp_name) throws IOException {
+    public void checkName(String temp_name) {
 
         // Ask for the clients name (currently via terminal)
         //System.out.println("Please enter your name:"); // Soon: Open Login-Window
-        if (temp_name.contains("/")) {
-            return "The name must not contain the symbol '/'!";//errorMessage
-        } else {
-            out.println(temp_name);
-
-        // Check whether the name is still available (if not, ask again)
-            String answer = in.readLine();
-            if (answer.equals("user existed!")) {
-                // Ask for a different name (currently via terminal)
-                return "The chosen name already exists. Please choose another name:";// errorMessage
+        try {
+            if (temp_name.contains("/")) {
+                errorMsg = "The name must not contain the symbol '/'!";//errorMessage
             } else {
-                // Print welcome-message (currently via terminal)
-                name = answer;
-                return "";
-                // Soon: Open Chat-Window and print welcome-message
-                //launcher.launchChat();
+                out.println(temp_name);
+                // Check whether the name is still available (if not, ask again)
+                String answer = in.readLine();
+                if (answer.equals("user existed!")) {
+                    // Ask for a different name (currently via terminal)
+                    errorMsg = "The chosen name already exists. Please choose another name:";// errorMessage
+                } else {
+                    // Print welcome-message (currently via terminal)
+                    name = answer;
+                    errorMsg = "done";
+                    // Soon: Open Chat-Window and print welcome-message
+                    //launcher.launchChat();
+                }
             }
+        } catch (IOException e){
+            e.printStackTrace();
         }
     }
 
@@ -210,24 +220,24 @@ public class Client {
     }
 
 
-    public void sendMessage(String msg) throws IOException {
-        // check logout condition
-        if (msg.equals("bye")) {
-            out.println("/0quit");
-            // stop the connection
-            try {
-                if (socket != null) {
-                    socket.close();
+    public void sendMessage(String msg){
+            // check logout condition
+            if (msg.equals("bye")) {
+                out.println("/0quit");
+                // stop the connection
+                try {
+                    if (socket != null) {
+                        socket.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                // Confirm logout (currently via terminal)
+                System.out.println("You left the room.");
+                // Soon: Logout-Window
+            } else {
+                // send message to server
+                out.println("$" + msg);
             }
-            // Confirm logout (currently via terminal)
-            System.out.println("You left the room.");
-            // Soon: Logout-Window
-        } else {
-            // send message to server
-            out.println("$" + msg);
-        }
     }
 }

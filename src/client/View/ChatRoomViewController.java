@@ -1,5 +1,6 @@
 package client.View;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -7,13 +8,12 @@ import javafx.scene.layout.AnchorPane;
 import client.Controller.Client;
 import client.ViewModel.*;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 // Controller Class for the Chat Window connected with the fxml file via data binding
 
-public class ChatRoomViewController implements Initializable {
+public class ChatRoomViewController {
 
     @FXML
     private AnchorPane chatRootPane;
@@ -35,12 +35,9 @@ public class ChatRoomViewController implements Initializable {
 
     private ChatRoomViewModel chatVM;
 
-    public ChatRoomViewController(ChatRoomViewModel chat){
-        chatVM = chat;
-    }
-
     //  Method for the initialization of the Button and the Text Field via bidirectional binding.
-    public void initialize(URL url, ResourceBundle rb) {
+    public void init(ChatRoomViewModel chat) {
+        chatVM = chat;
         typeField.textProperty().bindBidirectional(chatVM.getMessageOutput());
         chatView.textProperty().bindBidirectional(chatVM.getChatInput());
         //sendButton.defaultButtonProperty().bindBidirectional(ViewModel.sendButtonProperty());
@@ -52,12 +49,13 @@ public class ChatRoomViewController implements Initializable {
         chatVM.sendMessage();
     }
 
+
     // Method for setting Client messages in the List View.
 
-    public <Client> void setClient(Client client) {
+    /*public <Client> void setClient(Client client) {
 
         //ViewModel.setClient(client);
         //chatView.setItems(ViewModel.getClient().chatMessages);
-    }
+    }*/
 
 }

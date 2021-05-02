@@ -3,6 +3,7 @@ package client.View;
 import client.ViewModel.ChatRoomViewModel;
 import client.ViewModel.ErrorViewModel;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -10,34 +11,33 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ErrorController implements Initializable {
+public class ErrorController {
     @FXML
-    private AnchorPane errorRootPane;
+    private Pane errorRootPane;
 
     @FXML
-    private Button OKButton;
+    private Button okButton;
 
     @FXML
     private Label errorField;
 
     private ErrorViewModel errorVM;
 
-    public ErrorController(ErrorViewModel error){
+    public void init(ErrorViewModel error) {
         errorVM = error;
-    }
-
-    public void initialize(URL url, ResourceBundle rb) {
         errorField.textProperty().bindBidirectional(errorVM.getErrorMessage());
     }
 
     @FXML
-    private void OKButton(ActionEvent event) {
-        Platform.exit();
+    private void okButtonClicked(ActionEvent event) {
+        Stage stage = (Stage) okButton.getScene().getWindow();
+        stage.close();
     }
 }

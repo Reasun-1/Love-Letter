@@ -48,7 +48,7 @@ public class ServerThread implements Runnable {
                     out.println("user existed!");
                 } else {
                     // introduce the new client
-                    sendMessage(temp_name + " has joined the chat.");
+                    sendMessage("$" + temp_name + " has joined the chat.");
                     // Store the client name and add it to the name list
                     clientName = temp_name;
                     Server.clientList.put(clientName, this);
@@ -113,7 +113,7 @@ public class ServerThread implements Runnable {
         }
         //server.Server.clientList.remove(clientName);
         // inform the other clients
-        sendMessage(clientName + " has left the room.");
+        sendMessage("$" + clientName + " has left the room.");
         socket.close();
     }
 
@@ -126,7 +126,6 @@ public class ServerThread implements Runnable {
     public void executeOrder(String order) throws IOException{
         switch (order.charAt(0)){
             case '0':
-                closeConnect();
                 break;
             case '1':
                 String name = order.substring(1,order.indexOf('/'));

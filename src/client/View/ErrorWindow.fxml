@@ -8,11 +8,12 @@
 
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.Label?>
-<fx:root fx:id="errorRootPane" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="450.0" type="AnchorPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.layout.Pane?>
+<Pane fx:id="errorRootPane" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.View.ErrorController">
     <children>
-        <Label fx:id="errorField" alignment="CENTER" layoutX="212.0" layoutY="249.0" prefHeight="30.0" prefWidth="176.0">
+        <Label fx:id="errorField" alignment="CENTER" layoutX="150.0" layoutY="20.0" prefHeight="20.0" prefWidth="250.0">
         </Label>
-        <Button fx:id="OKButton" layoutX="341.0" layoutY="6.0" mnemonicParsing="false" onAction="#OKButton" text="OK" textAlignment="CENTER">
+        <Button fx:id="okButton" layoutX="300.0" layoutY="40.0" mnemonicParsing="false" onAction="#okButtonClicked" text="OK" textAlignment="CENTER">
     </Button>
     </children>
-</fx:root>
+</Pane>

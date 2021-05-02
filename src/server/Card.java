@@ -69,14 +69,14 @@ public enum Card {
                 } else { // when the deck is not empty, draw a card from deck
                     Game.getInstance().handCard[targetIndex] = Game.getInstance().deck.pop();
                 }
-                // inform the player whick card he has drawn
+                // inform the player which card he has drawn
                 Server.getServer().drawnCard(targetIndex, Game.getInstance().handCard[targetIndex]);
             }
         }
     },
 
     HANDMAID("handmaid", 4, 2) {
-        void functon(int myIndex) {
+        void function(int myIndex) {
             // put the played card into discarded cards
             int countDiscarded = Game.getInstance().countDiscarded[myIndex]++;
             Game.getInstance().discardedCard[myIndex][countDiscarded] = Card.HANDMAID;
@@ -195,7 +195,7 @@ public enum Card {
                 j++;
             }
         }
-        //schuffle the deck : change two cards of the deck for 100 times randomly
+        //shuffle the deck : change two cards of the deck for 100 times randomly
         for (int i = 0; i < 100; i++) {
             int indexCard1 = random.nextInt(16);
             int indexCard2 = random.nextInt(16);

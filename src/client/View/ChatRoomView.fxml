@@ -8,11 +8,11 @@
 
 
 <?import javafx.scene.control.TextArea?>
-<fx:root fx:id="chatRootPane" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="450.0" type="AnchorPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="chatRootPane" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.View.ChatRoomViewController">
    <children>
       <AnchorPane fx:id="writePane" layoutX="25.0" layoutY="496.0" prefHeight="40.0" prefWidth="400.0">
          <children>
-            <Button fx:id="sendButton" layoutX="341.0" layoutY="6.0" mnemonicParsing="false" onAction="#sendButton" text="Send " textAlignment="CENTER">
+            <Button fx:id="sendButton" layoutX="341.0" layoutY="6.0" mnemonicParsing="false" defaultButton="true" onAction="#sendButton" text="Send " textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -26,4 +26,4 @@
          </children>
       </AnchorPane>
    </children>
-</fx:root>
+</AnchorPane>

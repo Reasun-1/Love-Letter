@@ -1,9 +1,11 @@
 package client.ViewModel;
 
 
+import client.Controller.Client;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.io.PipedInputStream;
@@ -11,14 +13,14 @@ import java.io.PipedOutputStream;
 import java.io.PrintWriter;
 
 public class ChatRoomViewModel {
-    private PrintWriter out;
+    private Client client;
     private TextArea chatInput;
-    private StringProperty messageOutput;
+    private TextField messageOutput;
 
-    public ChatRoomViewModel(PipedInputStream instream) throws IOException {
-        out = new PrintWriter(new PipedOutputStream(instream), true);
+    public ChatRoomViewModel(Client client) throws IOException {
+        this.client = client;
         chatInput = new TextArea();
-        messageOutput = new SimpleStringProperty();
+        messageOutput = new TextField();
     }
 
     public StringProperty getChatInput(){
@@ -26,15 +28,17 @@ public class ChatRoomViewModel {
     }
 
     public StringProperty getMessageOutput(){
-        return messageOutput;
+        return messageOutput.textProperty();
     }
 
     public void updateChat(String msg){
-        chatInput.appendText(msg);
+        chatInput.appendText(msg + "\n");
     }
 
     public void sendMessage(){
-        out.println(messageOutput.get());
+        client.sendMessage(messageOutput.textProperty().get());
+        messageOutput.clear();
+        messageOutput.setPromptText("Type your message");
     }
 
 }

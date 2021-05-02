@@ -7,11 +7,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LogInController implements Initializable {
+public class LogInController {
 
     @FXML
     private AnchorPane logo;
@@ -27,14 +28,10 @@ public class LogInController implements Initializable {
 
     private logInViewModel logInVM;
 
-    public LogInController(logInViewModel logIn){
-        logInVM = logIn;
-    }
-
 
     // a method to initialize the logIn View (window) based on the FXML designed file
-    @Override
-    public void initialize(URL url, ResourceBundle rb){
+    public void init(logInViewModel logIn){
+        logInVM = logIn;
         /*With bidirectional binding, the two property values are synchronized so that if either
          property changes, the other property is automatically changed as well */
         name.textProperty().bindBidirectional(logInVM.heroNameProperty());
@@ -43,7 +40,8 @@ public class LogInController implements Initializable {
 
     @FXML
     private void loginButton(ActionEvent event) {
+        Stage stage = (Stage) startButton.getScene().getWindow();
         logInVM.nameEntered();
-        Platform.exit();
+        stage.close();
     }
 }

@@ -18,29 +18,40 @@ import java.io.PipedInputStream;
 //test code
 public class WindowLauncher {
 
-    public Scene launchLogin(PipedInputStream instream) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/logInWindow.fxml"));
-        LogInController ctrl = new LogInController(new logInViewModel(instream));
-        loader.setController(ctrl);
+    public void launchLogin(Client client) throws IOException{
+        Stage stage = new Stage();
+        stage.setTitle("Login");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/client/View/logInWindow.fxml"));
         Parent root = loader.load();
-        return new Scene(root, 600, 400);
+        LogInController ctrl = loader.getController();
+        ctrl.init(new logInViewModel(client));
+        stage.setScene(new Scene(root, 600, 400));
+        stage.showAndWait();
     }
 
-    public Scene launchError(String msg) throws IOException{
-        // errorMessage
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ErrorWindow.fxml"));
-        ErrorController ctrl = new ErrorController(new ErrorViewModel(msg));
-        loader.setController(ctrl);
+    public void launchError(String msg) throws IOException{
+        Stage stage = new Stage();
+        stage.setTitle("Error");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/client/View/ErrorWindow.fxml"));
         Parent root = loader.load();
-        return new Scene(root, 600, 400);
+        ErrorController ctrl = loader.getController();
+        ctrl.init(new ErrorViewModel(msg));
+        stage.setScene(new Scene(root, 600, 400));
+        stage.showAndWait();
     }
 
-    public Scene launchChat(ChatRoomViewModel chatVM) throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ChatRoomView.fxml"));
-        ChatRoomViewController ctrl = new ChatRoomViewController(chatVM);
-        loader.setController(ctrl);
+    public void launchChat(String name, ChatRoomViewModel chatVM) throws IOException{
+        Stage stage = new Stage();
+        stage.setTitle("Chat: " + name);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/client/View/ChatRoomView.fxml"));
         Parent root = loader.load();
-        return new Scene(root, 600, 400);
+        ChatRoomViewController ctrl = loader.getController();
+        ctrl.init(chatVM);
+        stage.setScene(new Scene(root, 600, 400));
+        stage.show();
     }
 }
 

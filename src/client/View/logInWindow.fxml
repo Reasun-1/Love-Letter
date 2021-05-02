@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.View.LogInController">
    <children>
       <AnchorPane fx:id="background" layoutX="139.0" layoutY="34.0" prefHeight="197.0" prefWidth="190.0">
          <children>
@@ -56,7 +56,7 @@
             </Lighting>
          </effect>
       </TextField>
-      <Button fx:id="startButton" layoutX="257.0" layoutY="308.0" mnemonicParsing="false" onAction="#loginButton" prefHeight="30.0" prefWidth="86.0" text="Start" textFill="#540707">
+      <Button fx:id="startButton" layoutX="257.0" layoutY="308.0" defaultButton="true" mnemonicParsing="false" onAction="#loginButton" prefHeight="30.0" prefWidth="86.0" text="Start" textFill="#540707">
          <effect>
             <Lighting>
                <bumpInput>
@@ -68,6 +68,5 @@
             </Lighting>
          </effect>
       </Button>
-      <Button layoutX="-27.0" layoutY="34.0" mnemonicParsing="false" text="Button" />
    </children>
 </Pane>

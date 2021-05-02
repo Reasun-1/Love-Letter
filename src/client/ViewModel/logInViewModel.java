@@ -1,5 +1,6 @@
 package client.ViewModel;
 
+import client.Controller.Client;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -13,15 +14,15 @@ public class logInViewModel {
 
     private StringProperty username;
 
-    private PrintWriter out;
+    private Client client;
 
-    public logInViewModel(PipedInputStream instream) throws IOException {
-        out = new PrintWriter(new PipedOutputStream(instream), true);
+    public logInViewModel(Client client){
+        this.client = client;
         username = new SimpleStringProperty();
     }
 
-    public void nameEntered(){
-        out.println(username.get());
+    public void nameEntered() {
+        client.checkName(username.get());
     }
 
     public String getUserName() {
