@@ -3,6 +3,7 @@ package client.Controller;
 import client.View.ChatRoomViewController;
 import client.View.ErrorController;
 import client.View.LogInController;
+import client.View.QuestionController;
 import client.ViewModel.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -52,6 +53,18 @@ public class WindowLauncher {
         ctrl.init(chatVM);
         stage.setScene(new Scene(root, 600, 400));
         stage.show();
+    }
+
+    public void launchQuestion(Client client, String msg) throws IOException{
+        Stage stage = new Stage();
+        stage.setTitle("Login");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/client/View/QuestionWindow.fxml"));
+        Parent root = loader.load();
+        QuestionController ctrl = loader.getController();
+        ctrl.init(new QuestionViewModel(client, msg));
+        stage.setScene(new Scene(root, 600, 400));
+        stage.showAndWait();
     }
 }
 

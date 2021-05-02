@@ -4,11 +4,13 @@ import client.ViewModel.ChatRoomViewModel;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import server.Card;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PipedInputStream;
+import java.util.Arrays;
 
 public class Main extends Application {
 
@@ -41,12 +43,46 @@ public class Main extends Application {
         launcher.launchChat(client.getName(), chatVM);
             new Thread(() -> {
                 try {
+                    String line;
                     while (!client.getSocket().isClosed()){
                         // Client socket waits for the input from the server
                         // If there is input, display the message (currently via terminal)
-                        String line = client.getIn().readLine();
+                        line = client.getIn().readLine();
                         if (line.charAt(0) == '/'){
-                            client.executeOrder(line.substring(1));
+                            String order = line.substring(1);
+                            switch (order.charAt(0)) {
+                                case '0':
+                                    client.sendMessage("done");
+                                    client.getSocket().close();
+                                    break;
+                                case '1':
+                                    client.sendMessage("done");
+                                    launcher.launchError(order.substring(1));
+                                    break;
+                                case '2':
+                                    launcher.launchQuestion(client, "Please choose a Player:");
+                                    break;
+                                case '3':
+                                    launcher.launchQuestion(client, "Please enter your card guess:");
+                                    break;
+                                case '4':
+                                    client.startGameInfo(order.substring(1));
+                                    break;
+                                case '5':
+                                    client.setDrawnCard(order.substring(1));
+                                    break;
+                                case '6':
+                                    client.setPlayedCard(order.substring(1));
+                                    break;
+                                case '7':
+                                    client.endOfRound(order.substring(1));
+                                    // End-Of-Round-Window
+                                    break;
+                                case '8':
+                                    client.endOfGame(order.substring(1));
+                                    // End-Of-Game-Window
+                                    break;
+                            }
                         } else {
                             chatVM.updateChat(line.substring(1));
                         }

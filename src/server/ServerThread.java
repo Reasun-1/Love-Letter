@@ -137,12 +137,15 @@ public class ServerThread implements Runnable {
                 }
                 break;
             case '2':
-                Server.getServer().addPlayer(clientName);
+                Server.getServer().createGame();
                 break;
             case '3':
-                Server.getServer().startGame(clientName);
+                Server.getServer().addPlayer(clientName);
                 break;
             case '4':
+                Server.getServer().startGame(clientName);
+                break;
+            case '5':
                 Server.getServer().playCard(order.substring(1));
                 break;
         }

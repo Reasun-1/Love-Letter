@@ -77,10 +77,10 @@ public class Server {
         }
     }
 
-    //public Game createGame(){
-        //create a new game
-      //  return null;
-    //}
+    public void createGame(){
+        Game.getInstance();
+        sendMessageToAll("New Game created");
+    }
 
     public void sendTo(String clientName, String message){
         //send message to Client clientName
@@ -95,17 +95,17 @@ public class Server {
         //add Player to PlayerList
         if(gameRunning){
             exception(clientName, "There is already a game running!");
-        } else {
-            if (playerList.size() < 4) {
+        } else if (playerList.containsKey(clientName)) {
+            exception(clientName, "You already joined the Game!");
+        } else if (playerList.size() < 4) {
                 playerList.put(playerList.size(), clientName);
-            } else {
+                sendMessageToAll(clientName + " has joined the Game");
+        } else {
                 exception(clientName, "Too many players!");
-            }
         }
     }
 
     public void startGame(String clientName) throws IOException{
-        //initiate the Gameplay
         if(gameRunning){
             exception(clientName, "There is already a game running!");
         } else {

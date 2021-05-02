@@ -49,6 +49,21 @@ public class ChatRoomViewController {
         chatVM.sendMessage();
     }
 
+    @FXML
+    public void createGame(ActionEvent actionEvent) {
+        chatVM.createGame();
+    }
+
+    @FXML
+    public void joinGame(ActionEvent actionEvent) {
+        chatVM.joinGame();
+    }
+
+    @FXML
+    public void startGame(ActionEvent actionEvent) {
+        chatVM.startGame();
+    }
+
 
     // Method for setting Client messages in the List View.
 

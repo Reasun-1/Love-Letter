@@ -41,4 +41,15 @@ public class ChatRoomViewModel {
         messageOutput.setPromptText("Type your message");
     }
 
+    public void createGame() {
+        client.createGame();
+    }
+
+    public void joinGame() {
+        client.joinGame();
+    }
+
+    public void startGame() {
+        client.startGame();
+    }
 }

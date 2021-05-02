@@ -40,6 +40,10 @@ public class Client {
 
     private String name;
 
+    private String winnerOfLastRound;
+
+    private String winner;
+
     //public Card[] getDiscardedCards(){
     //return discardedCards;
     //}
@@ -57,6 +61,15 @@ public class Client {
 
     public String getErrorMsg(){return errorMsg;}
 
+    public String getWinnerOfLastRound(){return winnerOfLastRound;}
+
+    public String getWinner(){return winner;}
+
+    public String[] getPlayerList(){return playerList;}
+
+    public int[] getTokens() {
+        return tokens;
+    }
 
     public Client() throws IOException{
 
@@ -110,103 +123,88 @@ public class Client {
         out.println("/1" + name + "/" + msg);
     }
 
-    public void joinGame() throws IOException {
+    public void createGame() {
         out.println("/2");
     }
 
-    public void startGame() throws IOException {
+    public void joinGame() {
         out.println("/3");
     }
 
-    public void playCard(Card card) throws IOException {
+    public void startGame() {
+        out.println("/4");
+    }
+
+    public void playCard(Card card) {
         if (card.equals(handCard)) {
             handCard = drawnCard;
             drawnCard = null;
         } else {
             drawnCard = null;
         }
-        out.println("/4" + card.getType());
+        out.println("/5" + card.getType());
     }
 
-    public void executeOrder(String order) throws IOException {
-        switch (order.charAt(0)) {
-            case '0':
-                out.println("done");
-                socket.close();
-                break;
-            case '1':
-                // open errorWindow with errorMessage = order.substring(1)
-                out.println("done");
-                break;
-            case '2':
-                String name = "";
-                // String name = ask the user to choose another player
-                out.println(name);
-                break;
-            case '3':
-                String cardname = "";
-                // String cardname = ask the user to guess a card
-                out.println(cardname);
-                break;
-            case '4':
-                int numberOfPlayers = order.charAt(1);
-                playerList = new String[numberOfPlayers];
-                String rest = order.substring(1);
-                for (int i = 0; i < numberOfPlayers; i++) {
-                    playerList[i] = order.substring(1, order.indexOf('/'));
-                    rest = rest.substring(order.indexOf('/'));
-                }
-                discardedCards = new Card[numberOfPlayers][5];
-                tokens = new int[numberOfPlayers];
-                Arrays.fill(discardedCards, null);
-                handCard = null;
-                out.println("done");
-                break;
-            case '5':
-                for (Card card : Card.values()) {
-                    if (card.getType().equals(order.substring(1))) {
-                        if (handCard == null) {
-                            handCard = card;
-                        } else {
-                            drawnCard = card;
-                        }
-                    }
-                }
-                out.println("done");
-                break;
-            case '6':
-                String player = order.substring(1, order.indexOf('/'));
-                for (Card card : Card.values()) {
-                    if (card.getType().equals(order.substring(order.indexOf('/')))) {
-                        playedCard = card;
-                    }
-                }
-                int index=0;
-                while (discardedCards[find(playerList, player)][index] == null){
-                    index++;
-                }
-                discardedCards[find(playerList, player)][index] = playedCard;
-                String nextPlayer = playerList[(find(playerList, player) + 1) % playerList.length];
-                out.println("done");
-                break;
-            case '7':
-                Arrays.fill(discardedCards, null);
-                handCard = null;
-                for (int i = 0; i < playerList.length; i++) {
-                    tokens[i] = order.charAt(i + 1);
-                }
-                String winner = order.substring(playerList.length + 1);
-                // print out the winner
-                out.println("done");
-                break;
-            case '8':
-                for (int i = 0; i < playerList.length; i++) {
-                    tokens[i] = order.charAt(i + 1);
-                }
-                // End-Of-Game-Window
-                out.println("done");
-                break;
+    public void startGameInfo(String info){
+        int numberOfPlayers = info.charAt(0);
+        playerList = new String[numberOfPlayers];
+        String rest = info.substring(1);
+        for (int i = 0; i < numberOfPlayers; i++) {
+            playerList[i] = info.substring(1, info.indexOf('/'));
+            rest = rest.substring(info.indexOf('/'));
         }
+        discardedCards = new Card[numberOfPlayers][5];
+        tokens = new int[numberOfPlayers];
+        Arrays.fill(discardedCards, null);
+        handCard = null;
+        out.println("done");
+    }
+
+    public void setDrawnCard(String cardName){
+        for (Card card : Card.values()) {
+            if (card.getType().equals(cardName)) {
+                if (handCard == null) {
+                    handCard = card;
+                } else {
+                    drawnCard = card;
+                }
+            }
+        }
+        out.println("done");
+    }
+
+    public void setPlayedCard(String playerCard){
+        String player = playerCard.substring(0, playerCard.indexOf('/'));
+        for (Card card : Card.values()) {
+            if (card.getType().equals(playerCard.substring(playerCard.indexOf('/')))) {
+                playedCard = card;
+            }
+        }
+        int index = 0;
+        while (discardedCards[find(playerList, player)][index] == null) {
+            index++;
+        }
+        discardedCards[find(playerList, player)][index] = playedCard;
+        String nextPlayer = playerList[(find(playerList, player) + 1) % playerList.length];
+        out.println("done");
+    }
+
+    public void endOfRound(String info){
+        Arrays.fill(discardedCards, null);
+        handCard = null;
+        for (int i = 0; i < playerList.length; i++) {
+            tokens[i] = info.charAt(i);
+        }
+        winnerOfLastRound = info.substring(playerList.length + 1);
+        out.println("done");
+    }
+
+    public void endOfGame(String info){
+        for (int i = 0; i < playerList.length; i++) {
+            tokens[i] = info.charAt(i);
+        }
+
+        out.println("done");
     }
 
     public int find(String[] array, String element) {
