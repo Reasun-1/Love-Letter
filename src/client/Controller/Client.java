@@ -2,6 +2,8 @@ package client.Controller;
 
 import client.ViewModel.ChatRoomViewModel;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.property.*;
 import javafx.stage.Stage;
 import server.*;
 
@@ -9,7 +11,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Arrays;
 
-public class Client {
+public class Client extends Application{
     // socket for the TCP connection
     private volatile Socket socket;
     // writer for outgoing messages
@@ -18,60 +20,82 @@ public class Client {
     private final BufferedReader in;
     // reader for outgoing messages
     //private final BufferedReader reader;
-
-    private String errorMsg;
-
-
-    private String[] playerList;
-
-    private Card handCard;
-
-    private Card drawnCard;
-
-    private Card playedCard;
-
-    private Card[][] discardedCards;
-
-    private int[] tokens;
-
-    public Card getHandCard() {
-        return handCard;
-    }
-
-    public Card getDrawnCard() {return drawnCard;}
+    private WindowLauncher launcher;
 
     private String name;
 
-    private String winnerOfLastRound;
+    private StringProperty errormessage;
 
-    private String winner;
+    private StringProperty questionmessage;
 
-    //public Card[] getDiscardedCards(){
-    //return discardedCards;
-    //}
+    private StringProperty chathistory;
+
+    private StringProperty[] players;
+
+    private StringProperty playerinturn;
+
+    private int playerinturnid;
+
+    private int numberofplayers;
+
+    private ObjectProperty[] handcard;
+
+    private ObjectProperty[] drawncard;
+
+    private StringProperty[] discardedcards;
+
+    private IntegerProperty[] tokens;
+
+    private BooleanProperty gameexists;
+
+    private BooleanProperty gamerunning;
+
+    private BooleanProperty inturn;
+
+    public Socket getSocket() { return socket; }
+
     public BufferedReader getIn(){ return in; }
 
     public PrintWriter getOut(){ return out; }
-
-    public Socket getSocket() {
-        return socket;
-    }
 
     public String getName(){
         return name;
     }
 
-    public String getErrorMsg(){return errorMsg;}
+    public StringProperty getErrorMessage(){return errormessage;}
 
-    public String getWinnerOfLastRound(){return winnerOfLastRound;}
-
-    public String getWinner(){return winner;}
-
-    public String[] getPlayerList(){return playerList;}
-
-    public int[] getTokens() {
-        return tokens;
+    public StringProperty getQuestionMessage() {
+        return questionmessage;
     }
+
+    public StringProperty getChatHistory() {return chathistory;}
+
+    public StringProperty getPlayers(int playerindex) {
+        return players[playerindex];
+    }
+
+    public StringProperty getPlayerinTurn() {return playerinturn;}
+
+    public ObjectProperty getHandCard(int playerindex) {
+        return handcard[playerindex];
+    }
+
+    public ObjectProperty getDrawnCard(int playerindex) {
+        return handcard[playerindex];
+    }
+
+    public StringProperty getDiscardedCards(int playerindex) {return discardedcards[playerindex];}
+
+    public BooleanProperty getGameExists(){ return gameexists;}
+
+    public BooleanProperty getGameRunning() {return gamerunning;}
+
+    public BooleanProperty getinTurn() {return inturn;}
+
+    //public Card[] getDiscardedCards(){
+    //return discardedCards;
+    //}
+
 
     public Client() throws IOException{
 
@@ -86,12 +110,48 @@ public class Client {
 
             name = "";
 
-            errorMsg = "";
+            errormessage = new SimpleStringProperty();
 
+            questionmessage = new SimpleStringProperty();
 
-        // Create reader for user input (currently via terminal)
-        //reader = new BufferedReader(new InputStreamReader(System.in));
-        // start login process
+            chathistory = new SimpleStringProperty();
+
+            players = new StringProperty[4];
+
+            playerinturn = new SimpleStringProperty();
+
+            handcard = new ObjectProperty[4];
+
+            drawncard = new ObjectProperty[4];
+
+            discardedcards = new StringProperty[4];
+
+            tokens = new IntegerProperty[4];
+
+            for (int i=0;i<4;i++){
+                players[i] = new SimpleStringProperty();
+                handcard[i] = new ObjectProperty();
+                drawncard[i] = new ObjectProperty();
+                discardedcards[i] = new SimpleStringProperty();
+                tokens[i] = new SimpleIntegerProperty();
+            }
+
+            gameexists = new BooleanProperty();
+            gamerunning = new BooleanProperty();
+            inturn = new BooleanProperty(false);
+
+            String gameinfo = in.readLine();
+            if(gameinfo.charAt(0) == '0') {
+                gameexists.set(false);
+            } else {
+                gameexists.set(true);
+            }
+        if(gameinfo.charAt(1) == '0') {
+            gamerunning.set(false);
+        } else {
+            gamerunning.set(true);
+        }
+        launcher = new WindowLauncher();
     }
 
     public void checkName(String temp_name) {
@@ -100,18 +160,19 @@ public class Client {
         //System.out.println("Please enter your name:"); // Soon: Open Login-Window
         try {
             if (temp_name.contains("/")) {
-                errorMsg = "The name must not contain the symbol '/'!";//errorMessage
+                launcher.launchError("The name must not contain the symbol '/'!");
+                launcher.launchLogin(this);
             } else {
                 out.println(temp_name);
                 // Check whether the name is still available (if not, ask again)
                 String answer = in.readLine();
                 if (answer.equals("user existed!")) {
                     // Ask for a different name (currently via terminal)
-                    errorMsg = "The chosen name already exists. Please choose another name:";// errorMessage
+                    launcher.launchError("The chosen name already exists. Please choose another name:");
+                    launcher.launchLogin(this);
                 } else {
                     // Print welcome-message (currently via terminal)
                     name = answer;
-                    errorMsg = "done";
                     // Soon: Open Chat-Window and print welcome-message
                     //launcher.launchChat();
                 }
@@ -138,92 +199,74 @@ public class Client {
     }
 
     public void playHandCard() {
-            out.println("/5" + handCard.getType());
-            handCard = drawnCard;
-            drawnCard = null;
+            out.println("/5" + handcard[0].get());
+            Object playedcard = handcard[0].get();
+            handcard[0].set(drawncard[0].get());
+            drawncard[0].set(playedcard);
     }
 
     public void playDrawnCard() {
-        out.println("/5" + drawnCard.getType());
-        drawnCard = null;
+        out.println("/5" + drawncard[0].get());
     }
 
     public void startGameInfo(String info){
-        int numberOfPlayers = info.charAt(0);
-        playerList = new String[numberOfPlayers];
+        numberofplayers = info.charAt(0);
+        playerinturnid = (- (int) info.charAt(1)) % numberofplayers;
         String rest = info.substring(1);
-        for (int i = 0; i < numberOfPlayers; i++) {
-            playerList[i] = info.substring(1, info.indexOf('/'));
+        for (int i = 0; i < numberofplayers; i++) {
+            players[i].set(rest.substring(1, info.indexOf('/')));
+            tokens[i].set(0);
             rest = rest.substring(info.indexOf('/'));
         }
-        discardedCards = new Card[numberOfPlayers][5];
-        tokens = new int[numberOfPlayers];
-        Arrays.fill(discardedCards, null);
-        handCard = null;
-        out.println("done");
+        playerinturn.set(players[playerinturnid].get());
     }
 
-    public void setDrawnCard(String cardName){
-        for (Card card : Card.values()) {
-            if (card.getType().equals(cardName)) {
-                if (handCard == null) {
-                    handCard = card;
+    public void setDrawnCard(String cardname){
+            if (handcard[0].get() == null) {
+                    //handcard[0].set(cardname); TODO
                 } else {
-                    drawnCard = card;
+                    //drawncard[0].set(cardname); TODO
                 }
-            }
-        }
         out.println("done");
     }
 
-    public void setPlayedCard(String playerCard){
-        String player = playerCard.substring(0, playerCard.indexOf('/'));
-        for (Card card : Card.values()) {
-            if (card.getType().equals(playerCard.substring(playerCard.indexOf('/')))) {
-                playedCard = card;
-            }
+    public void setPlayedCard(String cardname){
+        if (playerinturnid != 0){
+            //drawncard[playerinturnid].set(cardname); TODO
         }
-        int index = 0;
-        while (discardedCards[find(playerList, player)][index] == null) {
-            index++;
-        }
-        discardedCards[find(playerList, player)][index] = playedCard;
-        String nextPlayer = playerList[(find(playerList, player) + 1) % playerList.length];
+        drawncard[(playerinturnid - 1) % numberofplayers].set(null);
+        discardedcards[playerinturnid].concat(cardname + "\n");
+        playerinturnid = (playerinturnid + 1) % numberofplayers;
+        playerinturn.set(players[playerinturnid].get());
+        //drawncard[playerinturnid].set(dummycard); TODO
         out.println("done");
     }
 
     public void endOfRound(String info){
-        Arrays.fill(discardedCards, null);
-        handCard = null;
-        for (int i = 0; i < playerList.length; i++) {
-            tokens[i] = info.charAt(i);
+        String winneroflastround = info.substring(numberofplayers + 1);
+        for (int i = 0; i < numberofplayers; i++) {
+            discardedcards[i].set("");
+            //handcard[i].set(dummycard);
+            tokens[i].set(info.charAt(i));
+            if(players[i].get().equals(winneroflastround)){
+                playerinturnid = i;
+            }
         }
-        winnerOfLastRound = info.substring(playerList.length + 1);
-        out.println("done");
+        handcard[0].set(null);
+        playerinturn.set(players[playerinturnid].get());
+        //end-of-round window?
     }
 
     public void endOfGame(String info){
-        for (int i = 0; i < playerList.length; i++) {
-            tokens[i] = info.charAt(i);
+        for (int i = 0; i < numberofplayers; i++) {
+            tokens[i].set(info.charAt(i));
         }
-
-        out.println("done");
+        // end-of-game Window?
     }
 
-    public int find(String[] array, String element) {
-        int index = -1;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == element) {
-                index = i;
-            }
-        }
-        return index;
-    }
-
-
-    public void sendMessage(String msg){
+    public void sendMessage(String message){
             // check logout condition
-            if (msg.equals("bye")) {
+            if (message.equals("bye")) {
                 out.println("/0quit");
                 // stop the connection
                 try {
@@ -238,7 +281,117 @@ public class Client {
                 // Soon: Logout-Window
             } else {
                 // send message to server
-                out.println("$" + msg);
+                out.println("$" + message);
             }
     }
+
+    public void executeOrder(String order) throws IOException {
+        Client client = this;
+        switch (order.charAt(0)) {
+            case '0':
+                out.println("done");
+                socket.close();
+                break;
+            case '1':
+                out.println("done");
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            launcher.launchError(order.substring(1));
+                        } catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                break;
+            case '2':
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            launcher.launchQuestion(client, "Please choose a Player:");
+                        } catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                break;
+            case '3':
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            launcher.launchQuestion(client, "Please enter your card guess:");
+                        } catch (IOException e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                break;
+            case '4':
+                startGameInfo(order.substring(1));
+                out.println("done");
+                break;
+            case '5':
+                setDrawnCard(order.substring(1));
+                out.println("done");
+                break;
+            case '6':
+                setPlayedCard(order.substring(1));
+                out.println("done");
+                break;
+            case '7':
+                endOfRound(order.substring(1));
+                out.println("done");
+                break;
+            case '8':
+                endOfGame(order.substring(1));
+                out.println("done");
+                break;
+        }
+    }
+
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        launcher.launchLogin(this);
+
+        launcher.launchChat(this);
+        new Thread(() -> {
+            try {
+                String line;
+                while (!socket.isClosed()){
+                    // Client socket waits for the input from the server
+                    // If there is input, display the message (currently via terminal)
+                    line = in.readLine();
+                    if(!line.isEmpty()) {
+                        if (line.charAt(0) == '/') {
+                            executeOrder(line.substring(1));
+                        } else {
+                            chathistory.concat(line.substring(1) + "\n");
+                        }
+                    }
+                }
+                Platform.exit();
+            } catch (IOException e) {
+                try{
+                    socket.close();
+                    Platform.exit();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public static void main(String[] args){
+        try {
+            Client client = new Client();
+            client.launch(args);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 }

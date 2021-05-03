@@ -21,9 +21,9 @@ public class Server {
     // a set for checking clients´ names
     protected static Hashtable<String, ServerThread> clientList = new Hashtable<String, ServerThread>();
 
-    private boolean gameRunning = false;
+    private boolean gamerunning = false;
 
-    private boolean gameExists = false;
+    private boolean gameexists = false;
 
     private Server() {
     }
@@ -38,6 +38,24 @@ public class Server {
             }
         }
         return server;
+    }
+
+    public String gameExists(){
+        if(gameexists){
+            return "1";
+        }
+        else {
+            return "0";
+        }
+    }
+
+    public String gameRunning(){
+        if(gamerunning){
+            return "1";
+        }
+        else {
+            return "0";
+        }
     }
 
     //public static List<server.ServerThread> getThreads() {
@@ -80,12 +98,12 @@ public class Server {
     }
 
     public void createGame(String clientName) throws IOException{
-        if(gameExists){
+        if(gameexists){
             exception(clientName, "There exists already a Game!");
         }
         else {
             Game.getInstance();
-            gameExists = true;
+            gameexists = true;
             sendMessageToAll(clientName + "created a new Game");
         }
     }
@@ -101,7 +119,7 @@ public class Server {
 
     public void addPlayer(String clientName) throws IOException{
         //add Player to PlayerList
-        if(gameRunning){
+        if(gamerunning){
             exception(clientName, "There is already a game running!");
         } else if (playerList.contains(clientName)) {
             exception(clientName, "You already joined the Game!");
@@ -114,7 +132,7 @@ public class Server {
     }
 
     public void startGame(String clientName) throws IOException{
-        if(gameRunning){
+        if(gamerunning){
             exception(clientName, "There is already a game running!");
         } else {
             if (playerList.size() < 2) {
@@ -139,17 +157,17 @@ public class Server {
 
     public String choosePlayer(int playerID) throws IOException{
         //ask the active player to choose another player
-        String chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2");
+        String chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2").substring(1);
         while (!playerList.contains(chosenPlayer)){
             exception(playerList.get(playerID), "The chosen player doesn't exist!");
-            chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2");
+            chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2").substring(1);
         }
         return chosenPlayer;
     }
 
     public String guessCardType(int playerID) throws IOException{
         //ask the active player to choose a card (no error handling yet)
-        return clientList.get(playerList.get(playerID)).receiveOrder("3");
+        return clientList.get(playerList.get(playerID)).receiveOrder("3").substring(1);
     }
 
 
@@ -168,9 +186,9 @@ public class Server {
     // Tell the players how many players will participate and what are the names
     public void startGameInfo() throws IOException{
         for(int i=0;i<playerList.size();i++) {
-            String startInfo = "4" + playerList.size();
+            String startInfo = "4" + playerList.size() + i;
             for (int j = 0; j < playerList.size(); j++) {
-                startInfo = startInfo + playerList.get((i + j) % 4) + "/";
+                startInfo = startInfo + playerList.get((i + j) % playerList.size()) + "/";
             }
             clientList.get(playerList.get(i)).receiveOrder(startInfo);
         }
@@ -186,10 +204,10 @@ public class Server {
     }
 
     // inform the players about the card played by playerName
-    public void playedCard(String playerName, Card card){
+    public void playedCard(Card card){
         try{
             for(int i=0;i<playerList.size();i++) {
-                clientList.get(playerList.get(i)).receiveOrder("6" + playerName + "/" + card.getType());
+                clientList.get(playerList.get(i)).receiveOrder("6" + card.getType());
             }
         } catch (IOException e){
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package client.View;
+package client.ViewModel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,48 +63,48 @@ public class ChatRoomViewController {
     @FXML
     private Button startGame;
 
-    private ChatRoomViewModel chatVM;
+    private Client client;
 
     //  Method for the initialization of the Button and the Text Field via bidirectional binding.
-    public void init(ChatRoomViewModel chat) {
-        chatVM = chat;
-        typeField.textProperty().bindBidirectional(chatVM.getMessageOutput());
+    public void init(Client client) {
+        this.client = client;
+        /*typeField.textProperty().bindBidirectional(chatVM.getMessageOutput());
         chatView.textProperty().bindBidirectional(chatVM.getChatInput());
         handCards.textProperty().bindBidirectional(chatVM.getHandCards());
         handCardItem.textProperty().bindBidirectional(chatVM.getHandCardItem());
-        drawnCardItem.textProperty().bindBidirectional(chatVM.getDrawnCardItem());
+        drawnCardItem.textProperty().bindBidirectional(chatVM.getDrawnCardItem());*/
         //sendButton.defaultButtonProperty().bindBidirectional(ViewModel.sendButtonProperty());
     }
 
     // Method for sending messages to the server.
     @FXML
     private void sendButton(ActionEvent event) {
-        chatVM.sendMessage();
+        client.sendMessage(typeField.getText());
     }
 
     @FXML
     public void createGame(ActionEvent actionEvent) {
-        chatVM.createGame();
+        client.createGame();
     }
 
     @FXML
     public void joinGame(ActionEvent actionEvent) {
-        chatVM.joinGame();
+        client.joinGame();
     }
 
     @FXML
     public void startGame(ActionEvent actionEvent) {
-        chatVM.startGame();
+        client.startGame();
     }
 
     @FXML
     public void playHandCard(ActionEvent actionEvent) {
-        chatVM.playHandCard();
+        client.playHandCard();
     }
 
     @FXML
     public void playDrawnCard(ActionEvent actionEvent){
-        chatVM.playDrawnCard();
+        client.playDrawnCard();
     }
 
 

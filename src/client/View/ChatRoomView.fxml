@@ -11,7 +11,7 @@
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<AnchorPane fx:id="chatRootPane" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.View.ChatRoomViewController">
+<AnchorPane fx:id="chatRootPane" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ViewModel.ChatRoomViewController">
    <children>
       <AnchorPane fx:id="writePane" layoutX="25.0" layoutY="496.0" prefHeight="40.0" prefWidth="400.0">
          <children>

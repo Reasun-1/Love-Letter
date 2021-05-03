@@ -40,6 +40,8 @@ public class ServerThread implements Runnable {
             // Create writer for messages to the client
             PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
 
+            out.println(Server.getServer().gameExists() + Server.getServer().gameRunning());
+
             // Receive the name from the client and check it with the client list
             clientName = "";
             while (clientName.isEmpty()) {

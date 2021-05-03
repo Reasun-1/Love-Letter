@@ -195,7 +195,7 @@ public class Game {
         }
 
         // inform all the players who has played which card
-        Server.getServer().playedCard(playerNames.get(playerInTurn), playedCard[playerInTurn]);
+        Server.getServer().playedCard(playedCard[playerInTurn]);
         // apply the card function
         switch (playedCard[playerInTurn]) {
 

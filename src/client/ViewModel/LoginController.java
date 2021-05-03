@@ -1,5 +1,6 @@
-package client.View;
+package client.ViewModel;
 
+import client.Controller.Client;
 import client.ViewModel.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,7 +13,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LogInController {
+public class LoginController {
 
     @FXML
     private AnchorPane logo;
@@ -26,22 +27,22 @@ public class LogInController {
     @FXML
     private Button startButton;
 
-    private logInViewModel logInVM;
+    private Client client;
 
 
     // a method to initialize the logIn View (window) based on the FXML designed file
-    public void init(logInViewModel logIn){
-        logInVM = logIn;
+    public void init(Client client){
+        this.client = client;
         /*With bidirectional binding, the two property values are synchronized so that if either
          property changes, the other property is automatically changed as well */
-        name.textProperty().bindBidirectional(logInVM.heroNameProperty());
+
         //heroNameProperty() is a method declared on the LogInViewModel that returns the username required on the TextField
     }
 
     @FXML
     private void loginButton(ActionEvent event) {
         Stage stage = (Stage) startButton.getScene().getWindow();
-        logInVM.nameEntered();
+        client.checkName(name.getText());
         stage.close();
     }
 }

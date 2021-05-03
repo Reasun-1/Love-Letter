@@ -1,7 +1,9 @@
-package client.View;
+package client.ViewModel;
 
+import client.Controller.Client;
 import client.ViewModel.ChatRoomViewModel;
 import client.ViewModel.ErrorViewModel;
+import client.ViewModel.QuestionViewModel;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,26 +20,31 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ErrorController {
+public class QuestionController {
     @FXML
-    private Pane errorRootPane;
-
-    @FXML
-    private Button okButton;
+    private Pane questionRootPane;
 
     @FXML
-    private Label errorField;
+    private Button sendButton;
 
-    private ErrorViewModel errorVM;
+    @FXML
+    private Label questionField;
 
-    public void init(ErrorViewModel error) {
-        errorVM = error;
-        errorField.textProperty().bindBidirectional(errorVM.getErrorMessage());
+    @FXML
+    private TextField answer;
+
+    private Client client;
+
+
+    public void init(Client client, String message) {
+        this.client = client;
+        questionField.setText(message);
     }
 
     @FXML
-    private void okButtonClicked(ActionEvent event) {
-        Stage stage = (Stage) okButton.getScene().getWindow();
+    public void send(ActionEvent actionEvent) {
+        Stage stage = (Stage) sendButton.getScene().getWindow();
+        client.sendMessage(answer.getText());
         stage.close();
     }
 }
