@@ -21,7 +21,9 @@ public class Server {
     // a set for checking clients´ names
     protected static Hashtable<String, ServerThread> clientList = new Hashtable<String, ServerThread>();
 
-    private boolean gameRunning;
+    private boolean gameRunning = false;
+
+    private boolean gameExists = false;
 
     private Server() {
     }
@@ -77,9 +79,15 @@ public class Server {
         }
     }
 
-    public void createGame(){
-        Game.getInstance();
-        sendMessageToAll("New Game created");
+    public void createGame(String clientName) throws IOException{
+        if(gameExists){
+            exception(clientName, "There exists already a Game!");
+        }
+        else {
+            Game.getInstance();
+            gameExists = true;
+            sendMessageToAll(clientName + "created a new Game");
+        }
     }
 
     public void sendTo(String clientName, String message){
@@ -95,7 +103,7 @@ public class Server {
         //add Player to PlayerList
         if(gameRunning){
             exception(clientName, "There is already a game running!");
-        } else if (playerList.containsKey(clientName)) {
+        } else if (playerList.contains(clientName)) {
             exception(clientName, "You already joined the Game!");
         } else if (playerList.size() < 4) {
                 playerList.put(playerList.size(), clientName);

@@ -16,6 +16,15 @@ import java.util.ResourceBundle;
 public class ChatRoomViewController {
 
     @FXML
+    private MenuItem drawnCardItem;
+
+    @FXML
+    private MenuItem handCardItem;
+
+    @FXML
+    private MenuButton playCardButton;
+
+    @FXML
     private AnchorPane chatRootPane;
 
     @FXML
@@ -33,6 +42,27 @@ public class ChatRoomViewController {
     @FXML
     private TextArea chatView;
 
+    @FXML
+    private AnchorPane gameControlPane;
+
+    @FXML
+    private AnchorPane playCardPane;
+
+    @FXML
+    private TextArea handCards;
+
+    @FXML
+    private Button playButton;
+
+    @FXML
+    private Button createGame;
+
+    @FXML
+    private Button joinGame;
+
+    @FXML
+    private Button startGame;
+
     private ChatRoomViewModel chatVM;
 
     //  Method for the initialization of the Button and the Text Field via bidirectional binding.
@@ -40,6 +70,9 @@ public class ChatRoomViewController {
         chatVM = chat;
         typeField.textProperty().bindBidirectional(chatVM.getMessageOutput());
         chatView.textProperty().bindBidirectional(chatVM.getChatInput());
+        handCards.textProperty().bindBidirectional(chatVM.getHandCards());
+        handCardItem.textProperty().bindBidirectional(chatVM.getHandCardItem());
+        drawnCardItem.textProperty().bindBidirectional(chatVM.getDrawnCardItem());
         //sendButton.defaultButtonProperty().bindBidirectional(ViewModel.sendButtonProperty());
     }
 
@@ -62,6 +95,16 @@ public class ChatRoomViewController {
     @FXML
     public void startGame(ActionEvent actionEvent) {
         chatVM.startGame();
+    }
+
+    @FXML
+    public void playHandCard(ActionEvent actionEvent) {
+        chatVM.playHandCard();
+    }
+
+    @FXML
+    public void playDrawnCard(ActionEvent actionEvent){
+        chatVM.playDrawnCard();
     }
 
 

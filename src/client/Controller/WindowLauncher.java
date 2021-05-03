@@ -6,6 +6,7 @@ import client.View.LogInController;
 import client.View.QuestionController;
 import client.ViewModel.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,6 +30,9 @@ public class WindowLauncher {
         ctrl.init(new logInViewModel(client));
         stage.setScene(new Scene(root, 600, 400));
         stage.showAndWait();
+        stage.setOnCloseRequest((event) -> {
+            Platform.exit();
+        });
     }
 
     public void launchError(String msg) throws IOException{
@@ -53,6 +57,9 @@ public class WindowLauncher {
         ctrl.init(chatVM);
         stage.setScene(new Scene(root, 600, 400));
         stage.show();
+        stage.setOnCloseRequest((event) -> {
+            Platform.exit();
+        });
     }
 
     public void launchQuestion(Client client, String msg) throws IOException{

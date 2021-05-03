@@ -34,9 +34,11 @@ public class Client {
 
     private int[] tokens;
 
-    public Card getHandCards() {
+    public Card getHandCard() {
         return handCard;
     }
+
+    public Card getDrawnCard() {return drawnCard;}
 
     private String name;
 
@@ -135,14 +137,15 @@ public class Client {
         out.println("/4");
     }
 
-    public void playCard(Card card) {
-        if (card.equals(handCard)) {
+    public void playHandCard() {
+            out.println("/5" + handCard.getType());
             handCard = drawnCard;
             drawnCard = null;
-        } else {
-            drawnCard = null;
-        }
-        out.println("/5" + card.getType());
+    }
+
+    public void playDrawnCard() {
+        out.println("/5" + drawnCard.getType());
+        drawnCard = null;
     }
 
     public void startGameInfo(String info){

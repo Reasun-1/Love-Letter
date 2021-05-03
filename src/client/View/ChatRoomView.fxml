@@ -8,6 +8,9 @@
 
 
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <AnchorPane fx:id="chatRootPane" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.View.ChatRoomViewController">
    <children>
       <AnchorPane fx:id="writePane" layoutX="25.0" layoutY="496.0" prefHeight="40.0" prefWidth="400.0">
@@ -17,7 +20,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <TextField fx:id="typeField" layoutX="14.0" layoutY="5.0" prefHeight="30.0" prefWidth="325.0" promptText="Type your message" />
+            <TextField fx:id="typeField" layoutX="14.0" layoutY="5.0" prefHeight="30.0" prefWidth="325.0" promptText="Type your message..." />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="chatFieldPane" layoutX="25.0" layoutY="15.0" prefHeight="475.0" prefWidth="400.0">
@@ -25,11 +28,23 @@
             <TextArea fx:id="chatView" editable="false" prefHeight="475.0" prefWidth="400.0" />
          </children>
       </AnchorPane>
-      <Button fx:id="createGame" layoutX="430.0" layoutY="460.0" mnemonicParsing="false" onAction="#createGame" text="Create Game" textAlignment="CENTER">
-      </Button>
-      <Button fx:id="joinGame" layoutX="430.0" layoutY="430.0" mnemonicParsing="false" onAction="#joinGame" text="Join Game" textAlignment="CENTER">
-      </Button>
-      <Button fx:id="startGame" layoutX="430.0" layoutY="400.0" mnemonicParsing="false" onAction="#startGame" text="Start Game" textAlignment="CENTER">
-      </Button>
+      <AnchorPane fx:id="gameControlPane" layoutX="425.0" layoutY="15.0" prefHeight="475.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="createGame" layoutX="80.0" layoutY="125.0" mnemonicParsing="false" onAction="#createGame" text="Create Game" textAlignment="CENTER">
+            </Button>
+            <Button fx:id="joinGame" layoutX="80.0" layoutY="155.0" mnemonicParsing="false" onAction="#joinGame" text="Join Game" textAlignment="CENTER">
+            </Button>
+            <Button fx:id="startGame" layoutX="80.0" layoutY="185.0" mnemonicParsing="false" onAction="#startGame" text="Start Game" textAlignment="CENTER">
+            </Button>
+            <TextArea fx:id="handCards" editable="false" prefHeight="60.0" prefWidth="100.0">
+            </TextArea>
+            <MenuButton fx:id="playCardButton" layoutX="80.0" layoutY="430.0" mnemonicParsing="false" text="Play Card">
+               <items>
+                  <MenuItem fx:id="handCardItem" mnemonicParsing="false" onAction="#playHandCard" text="" />
+                  <MenuItem fx:id="drawnCardItem" mnemonicParsing="false" onAction="#playDrawnCard" text="" />
+               </items>
+            </MenuButton>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

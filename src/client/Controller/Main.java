@@ -57,19 +57,47 @@ public class Main extends Application {
                                     break;
                                 case '1':
                                     client.sendMessage("done");
-                                    launcher.launchError(order.substring(1));
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try{
+                                                launcher.launchError(order.substring(1));
+                                            } catch (IOException e){
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
                                     break;
                                 case '2':
-                                    launcher.launchQuestion(client, "Please choose a Player:");
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try{
+                                                launcher.launchQuestion(client, "Please choose a Player:");
+                                            } catch (IOException e){
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
                                     break;
                                 case '3':
-                                    launcher.launchQuestion(client, "Please enter your card guess:");
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try{
+                                                launcher.launchQuestion(client, "Please enter your card guess:");
+                                            } catch (IOException e){
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
                                     break;
                                 case '4':
                                     client.startGameInfo(order.substring(1));
                                     break;
                                 case '5':
                                     client.setDrawnCard(order.substring(1));
+                                    chatVM.updateCards(order.substring(1));
                                     break;
                                 case '6':
                                     client.setPlayedCard(order.substring(1));
