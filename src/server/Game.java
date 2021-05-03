@@ -23,7 +23,6 @@ public class Game {
     HashMap<String, Integer> tokens; // who has how many tokens in this game already
     HashMap<String, Integer> scores; // score of each player in this round
     List<Integer> winners; // winners´ name of each round
-    int roundNr;
 
     boolean gameOver;
     boolean roundOver;
@@ -44,7 +43,6 @@ public class Game {
     }
 
     public void startGame() throws IOException {
-        // ************wäre auch schön, wenn wir hier ein newGame() function hätten: wer sind im Spiel************
 
         //initialize the game info
         countPlayer = Server.playerList.size();
@@ -159,7 +157,6 @@ public class Game {
     // function for other class to invoke
     public void cardPlayed(Card card) {
         playedCard[playerInTurn] = card;
-        //waitingForCard = false; //****in while loop zu prüfen, die Umstellung hier ist vllt. gefährlich******
     }
 
     public void playCard() throws IOException {
@@ -168,7 +165,6 @@ public class Game {
         // inform player which card he/she has drawn
         Server.getServer().drawnCard(playerInTurn, drawnCard[playerInTurn]);
         // tell all players that the player in turn is playing
-        // ************generelle Frage: brauchen wir diese Funktion sendMessageToAll? Sonst noch eine Funktion in Server zu ergänzen?*********************
         Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + "has drawn one card and is playing...");
 
         waitingForCard = true;
@@ -230,11 +226,9 @@ public class Game {
                         if (targetName1 == null) {
                             continue;
                         } else if (status[playerNames.indexOf(targetName1)] == 2) {
-                            //**************soll ich hier in exception schreiben?**********************
-                            Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
+                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName1)] == 0) {
-                            //**************soll ich hier in exception schreiben?**********************
-                            Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
+                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
                         } else {
                             targetIndex1 = playerNames.indexOf(targetName1);
                             Card.KING.function(playerInTurn, targetIndex1);
@@ -263,10 +257,9 @@ public class Game {
                         if (targetName2 == null) {
                             continue;
                         } else if (status[playerNames.indexOf(targetName2)] == 2) {
-                            //**************soll ich hier in exception schreiben?**********************
-                            Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
+                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName2)] == 0) {
-                            Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
+                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
                         } else {
                             targetIndex2 = playerNames.indexOf(targetName2);
                             Card.PRINCE.function(playerInTurn, targetIndex2);
@@ -299,9 +292,9 @@ public class Game {
                         if (targetName3 == null) {
                             continue;
                         } else if (status[playerNames.indexOf(targetName3)] == 2) {
-                            Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
+                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName3)] == 0) {
-                            Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
+                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
                         } else {
                             targetIndex3 = playerNames.indexOf(targetName3);
                             Card.BARON.function(playerInTurn, targetIndex3);
@@ -318,7 +311,7 @@ public class Game {
 
                 // if all players are protected, the function goes to self = nothing happens
                 if (allPlayersProtected()) {
-                    Card.BARON.function(playerInTurn, targetIndex4); // nothing happens
+                    Card.PRIEST.function(playerInTurn, targetIndex4); // nothing happens
                 } else { // if there are unprotected active players in this round, choose one
 
                     Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + " is choosing a target player.");
@@ -330,9 +323,9 @@ public class Game {
                         if (targetName4 == null) {
                             continue;
                         } else if (status[playerNames.indexOf(targetName4)] == 2) {
-                            Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
+                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName4)] == 0) {
-                            Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
+                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
                         } else {
                             targetIndex4 = playerNames.indexOf(targetName4);
                             Card.PRIEST.function(playerInTurn, targetIndex4);
@@ -364,9 +357,9 @@ public class Game {
                         if (targetName5 == null) {
                             continue;
                         } else if (status[playerNames.indexOf(targetName5)] == 2) {
-                            Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
+                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName5)] == 0) {
-                            Server.getServer().sendTo(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
+                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
                         } else {
                             targetIndex5 = playerNames.indexOf(targetName5);
                             Card.PRIEST.function(playerInTurn, targetIndex5);
@@ -398,7 +391,7 @@ public class Game {
                 }
                 break;
             default:
-                 //***********brauchen wir hier Exceptions eg.? Mir ist nichts aufgefalle********
+                 //***********brauchen wir hier Exceptions eg.? Mir ist nichts aufgefallen********
                 break;
         }
         // playedCard refresh to null for next round check
@@ -519,6 +512,4 @@ public class Game {
         }
         return flag;
     }
-
-
 }

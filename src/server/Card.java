@@ -14,7 +14,6 @@ public enum Card {
             int countDiscarded = Game.getInstance().countDiscarded[myIndex]++;
             Game.getInstance().discardedCard[myIndex][countDiscarded] = Card.PRINCESS;
             Game.getInstance().status[myIndex] = 0; // when princess played, out of game
-            // ******************kann mann einfach mit sendMessageToAll schreiben oder ist hier ein separate Funktion von Server notwendig?**********
             Server.getServer().sendMessageToAll(Game.getInstance().playerNames.get(myIndex) + " is out of game.");
         }
 
@@ -37,7 +36,7 @@ public enum Card {
             Game.getInstance().discardedCard[myIndex][countDiscarded] = Card.KING;
             Game.getInstance().status[myIndex] = 1;
 
-            // change the card with the king (the conditions have been checked in the game logic)
+            // King's card is traded with another player's card 
             Card tempCard = Game.getInstance().handCard[targetIndex];
             Game.getInstance().handCard[myIndex] = tempCard;
             Game.getInstance().handCard[targetIndex] = Card.KING;
