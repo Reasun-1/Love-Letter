@@ -36,10 +36,11 @@ public enum Card {
             Game.getInstance().discardedCard[myIndex][countDiscarded] = Card.KING;
             Game.getInstance().status[myIndex] = 1;
 
-            // King's card is traded with another player's card 
+            // King's card is traded with another player's card
             Card tempCard = Game.getInstance().handCard[targetIndex];
+            Game.getInstance().handCard[targetIndex] = Game.getInstance().handCard[myIndex];
             Game.getInstance().handCard[myIndex] = tempCard;
-            Game.getInstance().handCard[targetIndex] = Card.KING;
+            Server.getServer().sendMessageToAll("Cards exchanged.");
         }
     },
 
@@ -52,13 +53,15 @@ public enum Card {
             // target player discards the hand card
             int targetCountDiscarded = Game.getInstance().countDiscarded[targetIndex]++;
             Card targetDiscard = Game.getInstance().handCard[targetIndex];
-            Game.getInstance().discardedCard[myIndex][targetCountDiscarded] = targetDiscard;
+            Game.getInstance().discardedCard[targetIndex][targetCountDiscarded] = targetDiscard;
             Game.getInstance().handCard[targetIndex] = null;
+            // inform everyone that target player dropped a card
+            Server.getServer().sendMessageToAll(Game.getInstance().playerNames.get(targetIndex) + " has dropped a " + targetDiscard);
             // if the discarded hand card is princess -> target player out of game
             if (targetDiscard.getType() == Card.PRINCESS.getType()) {
                 Game.getInstance().status[targetIndex] = 0;
                 // inform all players that the target player has played a PRINCESS
-                Server.getServer().playedCard(Card.PRINCESS);
+                Server.getServer().playedCard(Game.getInstance().playerNames.get(targetIndex), Card.PRINCESS);
                 // inform all players that the target player is out of game
                 Server.getServer().sendMessageToAll(Game.getInstance().playerNames.get(targetIndex) + " is out of game.");
             } else { // draw a new card
@@ -68,7 +71,7 @@ public enum Card {
                 } else { // when the deck is not empty, draw a card from deck
                     Game.getInstance().handCard[targetIndex] = Game.getInstance().deck.pop();
                 }
-                // inform the player which card he has drawn
+                // inform the player whick card he has drawn
                 Server.getServer().drawnCard(targetIndex, Game.getInstance().handCard[targetIndex]);
             }
         }
@@ -89,8 +92,8 @@ public enum Card {
             int countDiscarded = Game.getInstance().countDiscarded[myIndex]++;
             Game.getInstance().discardedCard[myIndex][countDiscarded] = Card.BARON;
 
-            int targetValue = Game.getInstance().handCard[targetIndex].value;
-            int myValue = Game.getInstance().handCard[targetIndex].value;
+            int targetValue = Game.getInstance().handCard[targetIndex].getValue();
+            int myValue = Game.getInstance().handCard[myIndex].getValue();
 
             if (targetValue > myValue) {
                 Game.getInstance().status[myIndex] = 0;
@@ -100,6 +103,8 @@ public enum Card {
                 Game.getInstance().status[myIndex] = 1;
                 Server.getServer().sendMessageToAll(Game.getInstance().playerNames.get(targetIndex) + " is out of game.");
             } else {
+                // inform everyone that nothing happens
+                Server.getServer().sendMessageToAll("Nothing happens, play continues.");
                 Game.getInstance().status[myIndex] = 1;
             }
         }
@@ -113,7 +118,7 @@ public enum Card {
             Game.getInstance().status[myIndex] = 1;
 
             if(myIndex != targetIndex){
-                Game.getInstance().seenCard[targetIndex] = targetIndex;
+                Game.getInstance().seenCard[myIndex] = targetIndex;
                 Card seenCard = Game.getInstance().handCard[targetIndex];
                 String message = Game.getInstance().playerNames.get(targetIndex) + " has a " + seenCard.getType();
                 //*******************brauchen wir hier ein besondere Funktion oder kann man so private Nachricht schicken? oder exception?*************
@@ -133,6 +138,8 @@ public enum Card {
                 if (Game.getInstance().handCard[targetIndex].getType() == guessCard.getType()) {
                     Game.getInstance().status[targetIndex] = 0;
                     Server.getServer().sendMessageToAll(Game.getInstance().playerNames.get(targetIndex) + " is out of game.");
+                }else{
+                    Server.getServer().sendMessageToAll("Nothing happened, play continues.");
                 }
             }
         }
@@ -194,7 +201,7 @@ public enum Card {
                 j++;
             }
         }
-        //shuffle the deck : change two cards of the deck for 100 times randomly
+        //schuffle the deck : change two cards of the deck for 100 times randomly
         for (int i = 0; i < 100; i++) {
             int indexCard1 = random.nextInt(16);
             int indexCard2 = random.nextInt(16);

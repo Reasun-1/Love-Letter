@@ -174,7 +174,6 @@ public class Server {
     public void updatePlayerIndex(List<String> updatedList){
 
         for (int i = 0; i < updatedList.size(); i++) {
-            playerList.clear();
             playerList.put(i, updatedList.get(i));
         }
     }
@@ -204,14 +203,16 @@ public class Server {
     }
 
     // inform the players about the card played by playerName
-    public void playedCard(Card card){
+    public void playedCard(String playerName, Card card){
+
         try{
             for(int i=0;i<playerList.size();i++) {
-                clientList.get(playerList.get(i)).receiveOrder("6" + card.getType());
+                clientList.get(playerList.get(i)).receiveOrder("6" + playerName + "/" + card.getType());
             }
         } catch (IOException e){
             e.printStackTrace();
         }
+
     }
 
     // inform the players about a new round and transmit the current score
