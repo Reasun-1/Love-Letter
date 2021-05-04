@@ -490,10 +490,13 @@ public class Game {
             } else { // there are several same max values
                 for (int i = 0; i < countPlayer; i++) {
                     String clientName = playerNames.get(i);
-                    int totalScore = handCard[i].getValue();
-                    for (int j = 0; j < 16; j++) {
-                        if(discardedCard[i][j] != null){
-                            totalScore += discardedCard[i][j].getValue();
+                    int totalScore = 0;
+                    if(status[i] != 0){
+                        totalScore = handCard[i].getValue();
+                        for (int j = 0; j < 16; j++) {
+                            if(discardedCard[i][j] != null){
+                                totalScore += discardedCard[i][j].getValue();
+                            }
                         }
                     }
                     scores.put(clientName, totalScore);
