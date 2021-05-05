@@ -244,6 +244,8 @@ public class Game {
 
                         if (targetName1 == null) {
                             continue;
+                        } else if(targetName1.equals(playerNames.get(playerInTurn))){
+                            Server.getServer().exception(playerNames.get(playerInTurn), "You can´t choose yourself, choose another player.");
                         } else if (status[playerNames.indexOf(targetName1)] == 2) {
                             Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName1)] == 0) {
@@ -312,6 +314,8 @@ public class Game {
 
                         if (targetName3 == null) {
                             continue;
+                        } else if(targetName3.equals(playerNames.get(playerInTurn))){
+                            Server.getServer().exception(playerNames.get(playerInTurn), "You can´t choose yourself, choose another player.");
                         } else if (status[playerNames.indexOf(targetName3)] == 2) {
                             Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName3)] == 0) {
@@ -344,6 +348,8 @@ public class Game {
 
                         if (targetName4 == null) {
                             continue;
+                        } else if(targetName4.equals(playerNames.get(playerInTurn))){
+                            Server.getServer().exception(playerNames.get(playerInTurn), "You can´t choose yourself, choose another player.");
                         } else if (status[playerNames.indexOf(targetName4)] == 2) {
                             Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName4)] == 0) {
@@ -379,6 +385,8 @@ public class Game {
 
                         if (targetName5 == null) {
                             continue;
+                        } else if(targetName5.equals(playerNames.get(playerInTurn))){
+                            Server.getServer().exception(playerNames.get(playerInTurn), "You can´t choose yourself, choose another player.");
                         } else if (status[playerNames.indexOf(targetName5)] == 2) {
                             Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
                         } else if (status[playerNames.indexOf(targetName5)] == 0) {
