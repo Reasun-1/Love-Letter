@@ -33,10 +33,14 @@ public class LoginController {
     // a method to initialize the logIn View (window) based on the FXML designed file
     public void init(Client client){
         this.client = client;
+        //create the viewModel
+        logInViewModel loginvm = new logInViewModel();
+        //connect the viewModel
         /*With bidirectional binding, the two property values are synchronized so that if either
          property changes, the other property is automatically changed as well */
-
+        name.textProperty().bindBidirectional(logInViewModel.heroNameProperty());
         //heroNameProperty() is a method declared on the LogInViewModel that returns the username required on the TextField
+        startButton.disableProperty().bind(logInViewModel.loginPossibleProperty().not());
     }
 
     @FXML

@@ -16,6 +16,7 @@ import java.io.IOException;
 //test code
 public class WindowLauncher {
 
+    //creating the LogIn Window
     public void launchLogin(Client client) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("Login");
@@ -31,6 +32,7 @@ public class WindowLauncher {
         });
     }
 
+    //Creating an window that pops up when errors appear
     public void launchError(String msg) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("Error");
@@ -43,6 +45,7 @@ public class WindowLauncher {
         stage.showAndWait();
     }
 
+    //creating the ChatRoom Window where the game will be played
     public void launchChat(Client client) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("Chat: " + client.getName());
@@ -58,6 +61,7 @@ public class WindowLauncher {
         });
     }
 
+    // creating a window that shows up to help with questions
     public void launchQuestion(Client client, String message) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("Question");
