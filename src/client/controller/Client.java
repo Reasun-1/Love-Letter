@@ -340,6 +340,10 @@ public class Client extends Application{
     public void start(Stage primaryStage) throws Exception {
         LAUNCHER.launchLogin(this);
 
+        // Only for tests
+        LAUNCHER.launchError("This is a test error");
+
+        // Only for tests
         LAUNCHER.launchQuestion(this, "This is a test Question");
 
         LAUNCHER.launchChat(this);

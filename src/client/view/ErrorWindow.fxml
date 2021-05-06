@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.Label?>
 
-<fx:root fx:id="errorRootPane" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="220.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="errorRootPane" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="220.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.viewmodel.ErrorController">
     <children>
         <Label fx:id="errorField" alignment="CENTER" layoutX="212.0" layoutY="249.0" prefHeight="30.0" prefWidth="176.0">
         </Label>
@@ -77,4 +77,4 @@
          </effect>
       </AnchorPane>
     </children>
-</fx:root>
+</AnchorPane>
