@@ -1,17 +1,11 @@
-package client.ViewModel;
+package client.viewmodel;
 
-import client.Controller.Client;
-import client.ViewModel.*;
-import javafx.application.Platform;
+import client.controller.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class LoginController {
 

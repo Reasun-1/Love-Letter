@@ -2,7 +2,7 @@ package sample;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import client.Controller.Client;
+import client.controller.Client;
 
 
 public class logInViewModel {

@@ -1,19 +1,15 @@
-package client.ViewModel;
+package client.viewmodel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import client.Controller.Client;
-import client.ViewModel.*;
-
-import java.net.URL;
-import java.util.ResourceBundle;
+import client.controller.Client;
 
 // Controller Class for the Chat Window connected with the fxml file via data binding
 
-public class ChatRoomViewController {
+public class ChatRoomController {
 
     @FXML
     private MenuItem drawnCardItem;

@@ -1,23 +1,18 @@
-package client.ViewModel;
+package client.viewmodel;
 
-import client.Controller.Client;
+import client.controller.Client;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintWriter;
-
 
 public class logInViewModel {
 
-    private static StringProperty userName;
+    private static StringProperty userName = new SimpleStringProperty();
 
     // ReadOnlyBooleanWrapper logInIndeed checks if the input on the "username" textField is a word or empty
-    private static ReadOnlyBooleanWrapper logInIndeed;
+    private static ReadOnlyBooleanWrapper logInIndeed = new ReadOnlyBooleanWrapper();
     // representing the current input of the text field "username"
 
     private Client client;

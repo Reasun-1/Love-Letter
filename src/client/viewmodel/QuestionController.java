@@ -1,24 +1,13 @@
-package client.ViewModel;
+package client.viewmodel;
 
-import client.Controller.Client;
-import client.ViewModel.ChatRoomViewModel;
-import client.ViewModel.ErrorViewModel;
-import client.ViewModel.QuestionViewModel;
-import javafx.application.Platform;
+import client.controller.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class QuestionController {
     @FXML

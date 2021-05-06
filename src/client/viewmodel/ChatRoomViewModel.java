@@ -1,21 +1,14 @@
-package client.ViewModel;
+package client.viewmodel;
 
 
-import client.Controller.Client;
-import javafx.beans.property.SimpleStringProperty;
+import client.controller.Client;
 import javafx.beans.property.StringProperty;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintWriter;
-
 public class ChatRoomViewModel {
-    private Client client;
+   /* private Client client;
     private TextArea chatInput;
     private TextField messageOutput;
     private TextArea handCards;
@@ -84,5 +77,5 @@ public class ChatRoomViewModel {
     public void updateCards(String cardName){
         handCards.appendText(cardName + "\n");
 
-    }
+    }*/
 }
