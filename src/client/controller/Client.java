@@ -43,6 +43,12 @@ public class Client extends Application{
     // Number of players in the current game
     private int numberofplayers;
 
+    // Current score of the players
+    private int[] score = new int[4];
+
+    // List of players out of round
+    private final StringProperty OUTOFROUND = new SimpleStringProperty();
+
     // Bindings to display the hand card of each player
     //private ObjectProperty[] handcard = new ObjectProperty[4];
 
@@ -81,6 +87,8 @@ public class Client extends Application{
     }
 
     public StringProperty getPlayerInTurn() {return PLAYERINTURN;}
+
+    public StringProperty getOutOfRound() {return OUTOFROUND;}
 
    /* public ObjectProperty getHandCard(int playerindex) {
         return handcard[playerindex];
@@ -198,6 +206,7 @@ public class Client extends Application{
         for (int i = 0; i < numberofplayers; i++) {
             PLAYERS[i].set(rest.substring(1, info.indexOf('/')));
             TOKENS[i].set(0);
+            score[i] = 0;
             rest = rest.substring(info.indexOf('/'));
         }
         // Set the name of the player in turn
@@ -224,6 +233,8 @@ public class Client extends Application{
         //drawncard[(playerinturnid - 1) % numberofplayers].set(null);
         // Add the played card to the discarded card pile
         DISCARDEDCARDS[playerinturnid].concat(cardname + "\n");
+        // Update the score
+        // score[playerinturnid] = ??
         // Change the player in turn
         playerinturnid = (playerinturnid + 1) % numberofplayers;
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
@@ -243,6 +254,7 @@ public class Client extends Application{
             }
         }
         //handcard[0].set(null);
+        OUTOFROUND.set("");
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
         //end-of-round window?
     }
@@ -384,12 +396,7 @@ public class Client extends Application{
     }
 
     public static void main(String[] args){
-        try {
-            Client client = new Client();
-            launch(args);
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        launch(args);
     }
 
 }
