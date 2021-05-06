@@ -39,7 +39,7 @@
                         </Lighting>
                     </effect>
                 </TextField>
-                <Button fx:id="sendButton" layoutX="277.0" layoutY="286.0" mnemonicParsing="false" opacity="0.63" text="Send" textAlignment="CENTER" textFill="#540707" />
+                <Button fx:id="sendButton" layoutX="277.0" layoutY="286.0" defaultButton="true" mnemonicParsing="false" opacity="0.63" onAction="#send" text="Send" textAlignment="CENTER" textFill="#540707" />
             </children>
         </AnchorPane>
     </children>

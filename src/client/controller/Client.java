@@ -200,10 +200,11 @@ public class Client extends Application{
             TOKENS[i].set(0);
             rest = rest.substring(info.indexOf('/'));
         }
-
+        // Set the name of the player in turn
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
     }
 
+    // Assign the drawn card to the correct slot
     public void setDrawnCard(String cardname){
             /*if (handcard[0].get() == null) {
                     //handcard[0].set(cardname); TODO
@@ -213,14 +214,20 @@ public class Client extends Application{
         OUT.println("done");
     }
 
+    // Show the card played by the player in turn
     public void setPlayedCard(String cardname){
+        // If it is someone else's turn, show the played card in the drawn card slot
         if (playerinturnid != 0){
             //drawncard[playerinturnid].set(cardname); TODO
         }
+        // Reset the drawn card's slot of the last player
         //drawncard[(playerinturnid - 1) % numberofplayers].set(null);
+        // Add the played card to the discarded card pile
         DISCARDEDCARDS[playerinturnid].concat(cardname + "\n");
+        // Change the player in turn
         playerinturnid = (playerinturnid + 1) % numberofplayers;
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
+        // Show a hidden card in the active player's drawn card slot
         //drawncard[playerinturnid].set(dummycard); TODO
         OUT.println("done");
     }
@@ -248,7 +255,7 @@ public class Client extends Application{
     }
 
     public void sendMessage(String message){
-            // check logout condition
+            // Check logout condition
             if (message.equals("bye")) {
                 OUT.println("/0quit");
                 // stop the connection
@@ -263,7 +270,7 @@ public class Client extends Application{
                 System.out.println("You left the room.");
                 // Soon: Logout-Window
             } else {
-                // send message to server
+                // Send message to server
                 OUT.println("$" + message);
             }
     }
@@ -271,11 +278,11 @@ public class Client extends Application{
     public void executeOrder(String order) throws IOException {
         Client client = this;
         switch (order.charAt(0)) {
-            case '0':
+            case '0': // terminate the connection
                 OUT.println("done");
                 socket.close();
                 break;
-            case '1':
+            case '1': // open Error Window
                 OUT.println("done");
                 Platform.runLater(new Runnable() {
                     @Override
@@ -288,7 +295,7 @@ public class Client extends Application{
                     }
                 });
                 break;
-            case '2':
+            case '2': // open Question Window to ask for a player
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -300,7 +307,7 @@ public class Client extends Application{
                     }
                 });
                 break;
-            case '3':
+            case '3': // open Question Window to ask for a card
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -312,23 +319,23 @@ public class Client extends Application{
                     }
                 });
                 break;
-            case '4':
+            case '4': // start Game
                 startGameInfo(order.substring(1));
                 OUT.println("done");
                 break;
-            case '5':
+            case '5': // show the drawn card
                 setDrawnCard(order.substring(1));
                 OUT.println("done");
                 break;
-            case '6':
+            case '6': // show the played card
                 setPlayedCard(order.substring(1));
                 OUT.println("done");
                 break;
-            case '7':
+            case '7': // end round
                 endOfRound(order.substring(1));
                 OUT.println("done");
                 break;
-            case '8':
+            case '8': // end game
                 endOfGame(order.substring(1));
                 OUT.println("done");
                 break;
@@ -338,6 +345,7 @@ public class Client extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // start the login process
         LAUNCHER.launchLogin(this);
 
         // Only for tests
@@ -346,15 +354,16 @@ public class Client extends Application{
         // Only for tests
         LAUNCHER.launchQuestion(this, "This is a test Question");
 
+        // Open chat after logging in successfully
         LAUNCHER.launchChat(this);
         new Thread(() -> {
             try {
                 String line;
                 while (!socket.isClosed()){
                     // Client socket waits for the input from the server
-                    // If there is input, display the message (currently via terminal)
                     line = IN.readLine();
                     if(!line.isEmpty()) {
+                        // Pass an order to the corresponding method or a message to the ChatWindow
                         if (line.charAt(0) == '/') {
                             executeOrder(line.substring(1));
                         } else {
@@ -377,7 +386,7 @@ public class Client extends Application{
     public static void main(String[] args){
         try {
             Client client = new Client();
-            client.launch(args);
+            launch(args);
         } catch (IOException e){
             e.printStackTrace();
         }
