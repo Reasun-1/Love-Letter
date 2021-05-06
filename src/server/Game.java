@@ -263,6 +263,7 @@ public class Game {
                 waitingForChoosePlayer = true;
                 String targetName2;
                 int targetIndex2 = playerInTurn; // initialize the target as self
+                status[playerInTurn] = 1; // reset the status from 2 to 1, if status was 2.
 
                 // if all players are protected, the function goes to self
                 if (allPlayersProtected()) {
