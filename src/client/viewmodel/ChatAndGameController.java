@@ -22,98 +22,72 @@ import client.controller.Client;
 
 public class ChatAndGameController {
 
-    @FXML
-    private AnchorPane chatRootPane;
 
     @FXML
-    private BorderPane mainBorderPane;
+    private BorderPane chatSplitting;
 
     @FXML
-    private AnchorPane clientPane;
+    private TextField clientName; //must be bonded with the logInWindow (clientName)
 
     @FXML
-    private TextField clientName;
+    private ScrollPane messagesHistory; //registers the written messages on TextField
 
     @FXML
-    private ScrollPane chat;
+    private TextField messageField; //bind the typed message with message history scroll pane
 
     @FXML
-    private TextField messageField;
+    private ComboBox sendTo; //send Message to a specific player on private
 
     @FXML
-    private ComboBox<?> sendToBox;
+    private Button send; //send from messageField a typed message to message history
 
     @FXML
-    private Button sendButton;
+    private GridPane playBoard;
 
     @FXML
-    private GridPane playersField;
+    private Button playHandCardYou;
 
     @FXML
-    private AnchorPane chatFieldPane;
+    private Button playDrawnCardYou;
 
     @FXML
-    private TextField yourscore;
+    private ImageView yourHandCard; //the card u have in your hands
 
     @FXML
-    private TextField player2score;
+    private ImageView yourDrawnCard; //the taken card
 
     @FXML
-    private TextField player3score;
+    private ImageView player2DrawnCard;
 
     @FXML
-    private TextField player4score;
+    private ImageView player2HandCard;
 
     @FXML
-    private Button getStartGameButton;
+    private ImageView player3DrawnCard;
 
     @FXML
-    private AnchorPane yourPane;
+    private ImageView player3HandCard;
 
     @FXML
-    private Text youText;
+    private ImageView player4DrawnCard;
 
     @FXML
-    private Button getPlayHandCard1;
+    private ImageView player4HandCard;
 
     @FXML
-    private Button getPlayDrawnCard1;
+    private TextField yourScore; //score table
 
     @FXML
-    private AnchorPane player2;
+    private TextField player2Score;
 
     @FXML
-    private Text player2text;
+    private TextField player3Score;
 
     @FXML
-    private Button getPlayHandCard2;
+    private TextField player4Score;
 
     @FXML
-    private Button getPlayDrawnCard2;
-
-    @FXML
-    private AnchorPane player3;
-
-    @FXML
-    private Text player3text;
-
-    @FXML
-    private Button getPlayHandCard3;
-
-    @FXML
-    private Button getPlayDrawnCard3;
-
-    @FXML
-    private AnchorPane player4;
-
-    @FXML
-    private Text player4text;
-
-    @FXML
-    private Button getPlayHandCard4;
-
-    @FXML
-    private Button getPlayDrawnCard4;
+    private ScrollPane outOfRoundCards;
 
     private Client client;
 

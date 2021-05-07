@@ -188,7 +188,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </TextField>
-                              <Button layoutX="844.0" layoutY="530.0" mnemonicParsing="false" text="Start game">
+                              <Button layoutX="836.0" layoutY="554.0" mnemonicParsing="false" text="Start game">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -208,6 +208,29 @@
                                     <Font size="14.0" />
                                  </font>
                               </TextField>
+                              <Text fx:id="scoreText1" fill="#540e0e" layoutX="800.0" layoutY="367.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Out of round:" textAlignment="CENTER" wrappingWidth="188.0389404296875">
+                                 <effect>
+                                    <Lighting diffuseConstant="1.21" specularConstant="0.73" specularExponent="31.9" surfaceScale="2.81">
+                                       <bumpInput>
+                                          <Shadow />
+                                       </bumpInput>
+                                       <light>
+                                          <Light.Distant color="#831212" />
+                                       </light>
+                                    </Lighting>
+                                 </effect>
+                                 <font>
+                                    <Font name="Arial Black" size="23.0" />
+                                 </font>
+                              </Text>
+                              <ScrollPane layoutX="804.0" layoutY="380.0" prefHeight="164.0" prefWidth="188.0">
+                                <content>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="187.0" prefWidth="159.0" />
+                                </content>
+                                 <effect>
+                                    <SepiaTone />
+                                 </effect>
+                              </ScrollPane>
                            </children>
                         </AnchorPane>
                      </children>
