@@ -1,5 +1,12 @@
 package client.controller;
 
+/**
+ * class for creating the stages and opening the windows
+ *
+ * @author Pascal Stucky
+ * @version 1.0-SNAPSHOT
+ */
+
 import client.viewmodel.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -9,10 +16,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-//test code
 public class WindowLauncher {
 
-    //creating the LogIn Window
+    /**
+     * Create a Login-Window and init the controller with a handle on the client
+     * @param client
+     * @throws IOException
+     */
     public void launchLogin(Client client) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("Login");
@@ -26,20 +36,29 @@ public class WindowLauncher {
         stage.setOnCloseRequest((event) -> Platform.exit());
     }
 
-    //Creating an window that pops up when errors appear
-    public void launchError(String msg) throws IOException{
+    /**
+     * Create an Error-Window and init the controller with the message to display
+     * @param message
+     * @throws IOException
+     */
+    public void launchError(String message) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("Error");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/client/view/ErrorWindow.fxml"));
         Parent root = loader.load();
         ErrorController ctrl = loader.getController();
-        ctrl.init(msg);
+        ctrl.init(message);
         stage.setScene(new Scene(root, 600, 400));
         stage.showAndWait();
+        stage.setOnCloseRequest((event) -> Platform.exit());
     }
 
-    //creating the ChatRoom Window where the game will be played
+    /**
+     * Create a Chat&Game-Window and init the controller with a handle on the client
+     * @param client
+     * @throws IOException
+     */
     public void launchChat(Client client) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("Chat: " + client.getName());
@@ -53,7 +72,13 @@ public class WindowLauncher {
         stage.setOnCloseRequest((event) -> Platform.exit());
     }
 
-    // creating a window that shows up to help with questions
+    /**
+     * Create a Question-Window and init the controller with a handle on the client
+     * and the message to display
+     * @param client
+     * @param message
+     * @throws IOException
+     */
     public void launchQuestion(Client client, String message) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("Question");
@@ -66,28 +91,36 @@ public class WindowLauncher {
         stage.showAndWait();
     }
 
-    //Creating an window that pops up when a round ends
-    public void launchEndOfRound(String msg) throws IOException{
+    /**
+     * Create a Window displaying the results of a finished round
+     * @param info
+     * @throws IOException
+     */
+    public void launchEndOfRound(String info) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("End of Round");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/client/view/EndOfRoundWindow.fxml"));
         Parent root = loader.load();
         EndOfRoundController ctrl = loader.getController();
-        ctrl.init(msg);
+        ctrl.init(info);
         stage.setScene(new Scene(root, 600, 400));
         stage.showAndWait();
     }
 
-    //Creating an window that pops up when a round ends
-    public void launchEndOfGame(String msg) throws IOException{
+    /**
+     * Create a Window displaying the results of a finished game
+     * @param info
+     * @throws IOException
+     */
+    public void launchEndOfGame(String info) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("End of Game");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/client/view/EndOfGameWindow.fxml"));
         Parent root = loader.load();
         EndOfGameController ctrl = loader.getController();
-        ctrl.init(msg);
+        ctrl.init(info);
         stage.setScene(new Scene(root, 600, 400));
         stage.showAndWait();
     }
