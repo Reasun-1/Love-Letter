@@ -110,7 +110,7 @@ public class Game {
             }
         }
         // tell everyone who won the game
-        Server.getServer().gameOver(tokens);
+        Server.getServer().gameOver(tokens, finalwinner);
         Server.getServer().sendMessageToAll("The final winner of this game is " + finalwinner);
     }
 
@@ -196,8 +196,8 @@ public class Game {
 
             checkRoundOver();
         }
-        String winnerName = updateScoresAndTokensAndWinnersForThisRound();
-        Server.getServer().roundOver(tokens, winnerName);
+        String winnername = updateScoresAndTokensAndWinnersForThisRound();
+        Server.getServer().roundOver(scores, winnername);
     }
 
 

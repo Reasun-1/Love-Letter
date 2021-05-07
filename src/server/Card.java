@@ -9,6 +9,7 @@ package server;
  * @author yuliia shaparenko
  * @version 1.0-SNAPSHOT
  */
+import java.io.IOException;
 import java.util.Random;
 import java.util.Stack;
 
@@ -17,12 +18,13 @@ public enum Card {
     //status of a player: 0=out, 1=in game, 2= protected
 
     PRINCESS("princess", 8, 1) {
-        void function(int myIndex) {
+        void function(int myIndex) throws IOException {
             // put the played card into discarded cards
             int countdiscarded = Game.getInstance().countdiscarded[myIndex]++;
             Game.getInstance().discardedcard[myIndex][countdiscarded] = Card.PRINCESS;
             Game.getInstance().status[myIndex] = 0; // when princess played, out of game
-            Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(myIndex) + " is out of game.");
+            Server.getServer().outOfRound(Game.getInstance().playernames.get(myIndex));
+            //Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(myIndex) + " is out of game.");
         }
 
     },
@@ -53,7 +55,7 @@ public enum Card {
     },
 
     PRINCE("prince", 5, 2) {
-        void function(int myIndex, int targetIndex) {
+        void function(int myIndex, int targetIndex) throws IOException {
             // put the played card into discarded cards
             int mycountdiscarded = Game.getInstance().countdiscarded[myIndex]++;
             Game.getInstance().discardedcard[myIndex][mycountdiscarded] = Card.PRINCE;
@@ -71,7 +73,8 @@ public enum Card {
                 // inform all players that the target player has played a PRINCESS
                 Server.getServer().playedCard(Game.getInstance().playernames.get(targetIndex), Card.PRINCESS);
                 // inform all players that the target player is out of game
-                Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
+                Server.getServer().outOfRound(Game.getInstance().playernames.get(targetIndex));
+                //Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
             } else { // draw a new card
                 if (Game.getInstance().deck.size() == 0) { // when the deck is empty, draw a card from top cards
                     Card drawncard = Game.getInstance().topcards.get(Game.getInstance().topcards.size() - 1);
@@ -95,7 +98,7 @@ public enum Card {
     },
 
     BARON("baron", 3, 2) {
-        void function(int myIndex, int targetIndex) {
+        void function(int myIndex, int targetIndex) throws IOException {
             // put the played card into discarded cards
             int countdiscarded = Game.getInstance().countdiscarded[myIndex]++;
             Game.getInstance().discardedcard[myIndex][countdiscarded] = Card.BARON;
@@ -105,11 +108,13 @@ public enum Card {
 
             if (targetValue > myValue) {
                 Game.getInstance().status[myIndex] = 0;
-                Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(myIndex) + " is out of game.");
+                Server.getServer().outOfRound(Game.getInstance().playernames.get(myIndex));
+                //Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(myIndex) + " is out of game.");
             } else if (targetValue < myValue) {
                 Game.getInstance().status[targetIndex] = 0;
                 Game.getInstance().status[myIndex] = 1;
-                Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
+                Server.getServer().outOfRound(Game.getInstance().playernames.get(targetIndex));
+                //Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
             } else {
                 // inform everyone that nothing happens
                 Server.getServer().sendMessageToAll("Nothing happens, play continues.");
@@ -136,7 +141,7 @@ public enum Card {
     },
 
     GUARD("guard", 1, 5) {
-        void function(int myIndex, int targetIndex, Card guessCard) {
+        void function(int myIndex, int targetIndex, Card guessCard) throws IOException {
             // put the played card into discarded cards
             int countdiscarded = Game.getInstance().countdiscarded[myIndex]++;
             Game.getInstance().discardedcard[myIndex][countdiscarded] = Card.GUARD;
@@ -145,7 +150,8 @@ public enum Card {
             if(myIndex != targetIndex){
                 if (Game.getInstance().handcard[targetIndex].getType() == guessCard.getType()) {
                     Game.getInstance().status[targetIndex] = 0;
-                    Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
+                    Server.getServer().outOfRound(Game.getInstance().playernames.get(targetIndex));
+                    //Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
                 }else{
                     Server.getServer().sendMessageToAll("Nothing happened, play continues.");
                 }
@@ -219,7 +225,7 @@ public enum Card {
      * This method is a basic function, which is in PRINCESS, COUNTESS and HANDMAID overridden
      * @param myIndex is the player index, who plays in turn
      */
-    void function(int myIndex) {
+    void function(int myIndex) throws IOException {
     }
 
     /**
@@ -227,7 +233,7 @@ public enum Card {
      * @param myIndex is the player index, who plays in turn
      * @param targetIndex is the index of the target player, whom the player in turn chooses
      */
-    void function(int myIndex, int targetIndex) {
+    void function(int myIndex, int targetIndex) throws IOException {
     }
 
     /**
@@ -236,7 +242,7 @@ public enum Card {
      * @param targetIndex is the index of the target player, whom the player in turn chooses
      * @param guessCard is the type of the card, which the player in turn guesses
      */
-    void function(int myIndex, int targetIndex, Card guessCard) {
+    void function(int myIndex, int targetIndex, Card guessCard) throws IOException {
     }
 
     /**
