@@ -221,20 +221,26 @@ public class Server {
         for(int i=0;i<playerList.size();i++){
             String scoreString = "7";
             for (int j = 0; j < playerList.size(); j++) {
-                scoreString = scoreString + score.get(playerList.get((i + j) % playerList.size())).toString() + winner;
+                String playerscore = "";
+                if(score.get(playerList.get((i + j) % playerList.size())) < 10){
+                    playerscore = "0" + score.get(playerList.get((i + j) % playerList.size())).toString();
+                } else {
+                    playerscore = score.get(playerList.get((i + j) % playerList.size())).toString();
+                }
+                scoreString = scoreString + playerscore;
             }
-            clientList.get(playerList.get(i)).receiveOrder(scoreString);
+            clientList.get(playerList.get(i)).receiveOrder(scoreString + winner);
         }
     }
 
     // inform the players about the end of the game and transmit the final tokens
-    public void gameOver(HashMap<String, Integer> tokens) throws IOException{
+    public void gameOver(HashMap<String, Integer> tokens, String winner) throws IOException{
         for(int i=0;i<playerList.size();i++){
             String scoreString = "8";
             for (int j = 0; j < playerList.size(); j++) {
                 scoreString = scoreString + tokens.get(playerList.get((i + j) % playerList.size())).toString();
             }
-            clientList.get(playerList.get(i)).receiveOrder(scoreString);
+            clientList.get(playerList.get(i)).receiveOrder(scoreString + winner);
         }
     }
 

@@ -78,5 +78,18 @@ public class WindowLauncher {
         stage.setScene(new Scene(root, 600, 400));
         stage.showAndWait();
     }
+
+    //Creating an window that pops up when a round ends
+    public void launchEndOfGame(String msg) throws IOException{
+        Stage stage = new Stage();
+        stage.setTitle("End of Game");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/client/view/EndOfGameWindow.fxml"));
+        Parent root = loader.load();
+        EndOfGameController ctrl = loader.getController();
+        ctrl.init(msg);
+        stage.setScene(new Scene(root, 600, 400));
+        stage.showAndWait();
+    }
 }
 
