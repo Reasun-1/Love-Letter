@@ -244,12 +244,14 @@ public class Client extends Application{
     }
 
     public void endOfRound(String info) throws IOException{
-        String winneroflastround = info.substring(numberofplayers + 1);
+        String winneroflastround = info.substring(2*numberofplayers + 1);
         String endofroundinfo = "Winner: " + winneroflastround + "\n\n" + "Score: \n";
         for (int i = 0; i < numberofplayers; i++) {
             DISCARDEDCARDS[i].set("");
             //handcard[i].set(dummycard);
-            endofroundinfo = endofroundinfo + PLAYERS[i].get() + "\t\t" + info.charAt(i) + "\n";
+            score[i] = Integer.parseInt(info.substring(2*i,2*i+1));
+
+            endofroundinfo = endofroundinfo + String.format("%-20.20s %2d" , PLAYERS[i].get(), score[i]) + "\n";
             if(PLAYERS[i].get().equals(winneroflastround)){
                 TOKENS[i].set(TOKENS[i].get()+1);
                 playerinturnid = i;
@@ -369,7 +371,7 @@ public class Client extends Application{
         //LAUNCHER.launchQuestion(this, "Please enter your card guess:");
 
         // Only for tests
-        LAUNCHER.launchEndOfRound("Winner: Pascal\n\n Score:\nPascal\t\t12\nElisabeth\t\t10\nCam\t\t3\n");
+        LAUNCHER.launchEndOfRound("Winner: Pascal\n\n Score:\n" + String.format("%-20.20s %2d" , "Pascal", 12) + "\n" + String.format("%-20.20s %2d" , "Elisabeth", 10) + "\n" + String.format("%-20.20s %2d" , "Can", 3) + "\n" + String.format("%-20.20s %2d" , "John", 5) + "\n");
 
         // Open chat after logging in successfully
         LAUNCHER.launchChat(this);
