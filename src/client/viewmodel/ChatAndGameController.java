@@ -18,6 +18,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import client.controller.Client;
 
+import java.awt.*;
+
 // Controller Class for the Chat and Game Window connected with the fxml file via data binding
 
 public class ChatAndGameController {
@@ -31,6 +33,7 @@ public class ChatAndGameController {
 
     @FXML
     private ScrollPane messagesHistory; //registers the written messages on TextField
+
 
     @FXML
     private TextField messageField; //bind the typed message with message history scroll pane
@@ -91,6 +94,24 @@ public class ChatAndGameController {
 
     private Client client;
 
+
+    @FXML
+    public void initialize(Client client){
+        this.client = client;
+        //create the view model of Chat and Game Room
+        ChatAndGameViewModel chgvm = new ChatAndGameViewModel();
+        //connects the send button and the message field together (if message field is empty then u can't press the send button)
+        send.disableProperty().bind(messageField.textProperty().isEmpty());
+    }
+
+    @FXML
+    //send method makes the message get sent from message field to messages History(ScrollPane)
+    private void send(){
+        String message = messageField.getText();
+        if (message != null && !message.isEmpty()){
+            //a function to bind the message area with messages history area
+        }
+    }
 
 
 }
