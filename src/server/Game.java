@@ -1,5 +1,16 @@
 package server;
 
+/**
+ * Game class is the central component of the server side,
+ * which contents the total logical functions of the Game Love Letter.
+ * Moreover, Game is also applied as a "Database" for the temporary
+ * storage of all the information of the cards and players during the game.
+ *
+ * @author can ren
+ * @author yuliia shaparenko
+ * @version 1.0-SNAPSHOT
+ */
+
 import javafx.beans.property.IntegerProperty;
 
 import java.io.IOException;
@@ -10,28 +21,33 @@ public class Game {
 
     private volatile static Game game;
 
-    int countPlayer;
-    List<String> playerNames; // IMPORTANT:index of the arrayList stands for the players´ index of this round
+    int countplayer;
+    List<String> playernames; // IMPORTANT:index of the arrayList stands for the players´ index of this round
     Stack<Card> deck;
-    List<Card> topCards; // the first Cards drawn at the beginning of every round
-    int[] countDiscarded; // the number of discarded cards of each player
-    Card[][] discardedCard; // the discarded cards of each player
+    List<Card> topcards; // the first Cards drawn at the beginning of every round
+    int[] countdiscarded; // the number of discarded cards of each player
+    Card[][] discardedcard; // the discarded cards of each player
     int[] status; // 0=game over, 1=in game, 2=protected by handmaid
-    Card[] handCard; // the card in hand of each player
-    Card[] drawnCard; // the drawn card of each player
-    Card[] playedCard; // temporary storage for the played card
-    int[] seenCard; // clientIndex for been seen, -1 for not seen
+    Card[] handcard; // the card in hand of each player
+    Card[] drawncard; // the drawn card of each player
+    Card[] playedcard; // temporary storage for the played card
+    int[] seencard; // clientIndex for been seen, -1 for not seen
     HashMap<String, Integer> tokens; // who has how many tokens in this game already
     HashMap<String, Integer> scores; // score of each player in this round
     List<Integer> winners; // winners´ index of each round
 
-    boolean gameOver;
-    boolean roundOver;
-    int playerInTurn;
-    boolean waitingForCard;
-    boolean waitingForChoosePlayer;
-    boolean waitingForGuessTyp;
+    boolean gameover;
+    boolean roundover;
+    int playerinturn;
+    boolean waitingforcard;
+    boolean waitingforchooseplayer;
+    boolean waitingforguesstyp;
 
+    /**
+     * constructor Game:
+     * With singleton (DCL), the constructor will return only one instance of the class Game.
+     * @return only one instance of the Game
+     */
     public static Game getInstance() {
         if (game == null) {
             synchronized (Game.class) {
@@ -43,28 +59,34 @@ public class Game {
         return game;
     }
 
+    /**
+     * This method startGame() will start a new game for the players.
+     * In the while-loop, the game-over condition will be checked. If not enough tokens are gained
+     * by the players, the game will continue to a new round, till the game-over condition is accomplished.
+     * @throws IOException
+     */
     public void startGame() throws IOException {
 
         //initialize the game info
-        countPlayer = Server.playerList.size();
+        countplayer = Server.playerList.size();
 
-        playerNames = new ArrayList<>(countPlayer);
+        playernames = new ArrayList<>(countplayer);
 
-        gameOver = false;
-        discardedCard = new Card[countPlayer][16];
-        countDiscarded = new int[countPlayer];
-        handCard = new Card[countPlayer];
-        drawnCard = new Card[countPlayer];
-        playedCard = new Card[countPlayer];
-        seenCard = new int[countPlayer];
-        status = new int[countPlayer];
-        scores = new HashMap<>(countPlayer);
-        tokens = new HashMap<>(countPlayer);
-        topCards = new ArrayList<>();
+        gameover = false;
+        discardedcard = new Card[countplayer][16];
+        countdiscarded = new int[countplayer];
+        handcard = new Card[countplayer];
+        drawncard = new Card[countplayer];
+        playedcard = new Card[countplayer];
+        seencard = new int[countplayer];
+        status = new int[countplayer];
+        scores = new HashMap<>(countplayer);
+        tokens = new HashMap<>(countplayer);
+        topcards = new ArrayList<>();
         winners = new ArrayList<>();
 
         // initialize the tokesn for all the players
-        for (int i = 0; i < countPlayer; i++) {
+        for (int i = 0; i < countplayer; i++) {
             String name = Server.playerList.get(i);
             tokens.put(name, 0);
         }
@@ -73,96 +95,103 @@ public class Game {
         Server.getServer().startGameInfo();
 
         // game begins
-        while (!gameOver) {
+        while (!gameover) {
             game.newRound();
             checkGameOver();
         }
 
         // check who won the game
         Integer maxTokens = Collections.max(tokens.values());
-        String finalWinner = "";
+        String finalwinner = "";
         for (String player : tokens.keySet()) {
             if (tokens.get(player) == maxTokens){
-                finalWinner = player;
+                finalwinner = player;
                 break;
             }
         }
         // tell everyone who won the game
         Server.getServer().gameOver(tokens);
-        Server.getServer().sendMessageToAll("The final winner of this game is " + finalWinner);
+        Server.getServer().sendMessageToAll("The final winner of this game is " + finalwinner);
     }
 
+    /**
+     * This method newRound() simulates the scenario during one play round.
+     * In the while-loop, the round-over condition will be checked. If the condition
+     * is accomplished, the current round will be over and a new round will be started.
+     * Otherwise, round will continue.
+     * @throws IOException
+     */
     public void newRound() throws IOException {
 
         // reset the round info
-        for (int i = 0; i < discardedCard.length; i++) {
-            Arrays.fill(discardedCard[i], null);
+        for (int i = 0; i < discardedcard.length; i++) {
+            Arrays.fill(discardedcard[i], null);
         }
-        Arrays.fill(countDiscarded, 0);
-        Arrays.fill(handCard, null);
-        Arrays.fill(drawnCard, null);
-        Arrays.fill(playedCard, null);
-        Arrays.fill(seenCard, -1);
+        Arrays.fill(countdiscarded, 0);
+        Arrays.fill(handcard, null);
+        Arrays.fill(drawncard, null);
+        Arrays.fill(playedcard, null);
+        Arrays.fill(seencard, -1);
         Arrays.fill(status, 1);
 
 
-        topCards.clear();
-        roundOver = false;
-        playerInTurn = 0;
+        topcards.clear();
+        roundover = false;
+        playerinturn = 0;
 
         // update playerIndex
         if (winners.size() == 0) {
-            for (int i = 0; i < countPlayer; i++) {
-                playerNames.add(Server.playerList.get(i));
+            for (int i = 0; i < countplayer; i++) {
+                playernames.add(Server.playerList.get(i));
             }
         } else { // winner in last round plays first
             int lastWinner = winners.get(winners.size() - 1);
 
             // the player won last round plays first in this round
             for (int i = 0; i < lastWinner; i++) {
-                playerNames.add(playerNames.get(i));
+                playernames.add(playernames.get(i));
             }
             for (int i = 0; i < lastWinner; i++) {
-                playerNames.remove(0);
+                playernames.remove(0);
             }
             // update the player index in this round
-            Server.getServer().updatePlayerIndex(playerNames);
+            Server.getServer().updatePlayerIndex(playernames);
         }
 
         // reset the scores
-        for (String name : playerNames) {
+        for (String name : playernames) {
             scores.put(name, 0);
         }
 
         deck = Card.shuffle();
 
-        if (countPlayer == 2) { // move three cards away if 2 player play
+        if (countplayer == 2) { // move three cards away if 2 player play
             for (int i = 0; i < 3; i++) {
-                topCards.add(deck.pop());
+                topcards.add(deck.pop());
             }
         } else { // otherwise move only one card away
-            topCards.add(deck.pop());
+            topcards.add(deck.pop());
         }
 
 
         Server.getServer().sendMessageToAll("deck shuffled \n" + "top card(s) moved");
 
         // each player draws one card
-        for (int i = 0; i < countPlayer; i++) {
-            handCard[i] = deck.pop();
+        for (int i = 0; i < countplayer; i++) {
+            handcard[i] = deck.pop();
             // tell each player which card he/she has drawn
-            Server.getServer().drawnCard(i, handCard[i]);
+            Server.getServer().drawncard(i, handcard[i]);
         }
 
-        while (!roundOver) {
+        while (!roundover) {
 
             playCard();
-            playerInTurn++;
-            if (playerInTurn == countPlayer) playerInTurn = 0;
+            playerinturn++;
+            if (playerinturn == countplayer) playerinturn = 0;
             // find the active player in next turn
-            while (status[playerInTurn] == 0) {
-                playerInTurn++;
-                if (playerInTurn == countPlayer) playerInTurn = 0;
+            while (status[playerinturn] == 0) {
+                playerinturn++;
+                if (playerinturn == countplayer) playerinturn = 0;
             }
 
             checkRoundOver();
@@ -171,257 +200,267 @@ public class Game {
         Server.getServer().roundOver(tokens, winnerName);
     }
 
-    // function for other class to invoke
+
+    /**
+     * This method is applied for other class (server) to invoke.
+     * @param card is given from client side and via server in the game transported
+     */
     public void cardPlayed(Card card) {
-        playedCard[playerInTurn] = card;
+        playedcard[playerinturn] = card;
     }
 
+    /**
+     * This method playCard() checks first whether the played card is valid in respect of the game rules.
+     * In the while-loop, the type of the played card will be selected and the according function of the
+     * played card will be applied.
+     * @throws IOException
+     */
     public void playCard() throws IOException {
 
-        drawnCard[playerInTurn] = deck.pop();
+        drawncard[playerinturn] = deck.pop();
 
         // inform player which card he/she has drawn
-        Server.getServer().drawnCard(playerInTurn, drawnCard[playerInTurn]);
+        Server.getServer().drawncard(playerinturn, drawncard[playerinturn]);
         // tell all players that the player in turn is playing
-        Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + " has drawn one card and is playing...");
+        Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " has drawn one card and is playing...");
 
-        waitingForCard = true;
+        waitingforcard = true;
 
-        while (waitingForCard) {
+        while (waitingforcard) {
 
-            if (playedCard[playerInTurn] == null) {
+            if (playedcard[playerinturn] == null) {
                 continue;
-                // check whether the played card if one of the handCard and drawnCard
-            } else if (playedCard[playerInTurn] != handCard[playerInTurn] && playedCard[playerInTurn] != drawnCard[playerInTurn]) {
-                Server.getServer().exception(playerNames.get(playerInTurn), "You don´t have this card in your hand, choose one in hand.");
+                // check whether the played card if one of the handcard and drawncard
+            } else if (playedcard[playerinturn] != handcard[playerinturn] && playedcard[playerinturn] != drawncard[playerinturn]) {
+                Server.getServer().exception(playernames.get(playerinturn), "You don´t have this card in your hand, choose one in hand.");
                 // if player has king or prince and also a countess in hand, countess must be played
-            } else if (playedCard[playerInTurn] != Card.COUNTESS
-                    && (((handCard[playerInTurn] == Card.PRINCE || handCard[playerInTurn] == Card.KING) && drawnCard[playerInTurn] == Card.COUNTESS)
-                    || ((drawnCard[playerInTurn] == Card.PRINCE || drawnCard[playerInTurn] == Card.KING) && handCard[playerInTurn] == Card.COUNTESS))) {
-                Server.getServer().exception(playerNames.get(playerInTurn), "You have royal member in your hand, the countess must be played.");
+            } else if (playedcard[playerinturn] != Card.COUNTESS
+                    && (((handcard[playerinturn] == Card.PRINCE || handcard[playerinturn] == Card.KING) && drawncard[playerinturn] == Card.COUNTESS)
+                    || ((drawncard[playerinturn] == Card.PRINCE || drawncard[playerinturn] == Card.KING) && handcard[playerinturn] == Card.COUNTESS))) {
+                Server.getServer().exception(playernames.get(playerinturn), "You have royal member in your hand, the countess must be played.");
             } else {
-                // update the handCard and drawnCard
-                if (playedCard[playerInTurn] == handCard[playerInTurn]) {
-                    handCard[playerInTurn] = drawnCard[playerInTurn];
-                    drawnCard[playerInTurn] = null;
-                    waitingForCard = false;
+                // update the handcard and drawncard
+                if (playedcard[playerinturn] == handcard[playerinturn]) {
+                    handcard[playerinturn] = drawncard[playerinturn];
+                    drawncard[playerinturn] = null;
+                    waitingforcard = false;
                 } else {
-                    drawnCard[playerInTurn] = null;
-                    waitingForCard = false;
+                    drawncard[playerinturn] = null;
+                    waitingforcard = false;
                 }
             }
         }
 
         // inform all the players who has played which card
-        Server.getServer().playedCard(playerNames.get(playerInTurn), playedCard[playerInTurn]);
+        Server.getServer().playedCard(playernames.get(playerinturn), playedcard[playerinturn]);
         // apply the card function
-        switch (playedCard[playerInTurn]) {
+        switch (playedcard[playerinturn]) {
 
             case PRINCESS:
-                Card.PRINCESS.function(playerInTurn);
+                Card.PRINCESS.function(playerinturn);
                 break;
 
             case COUNTESS:
-                Card.COUNTESS.function(playerInTurn);
+                Card.COUNTESS.function(playerinturn);
                 break;
 
             case KING:
-                waitingForChoosePlayer = true;
-                String targetName1;
-                int targetIndex1 = playerInTurn; // initialize the target as self
+                waitingforchooseplayer = true;
+                String targetname1;
+                int targetindex1 = playerinturn; // initialize the target as self
 
                 // if all players are protected, the function goes to self
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
-                    Card.KING.function(playerInTurn, targetIndex1); // nothing happens, just change the card with self.
+                    Card.KING.function(playerinturn, targetindex1); // nothing happens, just change the card with self.
                 } else { // if there are unprotected active players in this round, choose one
 
-                    Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + " is choosing a target player.");
+                    Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
 
-                    while (waitingForChoosePlayer) {
+                    while (waitingforchooseplayer) {
 
-                        targetName1 = Server.getServer().choosePlayer(playerInTurn);
+                        targetname1 = Server.getServer().choosePlayer(playerinturn);
 
-                        if (targetName1 == null) {
+                        if (targetname1 == null) {
                             continue;
-                        } else if(targetName1.equals(playerNames.get(playerInTurn))){
-                            Server.getServer().exception(playerNames.get(playerInTurn), "You can´t choose yourself, choose another player.");
-                        } else if (status[playerNames.indexOf(targetName1)] == 2) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
-                        } else if (status[playerNames.indexOf(targetName1)] == 0) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
+                        } else if(targetname1.equals(playernames.get(playerinturn))){
+                            Server.getServer().exception(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
+                        } else if (status[playernames.indexOf(targetname1)] == 2) {
+                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is protected, choose another player");
+                        } else if (status[playernames.indexOf(targetname1)] == 0) {
+                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
                         } else {
-                            targetIndex1 = playerNames.indexOf(targetName1);
-                            Card.KING.function(playerInTurn, targetIndex1);
-                            waitingForChoosePlayer = false;
+                            targetindex1 = playernames.indexOf(targetname1);
+                            Card.KING.function(playerinturn, targetindex1);
+                            waitingforchooseplayer = false;
                         }
                     }
                 }
                 break;
 
             case PRINCE:
-                waitingForChoosePlayer = true;
-                String targetName2;
-                int targetIndex2 = playerInTurn; // initialize the target as self
-                status[playerInTurn] = 1; // reset the status from 2 to 1, if status was 2.
+                waitingforchooseplayer = true;
+                String targetname2;
+                int targetindex2 = playerinturn; // initialize the target as self
+                status[playerinturn] = 1; // reset the status from 2 to 1, if status was 2.
 
                 // if all players are protected, the function goes to self
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, drop a card and draw a new one.");
-                    Card.PRINCE.function(playerInTurn, targetIndex2);
+                    Card.PRINCE.function(playerinturn, targetindex2);
                 } else { // if there are unprotected active players in this round, choose one
 
-                    Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + " is choosing a target player.");
+                    Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
 
-                    while (waitingForChoosePlayer) {
+                    while (waitingforchooseplayer) {
 
-                        targetName2 = Server.getServer().choosePlayer(playerInTurn);
+                        targetname2 = Server.getServer().choosePlayer(playerinturn);
 
-                        if (targetName2 == null) {
+                        if (targetname2 == null) {
                             continue;
-                        } else if (status[playerNames.indexOf(targetName2)] == 2) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
-                        } else if (status[playerNames.indexOf(targetName2)] == 0) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
+                        } else if (status[playernames.indexOf(targetname2)] == 2) {
+                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is protected, choose another player");
+                        } else if (status[playernames.indexOf(targetname2)] == 0) {
+                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
                         } else {
-                            targetIndex2 = playerNames.indexOf(targetName2);
-                            Card.PRINCE.function(playerInTurn, targetIndex2);
-                            waitingForChoosePlayer = false;
+                            targetindex2 = playernames.indexOf(targetname2);
+                            Card.PRINCE.function(playerinturn, targetindex2);
+                            waitingforchooseplayer = false;
                         }
                     }
                 }
                 break;
 
             case HANDMAID:
-                Card.HANDMAID.function(playerInTurn);
+                Card.HANDMAID.function(playerinturn);
                 break;
 
             case BARON:
-                waitingForChoosePlayer = true;
-                String targetName3;
-                int targetIndex3 = playerInTurn; // initialize the target as self
+                waitingforchooseplayer = true;
+                String targetname3;
+                int targetindex3 = playerinturn; // initialize the target as self
 
                 // if all players are protected, the function goes to self = nothing happens
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
-                    Card.BARON.function(playerInTurn, targetIndex3); // nothing happens, just compare the card with self
+                    Card.BARON.function(playerinturn, targetindex3); // nothing happens, just compare the card with self
                 } else { // if there are unprotected active players in this round, choose one
 
-                    Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + " is choosing a target player.");
+                    Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
 
-                    while (waitingForChoosePlayer) {
+                    while (waitingforchooseplayer) {
 
-                        targetName3 = Server.getServer().choosePlayer(playerInTurn);
+                        targetname3 = Server.getServer().choosePlayer(playerinturn);
 
-                        if (targetName3 == null) {
+                        if (targetname3 == null) {
                             continue;
-                        } else if(targetName3.equals(playerNames.get(playerInTurn))){
-                            Server.getServer().exception(playerNames.get(playerInTurn), "You can´t choose yourself, choose another player.");
-                        } else if (status[playerNames.indexOf(targetName3)] == 2) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
-                        } else if (status[playerNames.indexOf(targetName3)] == 0) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
+                        } else if(targetname3.equals(playernames.get(playerinturn))){
+                            Server.getServer().exception(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
+                        } else if (status[playernames.indexOf(targetname3)] == 2) {
+                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is protected, choose another player");
+                        } else if (status[playernames.indexOf(targetname3)] == 0) {
+                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
                         } else {
-                            targetIndex3 = playerNames.indexOf(targetName3);
-                            Card.BARON.function(playerInTurn, targetIndex3);
-                            waitingForChoosePlayer = false;
+                            targetindex3 = playernames.indexOf(targetname3);
+                            Card.BARON.function(playerinturn, targetindex3);
+                            waitingforchooseplayer = false;
                         }
                     }
                 }
                 break;
 
             case PRIEST:
-                waitingForChoosePlayer = true;
-                String targetName4;
-                int targetIndex4 = playerInTurn; // initialize the target as self
+                waitingforchooseplayer = true;
+                String targetname4;
+                int targetindex4 = playerinturn; // initialize the target as self
 
                 // if all players are protected, the function goes to self = nothing happens
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
-                    Card.PRIEST.function(playerInTurn, targetIndex4); // nothing happens
+                    Card.PRIEST.function(playerinturn, targetindex4); // nothing happens
                 } else { // if there are unprotected active players in this round, choose one
 
-                    Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + " is choosing a target player.");
+                    Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
 
-                    while (waitingForChoosePlayer) {
+                    while (waitingforchooseplayer) {
 
-                        targetName4 = Server.getServer().choosePlayer(playerInTurn);
+                        targetname4 = Server.getServer().choosePlayer(playerinturn);
 
-                        if (targetName4 == null) {
+                        if (targetname4 == null) {
                             continue;
-                        } else if(targetName4.equals(playerNames.get(playerInTurn))){
-                            Server.getServer().exception(playerNames.get(playerInTurn), "You can´t choose yourself, choose another player.");
-                        } else if (status[playerNames.indexOf(targetName4)] == 2) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
-                        } else if (status[playerNames.indexOf(targetName4)] == 0) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
+                        } else if(targetname4.equals(playernames.get(playerinturn))){
+                            Server.getServer().exception(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
+                        } else if (status[playernames.indexOf(targetname4)] == 2) {
+                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is protected, choose another player");
+                        } else if (status[playernames.indexOf(targetname4)] == 0) {
+                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
                         } else {
-                            targetIndex4 = playerNames.indexOf(targetName4);
-                            Card.PRIEST.function(playerInTurn, targetIndex4);
-                            waitingForChoosePlayer = false;
+                            targetindex4 = playernames.indexOf(targetname4);
+                            Card.PRIEST.function(playerinturn, targetindex4);
+                            waitingforchooseplayer = false;
                         }
                     }
                 }
                 break;
 
             case GUARD:
-                waitingForChoosePlayer = true;
-                waitingForGuessTyp = true;
-                String targetName5;
-                String guessCardType;
-                Card guessCard = Card.GUARD; // intitialize the target as self
-                int targetIndex5 = playerInTurn; // initialize the target as self
+                waitingforchooseplayer = true;
+                waitingforguesstyp = true;
+                String targetname5;
+                String guesscardtype;
+                Card guesscard = Card.GUARD; // intitialize the target as self
+                int targetindex5 = playerinturn; // initialize the target as self
 
                 // if all players are protected, the function goes to self = nothing happens
                 if (allPlayersProtected()) {
-                    Card.GUARD.function(playerInTurn, targetIndex5, guessCard); // nothing happens
+                    Card.GUARD.function(playerinturn, targetindex5, guesscard); // nothing happens
                     Server.getServer().sendMessageToAll("All players are protected, nothing happens, play continues.");
                 } else { // if there are unprotected active players in this round, choose one
 
-                    Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + " is choosing a target player.");
+                    Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
 
-                    while (waitingForChoosePlayer) {
+                    while (waitingforchooseplayer) {
 
-                        targetName5 = Server.getServer().choosePlayer(playerInTurn);
+                        targetname5 = Server.getServer().choosePlayer(playerinturn);
 
-                        if (targetName5 == null) {
+                        if (targetname5 == null) {
                             continue;
-                        } else if(targetName5.equals(playerNames.get(playerInTurn))){
-                            Server.getServer().exception(playerNames.get(playerInTurn), "You can´t choose yourself, choose another player.");
-                        } else if (status[playerNames.indexOf(targetName5)] == 2) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is protected, choose another player");
-                        } else if (status[playerNames.indexOf(targetName5)] == 0) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "the chosen player is already out of game, choose another player");
+                        } else if(targetname5.equals(playernames.get(playerinturn))){
+                            Server.getServer().exception(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
+                        } else if (status[playernames.indexOf(targetname5)] == 2) {
+                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is protected, choose another player");
+                        } else if (status[playernames.indexOf(targetname5)] == 0) {
+                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
                         } else {
-                            targetIndex5 = playerNames.indexOf(targetName5);
-                            Card.GUARD.function(playerInTurn, targetIndex5);
-                            waitingForChoosePlayer = false;
+                            targetindex5 = playernames.indexOf(targetname5);
+                            Card.GUARD.function(playerinturn, targetindex5);
+                            waitingforchooseplayer = false;
                         }
                     }
 
-                    Server.getServer().sendMessageToAll(playerNames.get(playerInTurn) + " is guessing the card type");
+                    Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is guessing the card type");
 
-                    while (waitingForGuessTyp) {
-                        guessCardType = Server.getServer().guessCardType(playerInTurn);
-                        guessCard = null;
+                    while (waitingforguesstyp) {
+                        guesscardtype = Server.getServer().guessCardType(playerinturn);
+                        guesscard = null;
 
                         for (Card c : Card.values()) {
-                            if (c.getType().equals(guessCardType)) {
-                                guessCard = c;
+                            if (c.getType().equals(guesscardtype)) {
+                                guesscard = c;
                             }
                         }
 
-                        if (guessCard == null) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "This card type does not exist. Choose again.");
+                        if (guesscard == null) {
+                            Server.getServer().exception(playernames.get(playerinturn), "This card type does not exist. Choose again.");
                             continue;
-                        } else if (guessCard == Card.GUARD) {
-                            Server.getServer().exception(playerNames.get(playerInTurn), "You can´t guess guard, guess another card type.");
+                        } else if (guesscard == Card.GUARD) {
+                            Server.getServer().exception(playernames.get(playerinturn), "You can´t guess guard, guess another card type.");
                             continue;
                         } else {
-                            waitingForGuessTyp = false;
+                            waitingforguesstyp = false;
                         }
                     }
-                    Card.GUARD.function(playerInTurn, targetIndex5, guessCard);
+                    Card.GUARD.function(playerinturn, targetindex5, guesscard);
                 }
                 break;
             default:
@@ -429,129 +468,143 @@ public class Game {
                 break;
         }
 
-        // playedCard refresh to null for next round check
-        playedCard[playerInTurn] = null;
+        // playedcard refresh to null for next round check
+        playedcard[playerinturn] = null;
     }
 
     public void checkRoundOver() {
         int numActivePlayer = 0;
-        for (int i = 0; i < countPlayer; i++) {
+        for (int i = 0; i < countplayer; i++) {
             if (status[i] != 0) {
                 numActivePlayer++;
             }
         }
         if (numActivePlayer == 1 || deck.size() == 0) {
-            roundOver = true;
+            roundover = true;
         }
     }
 
 
+    /**
+     * This method will update the scores, tokens and winner name at the end of
+     * every round.
+     * @return winner name of this round will be returned
+     */
     public String updateScoresAndTokensAndWinnersForThisRound() {
-        int numActivePlayer = 0;
-        for (int i = 0; i < countPlayer; i++) {
+        int numactiveplayer = 0;
+        for (int i = 0; i < countplayer; i++) {
             if (status[i] != 0) {
-                numActivePlayer++;
+                numactiveplayer++;
             }
         }
 
-        String winnerName = null;
+        String winnername = null;
 
-        if (numActivePlayer == 1) { // there is only active player left
-            for (int i = 0; i < countPlayer; i++) {
+        if (numactiveplayer == 1) { // there is only active player left
+            for (int i = 0; i < countplayer; i++) {
                 if (status[i] == 1) {
                     winners.add(i);
-                    winnerName = playerNames.get(i);
-                    scores.put(winnerName, handCard[i].getValue());
-                    tokens.put(winnerName, tokens.get(winnerName) + 1);
+                    winnername = playernames.get(i);
+                    scores.put(winnername, handcard[i].getValue());
+                    tokens.put(winnername, tokens.get(winnername) + 1);
                     break;
                 }
             }
         } else { // there are several active players left when this round is over
             int max = 0;
-            List<Integer> playerIndexWithMax = new ArrayList<>();
+            List<Integer> playerindexwithmax = new ArrayList<>();
             // get the max. value of hand card
-            for (int i = 0; i < countPlayer; i++) {
-                if(handCard[i] != null && status[i] != 0){
-                    max = Math.max(max, handCard[i].getValue());
+            for (int i = 0; i < countplayer; i++) {
+                if(handcard[i] != null && status[i] != 0){
+                    max = Math.max(max, handcard[i].getValue());
                 }
             }
             // get index of the player(s) with the max value
-            for (int i = 0; i < countPlayer; i++) {
-                if (handCard[i] != null && status[i] != 0 && handCard[i].getValue() == max) {
-                    playerIndexWithMax.add(i);
+            for (int i = 0; i < countplayer; i++) {
+                if (handcard[i] != null && status[i] != 0 && handcard[i].getValue() == max) {
+                    playerindexwithmax.add(i);
                 }
             }
 
-            if (playerIndexWithMax.size() == 1) { // if there is only one max Value
-                int winnerIndex = playerIndexWithMax.get(0);
-                winnerName = playerNames.get(winnerIndex);
+            if (playerindexwithmax.size() == 1) { // if there is only one max Value
+                int winnerIndex = playerindexwithmax.get(0);
+                winnername = playernames.get(winnerIndex);
                 winners.add(winnerIndex);
-                tokens.put(winnerName, tokens.get(winnerName) + 1);
+                tokens.put(winnername, tokens.get(winnername) + 1);
 
-                for (int i = 0; i < countPlayer; i++) {
-                    String clientName = playerNames.get(i);
+                for (int i = 0; i < countplayer; i++) {
+                    String clientName = playernames.get(i);
                     // the player out of game has no score
                     if(status[i] != 0){
-                        int score = handCard[i].getValue();
+                        int score = handcard[i].getValue();
                         scores.put(clientName, score);
                     }
                 }
             } else { // there are several same max values
-                for (int i = 0; i < countPlayer; i++) {
-                    String clientName = playerNames.get(i);
+                for (int i = 0; i < countplayer; i++) {
+                    String clientname = playernames.get(i);
                     int totalScore = 0;
                     if(status[i] != 0){
-                        totalScore = handCard[i].getValue();
+                        totalScore = handcard[i].getValue();
                         for (int j = 0; j < 16; j++) {
-                            if(discardedCard[i][j] != null){
-                                totalScore += discardedCard[i][j].getValue();
+                            if(discardedcard[i][j] != null){
+                                totalScore += discardedcard[i][j].getValue();
                             }
                         }
                     }
-                    scores.put(clientName, totalScore);
+                    scores.put(clientname, totalScore);
                 }
 
-                int maxScore = Collections.max(scores.values());
-                for (String name : playerNames) {
-                    if (scores.get(name) == maxScore) {
-                        winnerName = name;
-                        int winnerIndex = playerNames.indexOf(winnerName);
+                int maxscore = Collections.max(scores.values());
+                for (String name : playernames) {
+                    if (scores.get(name) == maxscore) {
+                        winnername = name;
+                        int winnerIndex = playernames.indexOf(winnername);
                         winners.add(winnerIndex);
-                        tokens.put(winnerName, tokens.get(winnerName) + 1);
+                        tokens.put(winnername, tokens.get(winnername) + 1);
                     }
                 }
             }
         }
-        return winnerName;
+        return winnername;
     }
 
+    /**
+     * This method checkGameOver() will check whether the condition of game over accomplished in
+     * respect of the game rules.
+     */
     public void checkGameOver() {
-        if (countPlayer == 2) {
-            for (String name : playerNames) {
+        if (countplayer == 2) {
+            for (String name : playernames) {
                 if (tokens.get(name) == 7) {
-                    gameOver = true;
+                    gameover = true;
                 }
             }
-        } else if (countPlayer == 3) {
-            for (String name : playerNames) {
+        } else if (countplayer == 3) {
+            for (String name : playernames) {
                 if (tokens.get(name) == 5) {
-                    gameOver = true;
+                    gameover = true;
                 }
             }
         } else {
-            for (String name : playerNames) {
+            for (String name : playernames) {
                 if (tokens.get(name) == 4) {
-                    gameOver = true;
+                    gameover = true;
                 }
             }
         }
     }
 
-    // check if all the active players are under protect
+
+    /**
+     * This method allPlayersProtected() checked whether all the other active players in this
+     * round are protected by handmaid.
+     * @return false when not all the active players are protected by handmaids, otherwise return true.
+     */
     public boolean allPlayersProtected() {
         boolean flag = true;
-        for (int i = 0; i < countPlayer; i++) {
-            if (status[i] == 1 && playerInTurn != i) {
+        for (int i = 0; i < countplayer; i++) {
+            if (status[i] == 1 && playerinturn != i) {
                 flag = false;
                 break;
             }

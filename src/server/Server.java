@@ -11,10 +11,6 @@ import java.util.List;
 
 public class Server {
 
-    //*********UPDATE THE INFO FROM GAME AND FURTHER TO CLIENTS!!*****************
-    //option: new attributes in server class:
-    //Card[] handCard; Card[] drawnCard; Card[][] discardedCards; Card[] playedCard;
-
     private volatile static Server server;
     // a set (here is a vector type) for the accepted ServerThreads
     protected static Hashtable<Integer, String> playerList = new Hashtable<Integer, String>();
@@ -194,7 +190,7 @@ public class Server {
     }
 
     // tells the active player which card was drawn
-    public void drawnCard(int playerID, Card card){
+    public void drawncard(int playerID, Card card){
         try{
             clientList.get(playerList.get(playerID)).receiveOrder("5" + card.getType());
         } catch (IOException e){
