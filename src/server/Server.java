@@ -217,11 +217,11 @@ public class Server {
 
     // inform the players about a new round and transmit the current score
     //************über scores soll mann auch wissen, laut Aufgabestellung***********
-    public void roundOver(HashMap<String, Integer> tokens, String winner) throws IOException{
+    public void roundOver(HashMap<String, Integer> score, String winner) throws IOException{
         for(int i=0;i<playerList.size();i++){
             String scoreString = "7";
             for (int j = 0; j < playerList.size(); j++) {
-                scoreString = scoreString + tokens.get(playerList.get((i + j) % playerList.size())).toString() + winner;
+                scoreString = scoreString + score.get(playerList.get((i + j) % playerList.size())).toString() + winner;
             }
             clientList.get(playerList.get(i)).receiveOrder(scoreString);
         }

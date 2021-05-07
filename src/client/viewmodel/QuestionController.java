@@ -28,6 +28,7 @@ public class QuestionController {
     public void init(Client client, String message) {
         this.client = client;
         questionField.setText(message);
+        sendButton.disableProperty().bind(answer.textProperty().isEmpty());
     }
 
     @FXML

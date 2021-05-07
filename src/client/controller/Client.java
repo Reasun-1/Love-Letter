@@ -243,20 +243,22 @@ public class Client extends Application{
         OUT.println("done");
     }
 
-    public void endOfRound(String info){
+    public void endOfRound(String info) throws IOException{
         String winneroflastround = info.substring(numberofplayers + 1);
+        String endofroundinfo = "Winner: " + winneroflastround + "\n\n" + "Score: \n";
         for (int i = 0; i < numberofplayers; i++) {
             DISCARDEDCARDS[i].set("");
             //handcard[i].set(dummycard);
-            TOKENS[i].set(info.charAt(i));
+            endofroundinfo = endofroundinfo + PLAYERS[i].get() + "\t\t" + info.charAt(i) + "\n";
             if(PLAYERS[i].get().equals(winneroflastround)){
+                TOKENS[i].set(TOKENS[i].get()+1);
                 playerinturnid = i;
             }
         }
         //handcard[0].set(null);
         OUTOFROUND.set("");
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
-        //end-of-round window?
+        LAUNCHER.launchEndOfRound(endofroundinfo);
     }
 
     public void endOfGame(String info){
@@ -361,10 +363,13 @@ public class Client extends Application{
         LAUNCHER.launchLogin(this);
 
         // Only for tests
-        LAUNCHER.launchError("This is a test error");
+        //LAUNCHER.launchError("This is a test error");
 
         // Only for tests
-        LAUNCHER.launchQuestion(this, "This is a test Question");
+        //LAUNCHER.launchQuestion(this, "Please enter your card guess:");
+
+        // Only for tests
+        LAUNCHER.launchEndOfRound("Winner: Pascal\n\n Score:\nPascal\t\t12\nElisabeth\t\t10\nCam\t\t3\n");
 
         // Open chat after logging in successfully
         LAUNCHER.launchChat(this);
