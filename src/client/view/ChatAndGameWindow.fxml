@@ -111,6 +111,16 @@
                                                 </Text>
                                              </children>
                                           </AnchorPane>
+                                          <ImageView fitHeight="174.0" fitWidth="122.0" layoutX="5.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../resources/Card_Back_Red.jpg" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="170.0" fitWidth="122.0" layoutX="132.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../resources/Card_Back_Red.jpg" />
+                                             </image>
+                                          </ImageView>
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
@@ -120,6 +130,16 @@
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
+                                          <ImageView fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../resources/Card_Back_Red.jpg" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="180.0" fitWidth="124.0" layoutX="2.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../resources/Card_Back_Red.jpg" />
+                                             </image>
+                                          </ImageView>
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -129,6 +149,16 @@
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
+                                          <ImageView fitHeight="174.0" fitWidth="124.0" layoutX="4.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../resources/Card_Back_Red.jpg" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="173.0" fitWidth="124.0" layoutX="131.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../resources/Card_Back_Red.jpg" />
+                                             </image>
+                                          </ImageView>
                                        </children>
                                     </AnchorPane>
                                  </children>
