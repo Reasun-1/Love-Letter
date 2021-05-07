@@ -1,9 +1,6 @@
 package client.controller;
 
-import client.viewmodel.ChatAndGameController;
-import client.viewmodel.ErrorController;
-import client.viewmodel.LoginController;
-import client.viewmodel.QuestionController;
+import client.viewmodel.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,10 +44,10 @@ public class WindowLauncher {
         Stage stage = new Stage();
         stage.setTitle("Chat: " + client.getName());
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/client/view/ChatRoomView.fxml"));
+        loader.setLocation(getClass().getResource("/client/view/ChatAndGameWindow.fxml"));
         Parent root = loader.load();
         ChatAndGameController ctrl = loader.getController();
-        ctrl.init(client);
+        //ctrl.init(client);
         stage.setScene(new Scene(root, 600, 400));
         stage.show();
         stage.setOnCloseRequest((event) -> Platform.exit());
@@ -65,6 +62,32 @@ public class WindowLauncher {
         Parent root = loader.load();
         QuestionController ctrl = loader.getController();
         ctrl.init(client, message);
+        stage.setScene(new Scene(root, 600, 400));
+        stage.showAndWait();
+    }
+
+    //Creating an window that pops up when a round ends
+    public void launchEndOfRound(String msg) throws IOException{
+        Stage stage = new Stage();
+        stage.setTitle("End of Round");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/client/view/EndOfRoundWindow.fxml"));
+        Parent root = loader.load();
+        EndOfRoundController ctrl = loader.getController();
+        ctrl.init(msg);
+        stage.setScene(new Scene(root, 600, 400));
+        stage.showAndWait();
+    }
+
+    //Creating an window that pops up when a round ends
+    public void launchEndOfGame(String msg) throws IOException{
+        Stage stage = new Stage();
+        stage.setTitle("End of Game");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/client/view/EndOfGameWindow.fxml"));
+        Parent root = loader.load();
+        EndOfGameController ctrl = loader.getController();
+        ctrl.init(msg);
         stage.setScene(new Scene(root, 600, 400));
         stage.showAndWait();
     }

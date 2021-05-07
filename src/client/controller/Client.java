@@ -243,26 +243,34 @@ public class Client extends Application{
         OUT.println("done");
     }
 
-    public void endOfRound(String info){
-        String winneroflastround = info.substring(numberofplayers + 1);
+    public void endOfRound(String info) throws IOException{
+        String winneroflastround = info.substring(2*numberofplayers + 1);
+        String endofroundinfo = "Winner: " + winneroflastround + "\n\n" + "Score: \n";
         for (int i = 0; i < numberofplayers; i++) {
             DISCARDEDCARDS[i].set("");
             //handcard[i].set(dummycard);
-            TOKENS[i].set(info.charAt(i));
+            score[i] = Integer.parseInt(info.substring(2*i,2*i+1));
+
+            endofroundinfo = endofroundinfo + String.format("%-20.20s %2d" , PLAYERS[i].get(), score[i]) + "\n";
             if(PLAYERS[i].get().equals(winneroflastround)){
+                TOKENS[i].set(TOKENS[i].get()+1);
                 playerinturnid = i;
             }
         }
         //handcard[0].set(null);
         OUTOFROUND.set("");
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
-        //end-of-round window?
+        LAUNCHER.launchEndOfRound(endofroundinfo);
     }
 
-    public void endOfGame(String info){
+    public void endOfGame(String info) throws IOException{
+        String winner = info.substring(2*numberofplayers + 1);
+        String endofgameinfo = "Winner: " + winner + "\n\n" + "Tokens: \n";
         for (int i = 0; i < numberofplayers; i++) {
             TOKENS[i].set(info.charAt(i));
+            endofgameinfo = endofgameinfo + String.format("%-20.20s %2d" , PLAYERS[i].get(), TOKENS[i].get()) + "\n";
         }
+        LAUNCHER.launchEndOfGame(endofgameinfo);
         // end-of-game Window?
     }
 
@@ -361,10 +369,13 @@ public class Client extends Application{
         LAUNCHER.launchLogin(this);
 
         // Only for tests
-        LAUNCHER.launchError("This is a test error");
+        //LAUNCHER.launchError("This is a test error");
 
         // Only for tests
-        LAUNCHER.launchQuestion(this, "This is a test Question");
+        //LAUNCHER.launchQuestion(this, "Please enter your card guess:");
+
+        // Only for tests
+        LAUNCHER.launchEndOfGame("Winner: Pascal\n\n Score:\n" + String.format("%-20.20s %2d" , "Pascal", 12) + "\n" + String.format("%-20.20s %2d" , "Elisabeth", 10) + "\n" + String.format("%-20.20s %2d" , "Can", 3) + "\n" + String.format("%-20.20s %2d" , "John", 5) + "\n");
 
         // Open chat after logging in successfully
         LAUNCHER.launchChat(this);

@@ -50,139 +50,19 @@ public class ChatAndGameController {
     private AnchorPane chatFieldPane;
 
     @FXML
-    private ScrollPane scrollField;
+    private TextField yourscore;
 
     @FXML
-    private AnchorPane gameFieldPane;
+    private TextField player2score;
 
     @FXML
-    private AnchorPane scorePane;
+    private TextField player3score;
 
     @FXML
-    private ImageView imageToken;
+    private TextField player4score;
 
     @FXML
-    private Text scoreText;
-
-    @FXML
-    private TextField personalScore;
-
-    @FXML
-    private TextField secPlayerScore;
-
-    @FXML
-    private TextField thirdPlayerScore;
-
-    @FXML
-    private TextField fourthPlayerScore;
-
-    @FXML
-    private Button startGameButton;
-
-    @FXML
-    private GridPane mainGridPane;
-
-    @FXML
-    private AnchorPane secPlayerPane;
-
-    @FXML
-    private Text secPlayerText;
-
-    @FXML
-    private AnchorPane secHandCardPane;
-
-    @FXML
-    private MenuButton secHandCardMenuButton;
-
-    @FXML
-    private MenuItem secHandCardItemOne;
-
-    @FXML
-    private MenuItem secHandCardItemTwo;
-
-    @FXML
-    private AnchorPane secPlayerMenuPane;
-
-    @FXML
-    private MenuButton secDrawnCardMenuButton;
-
-    @FXML
-    private MenuItem secDrawnCardItemOne;
-
-    @FXML
-    private MenuItem secDrawnCardItemTwo;
-
-    @FXML
-    private AnchorPane thirdPlayerPane;
-
-    @FXML
-    private Text thirdPlayerText;
-
-    @FXML
-    private MenuButton thirdHandCardMenuButton;
-
-    @FXML
-    private MenuItem thirdHandCardItemOne;
-
-    @FXML
-    private MenuItem thirdHandCardItemTwo;
-
-    @FXML
-    private MenuButton thirdDrawnCardMenuButton;
-
-    @FXML
-    private MenuItem thirdDrawnCardItemOne;
-
-    @FXML
-    private MenuItem thirdDrawnCardItemTwo;
-
-    @FXML
-    private AnchorPane fourthPlayerPane;
-
-    @FXML
-    private Text fourthPlayerText;
-
-    @FXML
-    private AnchorPane fourthPlayerButtonPane;
-
-    @FXML
-    private MenuButton fourthHandCardMenuButton;
-
-    @FXML
-    private MenuItem fourthHandCardItemOne;
-
-    @FXML
-    private MenuItem fourthHandCardItemTwo;
-
-    @FXML
-    private MenuButton fourthDrawnCardMenuButton;
-
-    @FXML
-    private MenuItem fourthDrawnCardItemOne;
-
-    @FXML
-    private MenuItem fourthDrawnCardItemTwo;
-
-    @FXML
-    private AnchorPane youPane;
-
-    @FXML
-    private MenuButton yourHandCardMenuButton;
-
-    @FXML
-    private MenuItem yourHandCardItemOne;
-
-    @FXML
-    private MenuItem yourHandCardItemTwo;
-
-    @FXML
-    private MenuButton yourDrawnCardMenuButton;
-
-    @FXML
-    private MenuItem yourDrawnCardItemOne;
-
-    @FXML
-    private MenuItem yourDrawnCardItemTwo;
+    private Button getStartGameButton;
 
     @FXML
     private AnchorPane yourPane;
@@ -190,6 +70,50 @@ public class ChatAndGameController {
     @FXML
     private Text youText;
 
+    @FXML
+    private Button getPlayHandCard1;
+
+    @FXML
+    private Button getPlayDrawnCard1;
+
+    @FXML
+    private AnchorPane player2;
+
+    @FXML
+    private Text player2text;
+
+    @FXML
+    private Button getPlayHandCard2;
+
+    @FXML
+    private Button getPlayDrawnCard2;
+
+    @FXML
+    private AnchorPane player3;
+
+    @FXML
+    private Text player3text;
+
+    @FXML
+    private Button getPlayHandCard3;
+
+    @FXML
+    private Button getPlayDrawnCard3;
+
+    @FXML
+    private AnchorPane player4;
+
+    @FXML
+    private Text player4text;
+
+    @FXML
+    private Button getPlayHandCard4;
+
+    @FXML
+    private Button getPlayDrawnCard4;
+
     private Client client;
+
+
 
 }
