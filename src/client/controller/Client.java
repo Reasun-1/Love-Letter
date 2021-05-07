@@ -1,5 +1,14 @@
 package client.controller;
 
+/**
+ * Client class is responsible for the connection to the server and for storing the properties connected with the GUI.
+ * It also holds the main method which starts the Application.
+ *
+ * @author Pascal Stucky
+ * @author Can Ren
+ * @version 1.0-SNAPSHOT
+ */
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.*;
@@ -42,9 +51,6 @@ public class Client extends Application{
 
     // Number of players in the current game
     private int numberofplayers;
-
-    // Current score of the players
-    private int[] score = new int[4];
 
     // List of players out of round
     private final StringProperty OUTOFROUND = new SimpleStringProperty();
@@ -106,7 +112,10 @@ public class Client extends Application{
 
     public BooleanProperty getInTurn() {return INTURN;}
 
-    // Constructor establishes the TCP-Connection
+    /**
+     * Constructor establishes the TCP-Connection and initializes the remaining variables
+     * @throws IOException
+     */
     public Client() throws IOException{
 
             // Always connect to localhost and fixed port (maybe ask for ip and port?)
@@ -134,7 +143,10 @@ public class Client extends Application{
         GAMERUNNING.set(gameinfo.charAt(1) != '0');
     }
 
-    // Method call from LoginWindowController to check the entered name
+    /**
+     * Method to be called from LoginWindowController to check the entered name.
+     * @param temp_name
+     */
     public void checkName(String temp_name) {
         try {
             // The name must not contain a '/', since we use this character as a separator for game info
@@ -162,40 +174,60 @@ public class Client extends Application{
         }
     }
 
-    // Send a message to only one client. The name and the message are separated by '/'. Order Code: 1
+    /**
+     * Send a message to only one client. The name and the message are separated by '/'. Order Code: 1
+     * @param name
+     * @param message
+     * @throws IOException
+     */
     public void sendPersonalMessage(String name, String message) throws IOException {
         OUT.println("/1" + name + "/" + message);
     }
 
-    // Create a new Game (only possible if no Game exists on the Server). Order Code: 2
+    /**
+     * Create a new Game (only possible if no Game exists on the Server). Order Code: 2
+     */
     public void createGame() {
         OUT.println("/2");
     }
 
-    // Join an existing Game (only possible if a Game exists and there are less than 4 players registered). Order Code: 3
+    /**
+     * Join an existing Game (only possible if a Game exists and there are less than 4 players registered). Order Code: 3
+     */
     public void joinGame() {
         OUT.println("/3");
     }
 
-    // Start an existing Game (only possible if this client has joined the Game). Order Code: 4
+    /**
+     * Start an existing Game (only possible if this client has joined the Game). Order Code: 4
+     */
     public void startGame() {
         OUT.println("/4");
     }
 
-    // Play your hand card (only possible if this client is player in turn in the current game). Order Code: 5
+    /**
+     * Play your hand card (only possible if this client is player in turn in the current game). Order Code: 5
+     */
     public void playHandCard() {
             /*OUT.println("/5" + handcard[0].get());
             Object playedcard = handcard[0].get();
             handcard[0].set(drawncard[0].get());
             drawncard[0].set(playedcard);*/
+        INTURN.set(false);
     }
 
-    // Play your hand card (only possible if this client is player in turn in the current game). Order Code: 5
+    /**
+     * Play your hand card (only possible if this client is player in turn in the current game). Order Code: 5
+     */
     public void playDrawnCard() {
+        INTURN.set(false);
         //OUT.println("/5" + drawncard[0].get());
     }
 
-    // Receive the Game info from the Server
+    /**
+     * Receive the Game info from the Server
+     * @param info
+     */
     public void startGameInfo(String info){
         // The first character is the number of players
         numberofplayers = info.charAt(0);
@@ -206,14 +238,19 @@ public class Client extends Application{
         for (int i = 0; i < numberofplayers; i++) {
             PLAYERS[i].set(rest.substring(1, info.indexOf('/')));
             TOKENS[i].set(0);
-            score[i] = 0;
             rest = rest.substring(info.indexOf('/'));
         }
         // Set the name of the player in turn
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
+        if (playerinturnid == 0){
+            INTURN.set(true);
+        }
     }
 
-    // Assign the drawn card to the correct slot
+    /**
+     * Assign the drawn card to the correct slot
+     * @param cardname
+     */
     public void setDrawnCard(String cardname){
             /*if (handcard[0].get() == null) {
                     //handcard[0].set(cardname); TODO
@@ -223,7 +260,10 @@ public class Client extends Application{
         OUT.println("done");
     }
 
-    // Show the card played by the player in turn
+    /**
+     * Show the card played by the player in turn
+     * @param cardname
+     */
     public void setPlayedCard(String cardname){
         // If it is someone else's turn, show the played card in the drawn card slot
         if (playerinturnid != 0){
@@ -243,11 +283,18 @@ public class Client extends Application{
             playerinturnid = (playerinturnid + 1) % numberofplayers;
         }
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
+        if (playerinturnid == 0){
+            INTURN.set(true);
+        }
         // Show a hidden card in the active player's drawn card slot
         //drawncard[playerinturnid].set(dummycard); TODO
         OUT.println("done");
     }
 
+    /**
+     * Add the given Player to the Out-Of-Round-List and clear the corresponding player panel
+     * @param name
+     */
     public void outOfRound(String name){
         OUTOFROUND.set(OUTOFROUND.get() + name + "\n");
         for(int i=0; i<numberofplayers; i++){
@@ -256,11 +303,21 @@ public class Client extends Application{
                 //drawncard[i].set(null);
             }
         }
+        while (OUTOFROUND.get().contains(PLAYERS[playerinturnid].get())){
+            playerinturnid = (playerinturnid + 1) % numberofplayers;
+        }
+        PLAYERINTURN.set(PLAYERS[playerinturnid].get());
     }
 
+    /**
+     * Display the results of this round in a Window and reset the player panels for the next round
+     * @param info
+     * @throws IOException
+     */
     public void endOfRound(String info) throws IOException{
         String winneroflastround = info.substring(2*numberofplayers + 1);
         String endofroundinfo = "Winner: " + winneroflastround + "\n\n" + "Score: \n";
+        int[] score = new int[numberofplayers];
         for (int i = 0; i < numberofplayers; i++) {
             DISCARDEDCARDS[i].set("");
             //handcard[i].set(dummycard);
@@ -278,6 +335,11 @@ public class Client extends Application{
         LAUNCHER.launchEndOfRound(endofroundinfo);
     }
 
+    /**
+     * Display the game results in a Window and reset the game panels
+     * @param info
+     * @throws IOException
+     */
     public void endOfGame(String info) throws IOException{
         String winner = info.substring(2*numberofplayers + 1);
         String endofgameinfo = "Winner: " + winner + "\n\n" + "Tokens: \n";
@@ -286,9 +348,26 @@ public class Client extends Application{
             endofgameinfo = endofgameinfo + String.format("%-20.20s %2d" , PLAYERS[i].get(), TOKENS[i].get()) + "\n";
         }
         LAUNCHER.launchEndOfGame(endofgameinfo);
-        // end-of-game Window?
+        // Reset the game panels
+        playerinturnid = 0;
+        for (int i = 0; i < numberofplayers; i++) {
+            PLAYERS[i].set("");
+            TOKENS[i].set(0);
+            //handcard[i].set(null);
+            //drawncard[i].set(null);
+            DISCARDEDCARDS[i].set("");
+        }
+        numberofplayers = 0;
+        PLAYERINTURN.set("");
+        INTURN.set(false);
+        GAMERUNNING.set(false);
+        //GAMEEXISTS.set(false);??
     }
 
+    /**
+     * Send message to the server, quit if logout order is given
+     * @param message
+     */
     public void sendMessage(String message){
             // Check logout condition
             if (message.equals("bye")) {
@@ -310,6 +389,11 @@ public class Client extends Application{
             }
     }
 
+    /**
+     * Execute an order from the server by checking the order code and calling the correct method
+     * @param order
+     * @throws IOException
+     */
     public void executeOrder(String order) throws IOException {
         Client client = this;
         switch (order.charAt(0)) {
@@ -380,7 +464,11 @@ public class Client extends Application{
         }
     }
 
-
+    /**
+     * Starts the application on the client side
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         // start the login process
