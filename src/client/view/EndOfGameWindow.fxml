@@ -25,7 +25,7 @@
         </ImageView>
         <AnchorPane fx:id="background2" prefHeight="400.0" prefWidth="600.0">
             <children>
-                <Label fx:id="infoField" alignment="CENTER" layoutX="71.0" layoutY="40.0" prefHeight="300.0" prefWidth="460.0" textAlignment="JUSTIFY" textFill="#fcfafad9">
+                <Label fx:id="infoField" alignment="CENTER" layoutX="71.0" layoutY="40.0" prefHeight="300.0" prefWidth="460.0" textAlignment="LEFT" textFill="#fcfafad9">
                     <font>
                         <Font name="Chalkduster" size="22.0" />
                     </font>
