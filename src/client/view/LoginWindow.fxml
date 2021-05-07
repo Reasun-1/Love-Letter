@@ -56,14 +56,14 @@
             </Lighting>
          </effect>
       </TextField>
-      <Button fx:id="startButton" layoutX="257.0" layoutY="308.0" defaultButton="true" mnemonicParsing="false" onAction="#loginButton" prefHeight="30.0" prefWidth="86.0" text="Start" textFill="#540707">
+      <Button fx:id="startButton" defaultButton="true" layoutX="257.0" layoutY="308.0" mnemonicParsing="false" onAction="#loginButton" prefHeight="30.0" prefWidth="86.0" text="Start" textFill="#391212">
          <effect>
             <Lighting>
                <bumpInput>
                   <Shadow />
                </bumpInput>
                <light>
-                  <Light.Distant color="#540505" />
+                  <Light.Distant color="#ae3939" />
                </light>
             </Lighting>
          </effect>

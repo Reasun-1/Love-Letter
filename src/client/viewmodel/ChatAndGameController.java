@@ -29,13 +29,13 @@ public class ChatAndGameController {
     private BorderPane mainBorderPane;
 
     @FXML
+    private AnchorPane clientPane;
+
+    @FXML
     private TextField clientName;
 
     @FXML
-    private SplitPane mainSplitPane;
-
-    @FXML
-    private AnchorPane writePane;
+    private ScrollPane chat;
 
     @FXML
     private TextField messageField;
@@ -45,6 +45,9 @@ public class ChatAndGameController {
 
     @FXML
     private Button sendButton;
+
+    @FXML
+    private GridPane playersField;
 
     @FXML
     private AnchorPane chatFieldPane;
