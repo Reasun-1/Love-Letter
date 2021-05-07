@@ -1,9 +1,6 @@
 package client.controller;
 
-import client.viewmodel.ChatAndGameController;
-import client.viewmodel.ErrorController;
-import client.viewmodel.LoginController;
-import client.viewmodel.QuestionController;
+import client.viewmodel.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
