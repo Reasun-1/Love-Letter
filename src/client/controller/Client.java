@@ -230,17 +230,32 @@ public class Client extends Application{
             //drawncard[playerinturnid].set(cardname); TODO
         }
         // Reset the drawn card's slot of the last player
-        //drawncard[(playerinturnid - 1) % numberofplayers].set(null);
+        int previousplayer = (playerinturnid - 1) % numberofplayers;
+        while (OUTOFROUND.get().contains(PLAYERS[previousplayer].get())){
+            previousplayer = (previousplayer - 1) % numberofplayers;
+        }
+        //drawncard[previousplayer].set(null);
         // Add the played card to the discarded card pile
         DISCARDEDCARDS[playerinturnid].concat(cardname + "\n");
-        // Update the score
-        // score[playerinturnid] = ??
         // Change the player in turn
         playerinturnid = (playerinturnid + 1) % numberofplayers;
+        while (OUTOFROUND.get().contains(PLAYERS[playerinturnid].get())){
+            playerinturnid = (playerinturnid + 1) % numberofplayers;
+        }
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
         // Show a hidden card in the active player's drawn card slot
         //drawncard[playerinturnid].set(dummycard); TODO
         OUT.println("done");
+    }
+
+    public void outOfRound(String name){
+        OUTOFROUND.set(OUTOFROUND.get() + name + "\n");
+        for(int i=0; i<numberofplayers; i++){
+            if (PLAYERS[i].get().equals(name)){
+                //handcard[i].set(null);
+                //drawncard[i].set(null);
+            }
+        }
     }
 
     public void endOfRound(String info) throws IOException{
@@ -359,6 +374,9 @@ public class Client extends Application{
                 endOfGame(order.substring(1));
                 OUT.println("done");
                 break;
+            case '9': // out of round
+                outOfRound(order.substring(1));
+                OUT.println("done");
         }
     }
 
@@ -375,7 +393,8 @@ public class Client extends Application{
         //LAUNCHER.launchQuestion(this, "Please enter your card guess:");
 
         // Only for tests
-        LAUNCHER.launchEndOfGame("Winner: Pascal\n\n Score:\n" + String.format("%-20.20s %2d" , "Pascal", 12) + "\n" + String.format("%-20.20s %2d" , "Elisabeth", 10) + "\n" + String.format("%-20.20s %2d" , "Can", 3) + "\n" + String.format("%-20.20s %2d" , "John", 5) + "\n");
+        LAUNCHER.launchEndOfGame("Winner: Pascal\n\n Score:\n" + String.format("%-20.20s %2.2s" , "Pascal", "12") + "\n" + String.format("%-20.20s %2.2s" , "Elisabeth", "10") + "\n" + String.format("%-20.20s %2.2s" , "Can", "3") + "\n" + String.format("%-20.20s %2.2s" , "John", "5") + "\n");
+
 
         // Open chat after logging in successfully
         LAUNCHER.launchChat(this);

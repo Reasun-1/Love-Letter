@@ -244,6 +244,12 @@ public class Server {
         }
     }
 
+    public void outOfRound(String name) throws IOException {
+        for(int i=0;i<playerList.size();i++){
+            clientList.get(playerList.get(i)).receiveOrder("9" + name);
+        }
+    }
+
     //server sends message to all clients
     public void sendMessageToAll(String message){
         try{
