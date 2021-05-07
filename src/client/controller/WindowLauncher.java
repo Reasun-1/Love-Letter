@@ -1,6 +1,6 @@
 package client.controller;
 
-import client.viewmodel.ChatRoomController;
+import client.viewmodel.ChatAndGameController;
 import client.viewmodel.ErrorController;
 import client.viewmodel.LoginController;
 import client.viewmodel.QuestionController;
@@ -49,7 +49,7 @@ public class WindowLauncher {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/client/view/ChatRoomView.fxml"));
         Parent root = loader.load();
-        ChatRoomController ctrl = loader.getController();
+        ChatAndGameController ctrl = loader.getController();
         ctrl.init(client);
         stage.setScene(new Scene(root, 600, 400));
         stage.show();

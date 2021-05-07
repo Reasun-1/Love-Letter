@@ -7,7 +7,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-public class ChatRoomViewModel {
+public class ChatAndGameViewModel {
    /* private Client client;
     private TextArea chatInput;
     private TextField messageOutput;

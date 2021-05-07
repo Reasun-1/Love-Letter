@@ -9,7 +9,7 @@ import client.controller.Client;
 
 // Controller Class for the Chat Window connected with the fxml file via data binding
 
-public class ChatRoomController {
+public class ChatAndGameController {
 
     @FXML
     private MenuItem drawnCardItem;
