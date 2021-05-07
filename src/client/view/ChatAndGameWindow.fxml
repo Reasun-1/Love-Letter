@@ -107,8 +107,8 @@
                                           <Font size="11.0" />
                                        </font>
                                        <items>
-                                          <MenuItem fx:id="secHandCardItem1" mnemonicParsing="false" text="Action 1" />
-                                          <MenuItem fx:id="secHandCardItem2" mnemonicParsing="false" text="Action 2" />
+                                          <MenuItem fx:id="secHandCardItemOne" mnemonicParsing="false" text="Action 1" />
+                                          <MenuItem fx:id="secHandCardItemTwo" mnemonicParsing="false" text="Action 2" />
                                        </items>
                                     </MenuButton>
                                  </children>
@@ -117,8 +117,8 @@
                                  <children>
                                     <MenuButton fx:id="secDrawnCardMenuButton" layoutX="21.0" layoutY="104.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="101.0" text="Drawn Card" AnchorPane.rightAnchor="75.0">
                                       <items>
-                                        <MenuItem fx:id="secDrawnCardItem1" mnemonicParsing="false" text="Action 1" />
-                                        <MenuItem fx:id="secDrawnCardItem2" mnemonicParsing="false" text="Action 2" />
+                                        <MenuItem fx:id="secDrawnCardItemOne" mnemonicParsing="false" text="Action 1" />
+                                        <MenuItem fx:id="secDrawnCardItemTwo" mnemonicParsing="false" text="Action 2" />
                                       </items>
                                        <font>
                                           <Font size="11.0" />
@@ -140,8 +140,8 @@
                                     <Font size="11.0" />
                                  </font>
                                  <items>
-                                    <MenuItem fx:id="thirdHandCardItem1" mnemonicParsing="false" text="Action 1" />
-                                    <MenuItem fx:id="thirdHandCardItem2" mnemonicParsing="false" text="Action 2" />
+                                    <MenuItem fx:id="thirdHandCardItemOne" mnemonicParsing="false" text="Action 1" />
+                                    <MenuItem fx:id="thirdHandCardItemTwo" mnemonicParsing="false" text="Action 2" />
                                  </items>
                               </MenuButton>
                               <MenuButton fx:id="thirdDrawnCardMenuButton" layoutX="144.0" layoutY="224.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="101.0" text="Drawn Card" AnchorPane.bottomAnchor="48.0" AnchorPane.topAnchor="218.0">
@@ -149,8 +149,8 @@
                                     <Font size="11.0" />
                                  </font>
                                  <items>
-                                    <MenuItem fx:id="thirdDrawnCardItem1" mnemonicParsing="false" text="Action 1" />
-                                    <MenuItem fx:id="thirdDrawnCardItem2" mnemonicParsing="false" text="Action 2" />
+                                    <MenuItem fx:id="thirdDrawnCardItemOne" mnemonicParsing="false" text="Action 1" />
+                                    <MenuItem fx:id="thirdDrawnCardItemTwo" mnemonicParsing="false" text="Action 2" />
                                  </items>
                               </MenuButton>
                            </children>
@@ -169,8 +169,8 @@
                                           <Font size="11.0" />
                                        </font>
                                        <items>
-                                          <MenuItem fx:id="fourthHandCardItem1" mnemonicParsing="false" text="Action 1" />
-                                          <MenuItem fx:id="fourthHandCardItem2" mnemonicParsing="false" text="Action 2" />
+                                          <MenuItem fx:id="fourthHandCardItemOne" mnemonicParsing="false" text="Action 1" />
+                                          <MenuItem fx:id="fourthHandCardItemTwo" mnemonicParsing="false" text="Action 2" />
                                        </items>
                                     </MenuButton>
                                  </children>
@@ -180,8 +180,8 @@
                                     <Font size="11.0" />
                                  </font>
                                  <items>
-                                    <MenuItem fx:id="fourthDrawnCardItem1" mnemonicParsing="false" text="Action 1" />
-                                    <MenuItem fx:id="fourthDrawnCardItem2" mnemonicParsing="false" text="Action 2" />
+                                    <MenuItem fx:id="fourthDrawnCardItemOne" mnemonicParsing="false" text="Action 1" />
+                                    <MenuItem fx:id="fourthDrawnCardItemTwo" mnemonicParsing="false" text="Action 2" />
                                  </items>
                               </MenuButton>
                            </children>
@@ -190,8 +190,8 @@
                            <children>
                               <MenuButton fx:id="yourHandCardMenuButton" layoutX="26.0" layoutY="250.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="101.0" text="Hand Card" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="125.0">
                                 <items>
-                                  <MenuItem fx:id="yourHandCardItem1" mnemonicParsing="false" text="Action 1" />
-                                  <MenuItem fx:id="fourthHandCardItem2" mnemonicParsing="false" text="Action 2" />
+                                  <MenuItem fx:id="yourHandCardItemOne" mnemonicParsing="false" text="Action 1" />
+                                  <MenuItem fx:id="yourHandCardItemTwo" mnemonicParsing="false" text="Action 2" />
                                 </items>
                                  <font>
                                     <Font size="11.0" />
@@ -202,8 +202,8 @@
                                     <Font size="11.0" />
                                  </font>
                                  <items>
-                                    <MenuItem fx:id="yourDrawnCardItem1" mnemonicParsing="false" text="Action 1" />
-                                    <MenuItem fx:id="yourDrawnCardItem2" mnemonicParsing="false" text="Action 2" />
+                                    <MenuItem fx:id="yourDrawnCardItemOne" mnemonicParsing="false" text="Action 1" />
+                                    <MenuItem fx:id="yourDrawnCardItemTwo" mnemonicParsing="false" text="Action 2" />
                                  </items>
                               </MenuButton>
                               <AnchorPane fx:id="yourPane" layoutX="-11.0" layoutY="-29.0" prefHeight="200.0" prefWidth="200.0">
