@@ -121,7 +121,7 @@ public class ServerThread implements Runnable {
 
     //**********************new**************************
     //send direkt Message to a or several players
-    public void sendPrivateMessage(String name, String msg) throws IOException{
+    public void sendPrivateMessage(String name, String msg){
         Server.getServer().sendTo(name, msg);
     }
 

@@ -66,7 +66,7 @@ public class WindowLauncher {
         loader.setLocation(getClass().getResource("/client/view/ChatAndGameWindow.fxml"));
         Parent root = loader.load();
         ChatAndGameController ctrl = loader.getController();
-        //ctrl.init(client);
+        ctrl.init(client);
         stage.setScene(new Scene(root, 600, 400));
         stage.show();
         stage.setOnCloseRequest((event) -> Platform.exit());

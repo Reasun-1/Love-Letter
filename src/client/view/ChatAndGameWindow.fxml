@@ -26,7 +26,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="607.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="607.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.viewmodel.ChatAndGameController">
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0">
          <children>
@@ -42,15 +42,15 @@
                                     <Image url="@../resources/rusty_paper.jpg" />
                                  </image>
                               </ImageView>
-                              <TextField fx:id="clientName" layoutX="-3.0" prefHeight="27.0" prefWidth="1005.0" promptText="Client name">
+                              <Label fx:id="clientName" layoutX="-3.0" prefHeight="27.0" prefWidth="1005.0">
                                  <font>
                                     <Font name="System Bold" size="13.0" />
                                  </font>
                                  <effect>
                                     <Reflection />
                                  </effect>
-                              </TextField>
-                              <ScrollPane layoutX="16.0" layoutY="47.0" prefHeight="390.0" prefWidth="239.0">
+                              </Label>
+                              <ScrollPane fx:id="messagesHistory" layoutX="16.0" layoutY="47.0" prefHeight="390.0" prefWidth="239.0">
                                 <content>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
                                        <children>
@@ -61,9 +61,9 @@
                                     <SepiaTone />
                                  </effect>
                               </ScrollPane>
-                              <TextField fx:id="messageField" alignment="CENTER" layoutX="39.0" layoutY="442.0" prefHeight="42.0" prefWidth="177.0" promptText="Message" text="Type your message here" />
-                              <ComboBox fx:id="sendToBox" layoutX="11.0" layoutY="515.0" prefHeight="34.0" prefWidth="103.0" promptText="Send to" />
-                              <Button fx:id="sendButton" layoutX="136.0" layoutY="514.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="114.0" text="Send">
+                              <TextField fx:id="messageField" alignment="CENTER" layoutX="39.0" layoutY="442.0" prefHeight="42.0" prefWidth="177.0" promptText="Type your message here..." />
+                              <TextField fx:id="sendTo" layoutX="11.0" layoutY="515.0" prefHeight="34.0" prefWidth="103.0" promptText="Send to" />
+                              <Button fx:id="sendButton" layoutX="136.0" layoutY="514.0" mnemonicParsing="false" onAction="#send" prefHeight="34.0" prefWidth="114.0" text="Send">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
@@ -87,16 +87,16 @@
                                                       <Font size="18.0" />
                                                    </font>
                                                 </Text>
-                                                <ImageView fitHeight="176.0" fitWidth="120.0" layoutX="-11.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="yourHandCard" fitHeight="176.0" fitWidth="120.0" layoutX="-11.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../resources/Countess_Card.jpg" />
                                                    </image>
                                                 </ImageView>
                                              </children>
                                           </AnchorPane>
-                                          <Button layoutX="9.0" layoutY="235.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="105.0" text="Play handcard" />
-                                          <Button layoutX="141.0" layoutY="236.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="105.0" text="Play drawncard" />
-                                          <ImageView fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+                                          <Button fx:id="playHandCardYou" layoutX="9.0" layoutY="235.0" mnemonicParsing="false" onAction="#playHandCard" prefHeight="31.0" prefWidth="105.0" text="Play handcard" />
+                                          <Button fx:id="playDrawnCardYou" layoutX="141.0" layoutY="236.0" mnemonicParsing="false" onAction="#playDrawnCard" prefHeight="32.0" prefWidth="105.0" text="Play drawncard" />
+                                          <ImageView fx:id="yourDrawnCard" fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
@@ -114,12 +114,12 @@
                                                 </Text>
                                              </children>
                                           </AnchorPane>
-                                          <ImageView fitHeight="174.0" fitWidth="122.0" layoutX="5.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="player2HandCard" fitHeight="174.0" fitWidth="122.0" layoutX="5.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="170.0" fitWidth="122.0" layoutX="132.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="player2DrawnCard" fitHeight="170.0" fitWidth="122.0" layoutX="132.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
@@ -133,12 +133,12 @@
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
-                                          <ImageView fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="player3HandCard" fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="180.0" fitWidth="124.0" layoutX="2.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="player3DrawnCard" fitHeight="180.0" fitWidth="124.0" layoutX="2.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
@@ -152,12 +152,12 @@
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
-                                          <ImageView fitHeight="174.0" fitWidth="124.0" layoutX="4.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="player4HandCard" fitHeight="174.0" fitWidth="124.0" layoutX="4.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fitHeight="173.0" fitWidth="124.0" layoutX="131.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="player4DrawnCard" fitHeight="173.0" fitWidth="124.0" layoutX="131.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
@@ -226,7 +226,7 @@
                                     <Font name="Arial Black" size="23.0" />
                                  </font>
                               </Text>
-                              <ScrollPane layoutX="804.0" layoutY="380.0" prefHeight="164.0" prefWidth="188.0">
+                              <ScrollPane fx:id="outOfRoundCards" layoutX="804.0" layoutY="380.0" prefHeight="164.0" prefWidth="188.0">
                                 <content>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="187.0" prefWidth="159.0" />
                                 </content>
