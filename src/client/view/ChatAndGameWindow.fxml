@@ -59,9 +59,12 @@
                                     <Reflection />
                                  </effect>
                               </TextField>
-                              <ScrollPane layoutX="16.0" layoutY="47.0" prefHeight="390.0" prefWidth="239.0">
+                              <ScrollPane hbarPolicy="ALWAYS" layoutX="16.0" layoutY="47.0" pannable="true" prefHeight="390.0" prefWidth="239.0" vbarPolicy="ALWAYS">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <TextArea prefHeight="375.0" prefWidth="227.0" />
+                                       </children></AnchorPane>
                                 </content>
                                  <effect>
                                     <SepiaTone />

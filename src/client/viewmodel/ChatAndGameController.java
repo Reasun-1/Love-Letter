@@ -39,6 +39,9 @@ public class ChatAndGameController {
     @FXML
     private ScrollPane messagesHistory; //registers the written messages on TextField
 
+    @FXML
+    private ScrollPane chatHistory;
+
 
     @FXML
     private TextField messageField; //bind the typed message with message history scroll pane
@@ -133,7 +136,7 @@ public class ChatAndGameController {
         //ChatAndGameViewModel chgvm = new ChatAndGameViewModel();
         //connects the send button and the message field together (if message field is empty then u can't press the send button)
         sendButton.disableProperty().bind(messageField.textProperty().isEmpty());
-        messagesHistory.accessibleTextProperty().bindBidirectional(client.getChatHistory());
+        chatHistory.accessibleTextProperty().bindBidirectional(client.getChatHistory());
         yourHandCard.imageProperty().bind(Bindings.createObjectBinding(() -> images.get(client.getHandCard(0).getValue()),
                 client.getHandCard(0)));
         yourDrawnCard.imageProperty().bind(Bindings.createObjectBinding(() -> images.get(client.getDrawnCard(0).getValue()),
