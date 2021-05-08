@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+* ChatAndGameWindow.fxml represents the design of the ChatAndGameWindow by using Scene Builder.
+* It is the window that shows up after the successful log in of the client and can only be opened
+* successfully with the help of ChatAndGameController and ChatAndGameViewModel classes.
+* @author Rajna Fani
+* @author Xheneta Krasniqi
+* @version 1.0-SNAPSHOT
+-->
+
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>

@@ -8,6 +8,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * ErrorController Class is responsible for the Error Window that pops up when an error occurs.
+ * It is connected with the FXML ErrorWindow File and with ErrorViewModel in order to complete the
+ * conditions of a MVVM model
+ * @author Rajna Fani
+ * @version 1.0-SNAPSHOT
+ */
+
+
 public class ErrorController {
     @FXML
     private Pane errorRootPane;

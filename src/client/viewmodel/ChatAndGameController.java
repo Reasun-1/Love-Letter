@@ -103,6 +103,9 @@ public class ChatAndGameController {
     @FXML
     private Button joinGame;
 
+    @FXML
+    private Button startGame;
+
     private Client client;
 
     private List<Image> images = Arrays.asList(new Image(getClass().getResource("/client/resources/Card_Back_Red.jpg").toString()),
@@ -174,12 +177,16 @@ public class ChatAndGameController {
         client.playDrawnCard();
     }
 
-   /* private void joinGame(){
+   private void joinGame(){
         client.joinGame();
     }
 
     private void createGame(){
         client.createGame();
-    }*/
+    }
+
+    private void startGame(){
+        client.startGame();
+    }
 
 }

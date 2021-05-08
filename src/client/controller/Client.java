@@ -111,24 +111,24 @@ public class Client extends Application{
      */
     public Client() throws IOException{
 
-            // Always connect to localhost and fixed port (maybe ask for ip and port?)
-            socket = new Socket("127.0.0.1", 5200);
+        // Always connect to localhost and fixed port (maybe ask for ip and port?)
+        socket = new Socket("127.0.0.1", 5200);
 
-            // Create writer to send messages to server via the TCP-socket
-            OUT = new PrintWriter(socket.getOutputStream(), true);
+        // Create writer to send messages to server via the TCP-socket
+        OUT = new PrintWriter(socket.getOutputStream(), true);
 
-            // Create reader to receive messages from server via the TCP-socket
-            IN = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        // Create reader to receive messages from server via the TCP-socket
+        IN = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            // Start with an empty name, will be set during Login
-            name = "";
+        // Start with an empty name, will be set during Login
+        name = "";
 
         for (int i=0;i<4;i++){
-                PLAYERS[i] = new SimpleStringProperty();
-                handcard[i] = new SimpleIntegerProperty();
-                drawncard[i] = new SimpleIntegerProperty();
-                TOKENS[i] = new SimpleIntegerProperty();
-            }
+            PLAYERS[i] = new SimpleStringProperty();
+            handcard[i] = new SimpleIntegerProperty();
+            drawncard[i] = new SimpleIntegerProperty();
+            TOKENS[i] = new SimpleIntegerProperty();
+        }
         // The first input from the Server will be info about a Game existing/running on this Server
         String gameinfo = IN.readLine();
         GAMEEXISTS.set(gameinfo.charAt(0) != '0');
@@ -212,10 +212,10 @@ public class Client extends Application{
      * Play your hand card (only possible if this client is player in turn in the current game). Order Code: 5
      */
     public void playHandCard() {
-            OUT.println("/5" + CARDS.get(handcard[0].get()));
-            Integer playedcard = handcard[0].get();
-            handcard[0].set(drawncard[0].get());
-            drawncard[0].set(playedcard);
+        OUT.println("/5" + CARDS.get(handcard[0].get()));
+        Integer playedcard = handcard[0].get();
+        handcard[0].set(drawncard[0].get());
+        drawncard[0].set(playedcard);
         INTURN.set(false);
     }
 
@@ -255,11 +255,11 @@ public class Client extends Application{
      * @param cardname
      */
     public void setDrawnCard(String cardname){
-            if (handcard[0].get() == 9) {
-                    handcard[0].set(CARDS.indexOf(cardname));
-                } else {
-                    drawncard[0].set(CARDS.indexOf(cardname));
-                }
+        if (handcard[0].get() == 9) {
+            handcard[0].set(CARDS.indexOf(cardname));
+        } else {
+            drawncard[0].set(CARDS.indexOf(cardname));
+        }
         OUT.println("done");
     }
 
@@ -373,24 +373,24 @@ public class Client extends Application{
      * @param message
      */
     public void sendMessage(String message){
-            // Check logout condition
-            if (message.equals("bye")) {
-                OUT.println("/0quit");
-                // stop the connection
-                try {
-                    if (socket != null) {
-                        socket.close();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        // Check logout condition
+        if (message.equals("bye")) {
+            OUT.println("/0quit");
+            // stop the connection
+            try {
+                if (socket != null) {
+                    socket.close();
                 }
-                // Confirm logout (currently via terminal)
-                System.out.println("You left the room.");
-                // Soon: Logout-Window
-            } else {
-                // Send message to server
-                OUT.println("$" + message);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            // Confirm logout (currently via terminal)
+            System.out.println("You left the room.");
+            // Soon: Logout-Window
+        } else {
+            // Send message to server
+            OUT.println("$" + message);
+        }
     }
 
     /**
@@ -477,6 +477,7 @@ public class Client extends Application{
     public void start(Stage primaryStage) throws Exception {
         // start the login process
         LAUNCHER.launchLogin(this);
+
         // Only for tests
         //LAUNCHER.launchError("This is a test error");
 
