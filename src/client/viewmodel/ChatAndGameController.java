@@ -20,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import client.controller.Client;
+import javafx.scene.control.TextArea;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -33,15 +34,11 @@ public class ChatAndGameController {
     @FXML
     private BorderPane chatSplitting;
 
-    @FXML
-    private Label clientName; //must be bonded with the logInWindow (clientName)
+    //@FXML
+    //private Label clientName; //must be bonded with the logInWindow (clientName)
 
     @FXML
-    private ScrollPane messagesHistory; //registers the written messages on TextField
-
-    @FXML
-    private ScrollPane chatHistory;
-
+    private TextArea messagesHistory; //registers the written messages on TextField
 
     @FXML
     private TextField messageField; //bind the typed message with message history scroll pane
@@ -54,6 +51,15 @@ public class ChatAndGameController {
 
     @FXML
     private GridPane playBoard;
+
+    @FXML
+    private Text secPlayerText;
+
+    @FXML
+    private Text thirdPlayerText;
+
+    @FXML
+    private Text fourthPlayerText;
 
     @FXML
     private Button playHandCardYou;
@@ -98,7 +104,7 @@ public class ChatAndGameController {
     private TextField player4Score;
 
     @FXML
-    private ScrollPane outOfRoundCards;
+    private TextArea outOfRoundCards;
 
     @FXML
     private Button createGame;
@@ -108,6 +114,27 @@ public class ChatAndGameController {
 
     @FXML
     private Button startGame;
+
+    @FXML
+    private Label player2;
+
+    @FXML
+    private Label player3;
+
+    @FXML
+    private Label player4;
+
+    @FXML
+    private Label score1;
+
+    @FXML
+    private Label score2;
+
+    @FXML
+    private Label score3;
+
+    @FXML
+    private Label score4;
 
     private Client client;
 
@@ -131,12 +158,12 @@ public class ChatAndGameController {
      */
     public void init(Client client){
         this.client = client;
-        clientName.setText(client.getName());
+        //clientName.setText(client.getName());
         //create the view model of Chat and Game Room
         //ChatAndGameViewModel chgvm = new ChatAndGameViewModel();
         //connects the send button and the message field together (if message field is empty then u can't press the send button)
         sendButton.disableProperty().bind(messageField.textProperty().isEmpty());
-        chatHistory.accessibleTextProperty().bindBidirectional(client.getChatHistory());
+        messagesHistory.textProperty().bindBidirectional(client.getChatHistory());
         yourHandCard.imageProperty().bind(Bindings.createObjectBinding(() -> images.get(client.getHandCard(0).getValue()),
                 client.getHandCard(0)));
         yourDrawnCard.imageProperty().bind(Bindings.createObjectBinding(() -> images.get(client.getDrawnCard(0).getValue()),
@@ -153,7 +180,7 @@ public class ChatAndGameController {
                 client.getHandCard(3)));
         player4DrawnCard.imageProperty().bind(Bindings.createObjectBinding(() -> images.get(client.getDrawnCard(3).getValue()),
                 client.getDrawnCard(3)));
-        outOfRoundCards.accessibleTextProperty().bindBidirectional(client.getDiscardedCards());
+        outOfRoundCards.textProperty().bindBidirectional(client.getDiscardedCards());
         playHandCardYou.disableProperty().bind(client.getInTurn().not());
         playDrawnCardYou.disableProperty().bind(client.getInTurn().not());
     }
@@ -180,14 +207,17 @@ public class ChatAndGameController {
         client.playDrawnCard();
     }
 
-   private void joinGame(){
+    @FXML
+    private void joinGame(){
         client.joinGame();
     }
 
+    @FXML
     private void createGame(){
         client.createGame();
     }
 
+    @FXML
     private void startGame(){
         client.startGame();
     }
