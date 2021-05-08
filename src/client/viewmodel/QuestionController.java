@@ -17,10 +17,10 @@ public class QuestionController {
     private Button sendButton;
 
     @FXML
-    private Label questionField;
+    private Label questionField; //label provides the change of the text based on the context
 
     @FXML
-    private TextField answer;
+    private TextField answer; // textfield provides input of a message
 
     private Client client;
 

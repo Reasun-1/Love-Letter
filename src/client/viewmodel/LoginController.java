@@ -32,7 +32,10 @@ public class LoginController {
     private Client client;
 
 
-    // a method to initialize the logIn View (window) based on the FXML designed file
+    /**
+     * Method to be called from WindowLauncher to check the entered name.
+     * @param client
+     */
     public void init(Client client){
         this.client = client;
         //create the viewModel
@@ -46,7 +49,11 @@ public class LoginController {
     }
 
     @FXML
-    // creates a new event where another scene(window) is opened after pressing the "start" Button on login window
+    /**
+     * Method creates a new event where another scene(window)
+     * is opened after pressing the "start" Button on login window
+     * @param event
+     */
     private void loginButton(ActionEvent event) {
         Stage stage = (Stage) startButton.getScene().getWindow();
         client.checkName(name.getText());

@@ -8,11 +8,12 @@ public class ErrorViewModel {
     private StringProperty errorMessage;
 
     public ErrorViewModel(String msg){
-        errorMessage = new SimpleStringProperty(msg);
+
+        errorMessage = new SimpleStringProperty(msg); //
     }
 
     public StringProperty getErrorMessage(){
+
         return errorMessage;
     }
-
 }
