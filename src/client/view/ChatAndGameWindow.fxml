@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-* ChatAndGameWindow.fxml represents the design of the ChatAndGameWindow by using Scene Builder.
-* It is the window that shows up after the successful log in of the client and can only be opened
-* successfully with the help of ChatAndGameController and ChatAndGameViewModel classes.
-* @author Rajna Fani
-* @author Xheneta Krasniqi
-* @version 1.0-SNAPSHOT
--->
 
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -34,7 +26,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="607.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.viewmodel.ChatAndGameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="607.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0">
          <children>
@@ -45,33 +37,30 @@
                         <BorderPane fx:id="mainBorderPane" layoutY="-7.0" prefHeight="30.0" prefWidth="700.0" />
                         <AnchorPane layoutX="11.0" layoutY="28.0" prefHeight="609.0" prefWidth="1002.0">
                            <children>
-                              <ImageView fitHeight="607.0" fitWidth="1002.0" layoutX="-1.0" layoutY="1.0">
+                              <ImageView fitHeight="607.0" fitWidth="1002.0" layoutX="2.0" layoutY="9.0">
                                  <image>
                                     <Image url="@../resources/rusty_paper.jpg" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="clientName" layoutX="-3.0" prefHeight="27.0" prefWidth="1005.0">
+                              <TextField fx:id="clientName" layoutX="-3.0" prefHeight="27.0" prefWidth="1005.0" promptText="Client name">
                                  <font>
                                     <Font name="System Bold" size="13.0" />
                                  </font>
                                  <effect>
                                     <Reflection />
                                  </effect>
-                              </Label>
-                              <ScrollPane fx:id="messagesHistory" layoutX="16.0" layoutY="47.0" prefHeight="390.0" prefWidth="239.0">
+                              </TextField>
+                              <ScrollPane layoutX="16.0" layoutY="47.0" prefHeight="390.0" prefWidth="239.0">
                                 <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
-                                       <children>
-                                          <TextField layoutX="-3.0" prefHeight="393.0" prefWidth="243.0" />
-                                       </children></AnchorPane>
+                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
                                 </content>
                                  <effect>
                                     <SepiaTone />
                                  </effect>
                               </ScrollPane>
-                              <TextField fx:id="messageField" alignment="CENTER" layoutX="39.0" layoutY="442.0" prefHeight="42.0" prefWidth="177.0" promptText="Type your message here..." />
-                              <TextField fx:id="sendTo" layoutX="11.0" layoutY="515.0" prefHeight="34.0" prefWidth="103.0" promptText="Send to" />
-                              <Button fx:id="sendButton" layoutX="136.0" layoutY="514.0" mnemonicParsing="false" onAction="#send" prefHeight="34.0" prefWidth="114.0" text="Send">
+                              <TextField fx:id="messageField" alignment="CENTER" layoutX="39.0" layoutY="442.0" prefHeight="42.0" prefWidth="177.0" promptText="Message" text="Type your message here" />
+                              <ComboBox fx:id="sendToBox" layoutX="11.0" layoutY="515.0" prefHeight="34.0" prefWidth="103.0" promptText="Send to" />
+                              <Button fx:id="sendButton" layoutX="136.0" layoutY="514.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="114.0" text="Send">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
@@ -95,16 +84,16 @@
                                                       <Font size="18.0" />
                                                    </font>
                                                 </Text>
-                                                <ImageView fx:id="yourHandCard" fitHeight="176.0" fitWidth="120.0" layoutX="-11.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="176.0" fitWidth="120.0" layoutX="-11.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../resources/Countess_Card.jpg" />
                                                    </image>
                                                 </ImageView>
                                              </children>
                                           </AnchorPane>
-                                          <Button fx:id="playHandCardYou" layoutX="9.0" layoutY="235.0" mnemonicParsing="false" onAction="#playHandCard" prefHeight="31.0" prefWidth="105.0" text="Play handcard" />
-                                          <Button fx:id="playDrawnCardYou" layoutX="141.0" layoutY="236.0" mnemonicParsing="false" onAction="#playDrawnCard" prefHeight="32.0" prefWidth="105.0" text="Play drawncard" />
-                                          <ImageView fx:id="yourDrawnCard" fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+                                          <Button layoutX="9.0" layoutY="235.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="105.0" text="Play handcard" />
+                                          <Button layoutX="141.0" layoutY="236.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="105.0" text="Play drawncard" />
+                                          <ImageView fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
@@ -122,12 +111,12 @@
                                                 </Text>
                                              </children>
                                           </AnchorPane>
-                                          <ImageView fx:id="player2HandCard" fitHeight="174.0" fitWidth="122.0" layoutX="5.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="174.0" fitWidth="122.0" layoutX="5.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fx:id="player2DrawnCard" fitHeight="170.0" fitWidth="122.0" layoutX="132.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="170.0" fitWidth="122.0" layoutX="132.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
@@ -141,12 +130,12 @@
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
-                                          <ImageView fx:id="player3HandCard" fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fx:id="player3DrawnCard" fitHeight="180.0" fitWidth="124.0" layoutX="2.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="180.0" fitWidth="124.0" layoutX="2.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
@@ -160,12 +149,12 @@
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
-                                          <ImageView fx:id="player4HandCard" fitHeight="174.0" fitWidth="124.0" layoutX="4.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="174.0" fitWidth="124.0" layoutX="4.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fx:id="player4DrawnCard" fitHeight="173.0" fitWidth="124.0" layoutX="131.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="173.0" fitWidth="124.0" layoutX="131.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
@@ -174,12 +163,12 @@
                                     </AnchorPane>
                                  </children>
                               </GridPane>
-                              <ImageView fx:id="imageToken" fitHeight="67.0" fitWidth="91.0" layoutX="825.0" layoutY="44.0">
+                              <ImageView fx:id="imageToken" fitHeight="67.0" fitWidth="91.0" layoutX="821.0" layoutY="30.0">
                                  <image>
                                     <Image url="@../resources/token.jpg" />
                                  </image>
                               </ImageView>
-                              <Text fx:id="scoreText" fill="#540e0e" layoutX="800.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:" textAlignment="CENTER" wrappingWidth="123.5">
+                              <Text fx:id="scoreText" fill="#540e0e" layoutX="804.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:" textAlignment="CENTER" wrappingWidth="123.5">
                                  <effect>
                                     <Lighting diffuseConstant="1.21" specularConstant="0.73" specularExponent="31.9" surfaceScale="2.81">
                                        <bumpInput>
@@ -194,32 +183,12 @@
                                     <Font name="Arial Black" size="27.0" />
                                  </font>
                               </Text>
-                              <TextField layoutX="798.0" layoutY="170.0" prefHeight="31.0" prefWidth="174.0" text="You:">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </TextField>
-                              <Button layoutX="836.0" layoutY="554.0" mnemonicParsing="false" text="Start game">
+                              <Button layoutX="845.0" layoutY="511.0" mnemonicParsing="false" text="Start game">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Button>
-                              <TextField layoutX="799.0" layoutY="209.0" prefHeight="31.0" prefWidth="175.0" text="Player 2:">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </TextField>
-                              <TextField layoutX="796.0" layoutY="250.0" prefHeight="33.0" prefWidth="178.0" text="Player 3:">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </TextField>
-                              <TextField layoutX="796.0" layoutY="296.0" prefHeight="33.0" prefWidth="180.0" text="Player 4:">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </TextField>
-                              <Text fx:id="scoreText1" fill="#540e0e" layoutX="800.0" layoutY="367.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Out of round:" textAlignment="CENTER" wrappingWidth="188.0389404296875">
+                              <Text fx:id="scoreText1" fill="#540e0e" layoutX="809.0" layoutY="318.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Out of round:" textAlignment="CENTER" wrappingWidth="188.0389404296875">
                                  <effect>
                                     <Lighting diffuseConstant="1.21" specularConstant="0.73" specularExponent="31.9" surfaceScale="2.81">
                                        <bumpInput>
@@ -234,14 +203,49 @@
                                     <Font name="Arial Black" size="23.0" />
                                  </font>
                               </Text>
-                              <ScrollPane fx:id="outOfRoundCards" layoutX="804.0" layoutY="380.0" prefHeight="164.0" prefWidth="188.0">
-                                <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="187.0" prefWidth="159.0" />
-                                </content>
+                              <Label layoutX="798.0" layoutY="153.0" prefHeight="30.0" prefWidth="189.0" text="You:" textFill="#510909">
+                                 <font>
+                                    <Font name="Arial Black" size="19.0" />
+                                 </font>
                                  <effect>
-                                    <SepiaTone />
+                                    <InnerShadow />
                                  </effect>
-                              </ScrollPane>
+                              </Label>
+                              <Label layoutX="799.0" layoutY="181.0" prefHeight="43.0" prefWidth="184.0" text="Player 2:" textFill="#510909">
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                                 <font>
+                                    <Font name="Arial Black" size="19.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="800.0" layoutY="210.0" prefHeight="53.0" prefWidth="198.0" text="Player 3:" textFill="#510909">
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                                 <font>
+                                    <Font name="Arial Black" size="19.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="800.0" layoutY="255.0" prefHeight="43.0" prefWidth="202.0" text="Player 4:" textFill="#510909">
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                                 <font>
+                                    <Font name="Arial Black" size="19.0" />
+                                 </font>
+                              </Label>
+                            <AnchorPane layoutX="840.0" layoutY="290.0" minHeight="0.0" minWidth="0.0" prefHeight="187.0" prefWidth="159.0">
+                                 <children>
+                                    <ScrollPane layoutX="-36.0" layoutY="36.0" prefHeight="168.0" prefWidth="189.0">
+                                       <effect>
+                                          <SepiaTone />
+                                       </effect>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                              <Button layoutX="798.0" layoutY="560.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="98.0" text="Create Game" />
+                              <Button layoutX="902.0" layoutY="559.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="92.0" text="Join Game" />
                            </children>
                         </AnchorPane>
                      </children>

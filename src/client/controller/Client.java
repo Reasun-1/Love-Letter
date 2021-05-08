@@ -477,7 +477,6 @@ public class Client extends Application{
     public void start(Stage primaryStage) throws Exception {
         // start the login process
         LAUNCHER.launchLogin(this);
-
         // Only for tests
         //LAUNCHER.launchError("This is a test error");
 

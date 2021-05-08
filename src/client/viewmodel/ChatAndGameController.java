@@ -97,6 +97,12 @@ public class ChatAndGameController {
     @FXML
     private ScrollPane outOfRoundCards;
 
+    @FXML
+    private Button createGame;
+
+    @FXML
+    private Button joinGame;
+
     private Client client;
 
     private List<Image> images = Arrays.asList(new Image(getClass().getResource("/client/resources/Card_Back_Red.jpg").toString()),
@@ -112,6 +118,11 @@ public class ChatAndGameController {
 
 
     @FXML
+    /**
+     * Method to be called from WindowLauncher to start the attributes from the FXML File of
+     * ChatAndGameController.
+     * @param client
+     */
     public void init(Client client){
         this.client = client;
         clientName.setText(client.getName());
@@ -162,5 +173,13 @@ public class ChatAndGameController {
     private void playDrawnCard(){
         client.playDrawnCard();
     }
+
+   /* private void joinGame(){
+        client.joinGame();
+    }
+
+    private void createGame(){
+        client.createGame();
+    }*/
 
 }
