@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!--
+* LogInWindow.fxml represents the design of the window that shows up and provides the client to log in
+* and then to go to the chatAndGameRoom. It is made with the help of Scene Builder.
+* @author Rajna Fani
+* @version 1.0-SNAPSHOT
+-->
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>

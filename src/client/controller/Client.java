@@ -38,7 +38,7 @@ public class Client extends Application{
     //questionmessage = new SimpleStringProperty();
 
     // Binding to Chat Window for displaying incoming messages
-    private final StringProperty CHATHISTORY = new SimpleStringProperty();
+    private final StringProperty messagesHistory = new SimpleStringProperty();
 
     // List-of-Players-binding to Chat Window
     private final StringProperty[] PLAYERS = new StringProperty[4];
@@ -86,7 +86,7 @@ public class Client extends Application{
 
     //public StringProperty getQuestionMessage() {return questionmessage;}
 
-    public StringProperty getChatHistory() {return CHATHISTORY;}
+    public StringProperty getChatHistory() {return messagesHistory;}
 
     public StringProperty getPlayers(int playerindex) {
         return PLAYERS[playerindex];
@@ -497,7 +497,7 @@ public class Client extends Application{
                         if (line.charAt(0) == '/') {
                             executeOrder(line.substring(1));
                         } else {
-                            CHATHISTORY.concat(line.substring(1) + "\n");
+                            messagesHistory.concat(line.substring(1) + "\n");
                         }
                     }
                 }
