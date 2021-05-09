@@ -209,6 +209,7 @@ public class Game {
     public void cardPlayed(Card card) {
         System.out.println("TestFlagPlayCard2");
         playedcard[playerinturn] = card;
+        System.out.println(playedcard[playerinturn].getType());
     }
 
     /**

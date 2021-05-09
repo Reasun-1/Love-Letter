@@ -103,11 +103,9 @@ public class Server {
             Game.getInstance();
             gameexists = true;
             sendMessageToAll(clientName + " created a new Game");
-                synchronized (clientList) {
                     for (Enumeration<ServerThread> e = clientList.elements(); e.hasMoreElements();) {
                         new PrintWriter(e.nextElement().getSocket().getOutputStream(), true).println("/a");
                     }
-                }
         }
     }
 
@@ -152,12 +150,11 @@ public class Server {
                 Game.getInstance().cardPlayed(card);
             }
         }
+        System.out.println("cardPlayed1");
     }
 
     public void exception(String name, String msg) throws IOException {
-        synchronized (clientList) {
             clientList.get(name).receiveOrder("1" + msg);
-        }
     }
 
     public String choosePlayer(int playerID) throws IOException{
@@ -175,6 +172,7 @@ public class Server {
                     continue;
                 }
                 chosenPlayer = answer;
+                answer = "";
             }
             return chosenPlayer;
         }
@@ -205,7 +203,6 @@ public class Server {
     // Tell the players how many players will participate and what are the names
 
     public void startGameInfo() throws IOException{
-        synchronized (clientList) {
             for (int i = 0; i < playerList.size(); i++) {
                 String startInfo = "4" + playerList.size() + i;
 
@@ -216,7 +213,6 @@ public class Server {
                 clientList.get(playerList.get(i)).receiveOrder(startInfo);
                 System.out.println("recieveOrder completed.");
             }
-        }
     }
 
     public void receiveAnswer(String answer){
@@ -227,9 +223,7 @@ public class Server {
     // tells the active player which card was drawn
     public void drawncard(int playerID, Card card){
         try{
-            synchronized (clientList) {
                 clientList.get(playerList.get(playerID)).receiveOrder("5" + card.getType());
-            }
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -239,10 +233,8 @@ public class Server {
     public void playedCard(String playerName, Card card){
 
         try{
-            synchronized (clientList) {
                 for (int i = 0; i < playerList.size(); i++) {
                    clientList.get(playerList.get(i)).receiveOrder("6" + playerName + "/" + card.getType());
-                }
             }
         } catch (IOException e){
             e.printStackTrace();
@@ -253,7 +245,6 @@ public class Server {
     // inform the players about a new round and transmit the current score
     //************über scores soll mann auch wissen, laut Aufgabestellung***********
     public void roundOver(HashMap<String, Integer> score, String winner) throws IOException{
-        synchronized (clientList) {
             for (int i = 0; i < playerList.size(); i++) {
                 String scoreString = "7";
                 for (int j = 0; j < playerList.size(); j++) {
@@ -267,12 +258,10 @@ public class Server {
                 }
                 clientList.get(playerList.get(i)).receiveOrder(scoreString + winner);
             }
-        }
     }
 
     // inform the players about the end of the game and transmit the final tokens
     public void gameOver(HashMap<String, Integer> tokens, String winner) throws IOException{
-        synchronized (clientList) {
             for (int i = 0; i < playerList.size(); i++) {
                 String scoreString = "8";
                 for (int j = 0; j < playerList.size(); j++) {
@@ -280,15 +269,12 @@ public class Server {
                 }
                 clientList.get(playerList.get(i)).receiveOrder(scoreString + winner);
             }
-        }
     }
 
     public void outOfRound(String name) throws IOException {
-        synchronized (clientList) {
             for (int i = 0; i < playerList.size(); i++) {
                clientList.get(playerList.get(i)).receiveOrder("9" + name);
             }
-        }
     }
 
     //server sends message to all clients
