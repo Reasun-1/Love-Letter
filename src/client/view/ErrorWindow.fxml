@@ -62,9 +62,9 @@
                         <Cursor fx:constant="SW_RESIZE" />
                      </cursor>
                   </Button>
-                    <Label fx:id="errorField" alignment="CENTER" layoutX="124.0" layoutY="123.0" prefHeight="49.0" prefWidth="200.0" textAlignment="CENTER" textFill="#b5aaaa">
+                    <Label fx:id="errorField" alignment="CENTER" layoutX="38.0" layoutY="123.0" prefHeight="55.0" prefWidth="286.0" textAlignment="CENTER" textFill="#b5aaaa">
                      <font>
-                        <Font name="Arial Black" size="18.0" />
+                        <Font name="Arial Black" size="16.0" />
                      </font></Label>
                </children>
             </Pane>
