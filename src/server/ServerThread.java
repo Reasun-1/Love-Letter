@@ -149,6 +149,7 @@ public class ServerThread implements Runnable {
                 Server.getServer().startGame(clientName);
                 break;
             case '5':
+                System.out.println(order.substring(1));
                 Server.getServer().playCard(order.substring(1));
                 break;
             case '6':

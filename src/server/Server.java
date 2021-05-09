@@ -103,6 +103,11 @@ public class Server {
             Game.getInstance();
             gameexists = true;
             sendMessageToAll(clientName + " created a new Game");
+                synchronized (clientList) {
+                    for (Enumeration<ServerThread> e = clientList.elements(); e.hasMoreElements();) {
+                        new PrintWriter(e.nextElement().getSocket().getOutputStream(), true).println("/a");
+                    }
+                }
         }
     }
 

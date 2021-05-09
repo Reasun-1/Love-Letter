@@ -247,7 +247,7 @@ public class Client extends Application{
         System.out.println(numberofplayers);
         // The second character encodes the start player
         //playerinturnid = (- (int) info.charAt(1)) % numberofplayers;
-        playerinturnid = numberofplayers - 1 - Integer.valueOf(Character.toString((char) info.charAt(1)));
+        playerinturnid = (numberofplayers - Integer.valueOf(Character.toString((char) info.charAt(1)))) % numberofplayers;
         System.out.println(playerinturnid);
         // GUI cannot be directly updated from a non-application thread, here a Runnable object is needed.
             //Platform.runLater(new Runnable() {
@@ -258,7 +258,7 @@ public class Client extends Application{
                     String rest = info.substring(2) + '0';
                     System.out.println(rest);
 
-                    for (int i = 0; i < numberofplayers; i++) {
+                    for (int i = 1; i < numberofplayers; i++) {
                         System.out.println("startGameInfoFlag01");
                         //PLAYERS[i].set(rest.substring(1, info.indexOf('/')));
                         PLAYERS[i].set(rest.substring(0, rest.indexOf('/')));
@@ -292,7 +292,6 @@ public class Client extends Application{
         } else {
             drawncard[0].set(CARDS.indexOf(cardname));
         }
-        OUT.println("done");
     }
 
     /**
@@ -323,7 +322,6 @@ public class Client extends Application{
         }
         // Show a hidden card in the active player's drawn card slot
         drawncard[playerinturnid].set(0);
-        OUT.println("done");
     }
 
     /**
@@ -471,6 +469,10 @@ public class Client extends Application{
                     break;
                 case '9': // out of round
                     outOfRound(order.substring(1));
+                    break;
+                    case 'a':
+                        GAMEEXISTS.set(true);
+                        break;
             }}catch (IOException e){
                     e.printStackTrace();
         }
