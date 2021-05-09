@@ -102,13 +102,8 @@ public class ServerThread implements Runnable {
         }
     }
 
-    public String receiveOrder(String order) throws IOException{
+    public void receiveOrder(String order) throws IOException{
         new PrintWriter(socket.getOutputStream(),true).println("/" + order);
-        String answer = "";
-        while(answer.isEmpty()){
-            answer = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
-        }
-        return answer;
     }
 
     //close socket connection
@@ -135,9 +130,11 @@ public class ServerThread implements Runnable {
                 break;
             case '1':
                 String name = order.substring(1,order.indexOf('/'));
-                if (Server.clientList.contains(name)) {
-                    String msg = order.substring(order.indexOf('/'));
-                    sendPrivateMessage(name, "$" + clientName + "[private]: " + msg);
+                System.out.println(name);
+                if (Server.clientList.containsKey(name)) {
+                    String msg = order.substring(order.indexOf('/') + 1);
+                    sendPrivateMessage(name,  "$" + clientName + "[private]: " + msg);
+                    new PrintWriter(socket.getOutputStream(),true).println("$" + clientName + "[private]: " + msg);
                 } else {
                     receiveOrder("1There is no client with this name!");
                 }
@@ -153,6 +150,9 @@ public class ServerThread implements Runnable {
                 break;
             case '5':
                 Server.getServer().playCard(order.substring(1));
+                break;
+            case '6':
+                Server.getServer().receiveAnswer(order.substring(1));
                 break;
         }
     }

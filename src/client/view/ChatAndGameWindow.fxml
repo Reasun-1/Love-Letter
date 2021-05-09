@@ -117,12 +117,12 @@
                                                 <Font size="18.0" />
                                              </font>
                                           </Text>
-                                          <ImageView fx:id="player3HandCard" fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="player3DrawnCard" fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>
                                           </ImageView>
-                                          <ImageView fx:id="player3DrawnCard" fitHeight="180.0" fitWidth="124.0" layoutX="2.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="player3HandCard" fitHeight="180.0" fitWidth="124.0" layoutX="2.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
                                              </image>

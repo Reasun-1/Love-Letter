@@ -34,7 +34,7 @@ public class QuestionController {
     @FXML
     public void send(ActionEvent actionEvent) {
         Stage stage = (Stage) sendButton.getScene().getWindow();
-        client.sendMessage(answer.getText());
+        client.sendAnswer(answer.getText());
         stage.close();
     }
 }

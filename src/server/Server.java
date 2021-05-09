@@ -21,6 +21,8 @@ public class Server {
 
     private boolean gameexists = false;
 
+    private String answer = "";
+
     private Server() {
     }
 
@@ -107,7 +109,7 @@ public class Server {
     public void sendTo(String clientName, String message){
         //send message to Client clientName
         try{
-            new PrintWriter(clientList.get(clientName).getSocket().getOutputStream(), true).println("$Server: " + message);
+            new PrintWriter(clientList.get(clientName).getSocket().getOutputStream(), true).println(message);
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -148,22 +150,39 @@ public class Server {
     }
 
     public void exception(String name, String msg) throws IOException {
-        clientList.get(name).receiveOrder("1" + msg);
+        synchronized (clientList) {
+            clientList.get(name).receiveOrder("1" + msg);
+        }
     }
 
     public String choosePlayer(int playerID) throws IOException{
         //ask the active player to choose another player
-        String chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2").substring(1);
-        while (!playerList.contains(chosenPlayer)){
-            exception(playerList.get(playerID), "The chosen player doesn't exist!");
-            chosenPlayer = clientList.get(playerList.get(playerID)).receiveOrder("2").substring(1);
+            clientList.get(playerList.get(playerID)).receiveOrder("2");
+            while(answer.isEmpty()) {
+                continue;
+            }
+        String chosenPlayer = answer;
+            answer = "";
+            while (!playerList.contains(chosenPlayer)) {
+                exception(playerList.get(playerID), "The chosen player doesn't exist!");
+                clientList.get(playerList.get(playerID)).receiveOrder("2");
+                while(answer.isEmpty()) {
+                    continue;
+                }
+                chosenPlayer = answer;
+            }
+            return chosenPlayer;
         }
-        return chosenPlayer;
-    }
 
     public String guessCardType(int playerID) throws IOException{
         //ask the active player to choose a card (no error handling yet)
-        return clientList.get(playerList.get(playerID)).receiveOrder("3").substring(1);
+        clientList.get(playerList.get(playerID)).receiveOrder("3");
+        while (answer.isEmpty()){
+            continue;
+        }
+        String cardType = answer;
+        answer = "";
+        return cardType;
     }
 
 
@@ -181,23 +200,31 @@ public class Server {
     // Tell the players how many players will participate and what are the names
 
     public void startGameInfo() throws IOException{
-        for(int i=0;i<playerList.size();i++) {
-            String startInfo = "4" + playerList.size() + i;
+        synchronized (clientList) {
+            for (int i = 0; i < playerList.size(); i++) {
+                String startInfo = "4" + playerList.size() + i;
 
-            for (int j = 0; j < playerList.size(); j++) {
-                startInfo = startInfo + playerList.get((i + j) % playerList.size()) + "/";
+                for (int j = 0; j < playerList.size(); j++) {
+                    startInfo = startInfo + playerList.get((i + j) % playerList.size()) + "/";
+                }
+                System.out.println(startInfo);
+                clientList.get(playerList.get(i)).receiveOrder(startInfo);
+                System.out.println("recieveOrder completed.");
             }
-            System.out.println(startInfo);
-            clientList.get(playerList.get(i)).receiveOrder(startInfo);
-            System.out.println("recieveOrder completed.");
         }
+    }
+
+    public void receiveAnswer(String answer){
+        this.answer = answer;
     }
 
 
     // tells the active player which card was drawn
     public void drawncard(int playerID, Card card){
         try{
-            clientList.get(playerList.get(playerID)).receiveOrder("5" + card.getType());
+            synchronized (clientList) {
+                clientList.get(playerList.get(playerID)).receiveOrder("5" + card.getType());
+            }
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -207,8 +234,10 @@ public class Server {
     public void playedCard(String playerName, Card card){
 
         try{
-            for(int i=0;i<playerList.size();i++) {
-                clientList.get(playerList.get(i)).receiveOrder("6" + playerName + "/" + card.getType());
+            synchronized (clientList) {
+                for (int i = 0; i < playerList.size(); i++) {
+                   clientList.get(playerList.get(i)).receiveOrder("6" + playerName + "/" + card.getType());
+                }
             }
         } catch (IOException e){
             e.printStackTrace();
@@ -219,35 +248,41 @@ public class Server {
     // inform the players about a new round and transmit the current score
     //************über scores soll mann auch wissen, laut Aufgabestellung***********
     public void roundOver(HashMap<String, Integer> score, String winner) throws IOException{
-        for(int i=0;i<playerList.size();i++){
-            String scoreString = "7";
-            for (int j = 0; j < playerList.size(); j++) {
-                String playerscore = "";
-                if(score.get(playerList.get((i + j) % playerList.size())) < 10){
-                    playerscore = "0" + score.get(playerList.get((i + j) % playerList.size())).toString();
-                } else {
-                    playerscore = score.get(playerList.get((i + j) % playerList.size())).toString();
+        synchronized (clientList) {
+            for (int i = 0; i < playerList.size(); i++) {
+                String scoreString = "7";
+                for (int j = 0; j < playerList.size(); j++) {
+                    String playerscore = "";
+                    if (score.get(playerList.get((i + j) % playerList.size())) < 10) {
+                        playerscore = "0" + score.get(playerList.get((i + j) % playerList.size())).toString();
+                    } else {
+                        playerscore = score.get(playerList.get((i + j) % playerList.size())).toString();
+                    }
+                    scoreString = scoreString + playerscore;
                 }
-                scoreString = scoreString + playerscore;
+                clientList.get(playerList.get(i)).receiveOrder(scoreString + winner);
             }
-            clientList.get(playerList.get(i)).receiveOrder(scoreString + winner);
         }
     }
 
     // inform the players about the end of the game and transmit the final tokens
     public void gameOver(HashMap<String, Integer> tokens, String winner) throws IOException{
-        for(int i=0;i<playerList.size();i++){
-            String scoreString = "8";
-            for (int j = 0; j < playerList.size(); j++) {
-                scoreString = scoreString + tokens.get(playerList.get((i + j) % playerList.size())).toString();
+        synchronized (clientList) {
+            for (int i = 0; i < playerList.size(); i++) {
+                String scoreString = "8";
+                for (int j = 0; j < playerList.size(); j++) {
+                    scoreString = scoreString + tokens.get(playerList.get((i + j) % playerList.size())).toString();
+                }
+                clientList.get(playerList.get(i)).receiveOrder(scoreString + winner);
             }
-            clientList.get(playerList.get(i)).receiveOrder(scoreString + winner);
         }
     }
 
     public void outOfRound(String name) throws IOException {
-        for(int i=0;i<playerList.size();i++){
-            clientList.get(playerList.get(i)).receiveOrder("9" + name);
+        synchronized (clientList) {
+            for (int i = 0; i < playerList.size(); i++) {
+               clientList.get(playerList.get(i)).receiveOrder("9" + name);
+            }
         }
     }
 
