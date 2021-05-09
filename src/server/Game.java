@@ -277,8 +277,8 @@ public class Game {
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
 
                     while (waitingforchooseplayer) {
-
-                        targetname2 = Server.getServer().choosePlayer(playerinturn);
+                        targetname2 = "";
+                        Server.getServer().question(playernames.get(playerinturn), "Please choose a player:");
 
                         if (targetname2 == null) {
                             continue;
@@ -314,7 +314,8 @@ public class Game {
 
                     while (waitingforchooseplayer) {
 
-                        targetname3 = Server.getServer().choosePlayer(playerinturn);
+                        targetname3 = "";
+                                Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
 
                         if (targetname3 == null) {
                             continue;
@@ -348,7 +349,8 @@ public class Game {
 
                     while (waitingforchooseplayer) {
 
-                        targetname4 = Server.getServer().choosePlayer(playerinturn);
+                        targetname4 = "";
+                                Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
 
                         if (targetname4 == null) {
                             continue;
@@ -385,7 +387,8 @@ public class Game {
 
                     while (waitingforchooseplayer) {
 
-                        targetname5 = Server.getServer().choosePlayer(playerinturn);
+                        targetname5 = "";
+                                Server.getServer().question(playernames.get(playerinturn), "Please choose a player:");
 
                         if (targetname5 == null) {
                             continue;
@@ -405,7 +408,8 @@ public class Game {
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is guessing the card type");
 
                     while (waitingforguesstyp) {
-                        guesscardtype = Server.getServer().guessCardType(playerinturn);
+                        guesscardtype = "";
+                                Server.getServer().question(playernames.get(playerinturn), "Please choose a Card:");
                         guesscard = null;
 
                         for (Card c : Card.values()) {
@@ -433,7 +437,7 @@ public class Game {
         }
     }
 
-    public void endOfTurn(){
+    public void endOfTurn() throws IOException{
         // playedcard refresh to null for next round check
         playedcard[playerinturn] = null;
 

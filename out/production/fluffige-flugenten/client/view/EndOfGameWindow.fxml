@@ -55,17 +55,17 @@
                   <Font size="16.0" />
                </font>
             </Text>
-            <Text fill="#d3ba2d" layoutX="30.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2:" wrappingWidth="73.21630859375">
+            <Text fx:id="secondPlayer" fill="#d3ba2d" layoutX="30.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2:" wrappingWidth="73.21630859375">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Text fill="#d3ba2d" layoutX="30.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3:" wrappingWidth="73.21630859375">
+            <Text fx:id="thirdPlayer" fill="#d3ba2d" layoutX="30.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3:" wrappingWidth="73.21630859375">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Text fill="#d3ba2d" layoutX="30.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4:" wrappingWidth="73.21630859375">
+            <Text fx:id="fourthPlayer" fill="#d3ba2d" layoutX="30.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4:" wrappingWidth="73.21630859375">
                <font>
                   <Font size="16.0" />
                </font>

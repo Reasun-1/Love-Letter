@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
@@ -37,13 +38,13 @@ public class EndOfGameController {
     private Label winnerName;
 
     @FXML
-    private Label secondPlayer;
+    private Text secondPlayer;
 
     @FXML
-    private Label thirdPlayer;
+    private Text thirdPlayer;
 
     @FXML
-    private Label fourthPlayer;
+    private Text fourthPlayer;
 
     @FXML
     private Label yourScore;

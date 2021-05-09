@@ -500,6 +500,10 @@ public class Client extends Application{
         //LAUNCHER.launchQuestion(this, "Please enter your card guess:");
 
         // Only for tests
+        PLAYERS[0].set("Pascal");
+        PLAYERS[1].set("Can");
+        PLAYERS[2].set("Rajna");
+        PLAYERS[3].set("Julia");
         LAUNCHER.launchEndOfGame(this, "Pascal");
 
         // Open chat and game window after logging in successfully
