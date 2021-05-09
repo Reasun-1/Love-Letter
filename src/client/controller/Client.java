@@ -348,6 +348,11 @@ public class Client extends Application{
             playerinturnid = (playerinturnid + 1) % numberofplayers;
         }
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
+        if(playerinturnid == 0){
+            INTURN.set(true);
+        } else {
+            INTURN.set(false);
+        }
     }
 
     /**
@@ -503,13 +508,6 @@ public class Client extends Application{
 
         // Only for tests
         //LAUNCHER.launchQuestion(this, "Please enter your card guess:");
-
-        // Only for tests
-        PLAYERS[0].set("Pascal");
-        PLAYERS[1].set("Can");
-        PLAYERS[2].set("Rajna");
-        PLAYERS[3].set("Julia");
-        LAUNCHER.launchEndOfGame(this, "Pascal");
 
         // Open chat and game window after logging in successfully
         LAUNCHER.launchChatAndGame(this);
