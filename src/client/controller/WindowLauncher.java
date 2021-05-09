@@ -49,7 +49,7 @@ public class WindowLauncher {
         Parent root = loader.load();
         ErrorController ctrl = loader.getController();
         ctrl.init(message);
-        stage.setScene(new Scene(root, 600, 400));
+        stage.setScene(new Scene(root, 388, 186));
         stage.showAndWait();
         stage.setOnCloseRequest((event) -> Platform.exit());
     }
