@@ -183,6 +183,15 @@ public class ChatAndGameController {
         outOfRoundCards.textProperty().bindBidirectional(client.getDiscardedCards());
         playHandCardYou.disableProperty().bind(client.getInTurn().not());
         playDrawnCardYou.disableProperty().bind(client.getInTurn().not());
+        secPlayerText.textProperty().bind(client.getPlayers(1));
+        thirdPlayerText.textProperty().bind(client.getPlayers(2));
+        fourthPlayerText.textProperty().bind(client.getPlayers(3));
+        player2.textProperty().bind(client.getPlayers(1));
+        player3.textProperty().bind(client.getPlayers(2));
+        player4.textProperty().bind(client.getPlayers(3));
+        createGame.disableProperty().bind(client.getGameExists());
+        joinGame.disableProperty().bind(client.getGameExists().not().or(client.getGameRunning()));
+        startGame.disableProperty().bind(client.getGameExists().not().or(client.getGameRunning()));
     }
 
     @FXML

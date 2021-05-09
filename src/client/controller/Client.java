@@ -191,6 +191,7 @@ public class Client extends Application{
      * Create a new Game (only possible if no Game exists on the Server). Order Code: 2
      */
     public void createGame() {
+        GAMEEXISTS.set(true);
         OUT.println("/2");
     }
 
@@ -248,6 +249,7 @@ public class Client extends Application{
         if (playerinturnid == 0){
             INTURN.set(true);
         }
+        GAMERUNNING.set(true);
     }
 
     /**

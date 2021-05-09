@@ -54,7 +54,6 @@
                               <ScrollPane layoutX="16.0" layoutY="47.0" prefHeight="390.0" prefWidth="239.0">
                                 <content>
                                    <TextArea fx:id="messagesHistory" layoutX="16.0" layoutY="47.0" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"></TextArea>
-                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
                                 </content>
                                  <effect>
                                     <SepiaTone />
@@ -62,7 +61,7 @@
                               </ScrollPane>
                               <TextField fx:id="messageField" alignment="CENTER" layoutX="39.0" layoutY="442.0" prefHeight="42.0" prefWidth="177.0" promptText="Type your message here..." />
                               <TextField fx:id="sendTo" layoutX="11.0" layoutY="515.0" prefHeight="34.0" prefWidth="103.0" promptText="Send to" />
-                              <Button fx:id="sendButton" layoutX="136.0" layoutY="514.0" mnemonicParsing="false" prefHeight="34.0" onAction="#send" prefWidth="114.0" text="Send">
+                              <Button fx:id="sendButton" layoutX="136.0" layoutY="514.0" mnemonicParsing="false" defaultButton="true" prefHeight="34.0" onAction="#send" prefWidth="114.0" text="Send">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
@@ -185,7 +184,7 @@
                                     <Font name="Arial Black" size="27.0" />
                                  </font>
                               </Text>
-                              <Button layoutX="845.0" layoutY="511.0" mnemonicParsing="false" onAction="#startGame" text="Start game">
+                              <Button fx:id="startGame" layoutX="845.0" layoutY="511.0" mnemonicParsing="false" onAction="#startGame" text="Start game">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -249,8 +248,8 @@
                                     </ScrollPane>
                                  </children>
                               </AnchorPane>
-                              <Button layoutX="798.0" layoutY="560.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="98.0" onAction="#createGame" text="Create Game" />
-                              <Button layoutX="902.0" layoutY="559.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="92.0" onAction="#joinGame" text="Join Game" />
+                              <Button fx:id="createGame" layoutX="798.0" layoutY="560.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="98.0" onAction="#createGame" text="Create Game" />
+                              <Button fx:id="joinGame" layoutX="902.0" layoutY="559.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="92.0" onAction="#joinGame" text="Join Game" />
                            </children>
                         </AnchorPane>
                      </children>
