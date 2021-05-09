@@ -109,12 +109,12 @@ public enum Card {
             if (targetValue > myValue) {
                 Game.getInstance().status[myIndex] = 0;
                 Server.getServer().outOfRound(Game.getInstance().playernames.get(myIndex));
-                //Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(myIndex) + " is out of game.");
+                Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(myIndex) + " is out of game.");
             } else if (targetValue < myValue) {
                 Game.getInstance().status[targetIndex] = 0;
                 Game.getInstance().status[myIndex] = 1;
                 Server.getServer().outOfRound(Game.getInstance().playernames.get(targetIndex));
-                //Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
+                Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
             } else {
                 // inform everyone that nothing happens
                 Server.getServer().sendMessageToAll("Nothing happens, play continues.");
