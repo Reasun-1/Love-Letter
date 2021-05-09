@@ -103,7 +103,7 @@
                                        <children>
                                           <AnchorPane layoutX="4.0" layoutY="-4.0" prefHeight="109.0" prefWidth="153.0">
                                              <children>
-                                                <Text fx:id="secPlayerText" layoutX="22.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
+                                                <Text fx:id="secPlayerText" layoutX="22.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="">
                                                    <font>
                                                       <Font size="18.0" />
                                                    </font>
@@ -124,7 +124,7 @@
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                        <children>
-                                          <Text fx:id="thirdPlayerText" layoutX="17.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
+                                          <Text fx:id="thirdPlayerText" layoutX="17.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
@@ -143,7 +143,7 @@
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
-                                          <Text fx:id="fourthPlayerText" layoutX="26.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4" wrappingWidth="69.76806640625">
+                                          <Text fx:id="fourthPlayerText" layoutX="26.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" wrappingWidth="69.76806640625">
                                              <font>
                                                 <Font size="18.0" />
                                              </font>
@@ -210,6 +210,14 @@
                                     <InnerShadow />
                                  </effect>
                               </Label>
+                              <Label fx:id="score1" layoutX="970.0" layoutY="153.0" prefHeight="30.0" prefWidth="189.0" text="" textFill="#510909">
+                                 <font>
+                                    <Font name="Arial Black" size="19.0" />
+                                 </font>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                              </Label>
                               <Label fx:id="player2" layoutX="799.0" layoutY="181.0" prefHeight="43.0" prefWidth="184.0" text="Player 2:" textFill="#510909">
                                  <effect>
                                     <InnerShadow />
@@ -217,6 +225,14 @@
                                  <font>
                                     <Font name="Arial Black" size="19.0" />
                                  </font>
+                              </Label>
+                              <Label fx:id="score2" layoutX="970.0" layoutY="181.0" prefHeight="30.0" prefWidth="189.0" text="" textFill="#510909">
+                                 <font>
+                                    <Font name="Arial Black" size="19.0" />
+                                 </font>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
                               </Label>
                               <Label fx:id="player3" layoutX="800.0" layoutY="210.0" prefHeight="53.0" prefWidth="198.0" text="Player 3:" textFill="#510909">
                                  <effect>
@@ -226,13 +242,29 @@
                                     <Font name="Arial Black" size="19.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="player4" layoutX="800.0" layoutY="255.0" prefHeight="43.0" prefWidth="202.0" text="Player 4:" textFill="#510909">
+                              <Label fx:id="score3" layoutX="970.0" layoutY="210.0" prefHeight="30.0" prefWidth="189.0" text="" textFill="#510909">
+                                 <font>
+                                    <Font name="Arial Black" size="19.0" />
+                                 </font>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
+                              </Label>
+                              <Label fx:id="player4" layoutX="800.0" layoutY="240.0" prefHeight="43.0" prefWidth="202.0" text="Player 4:" textFill="#510909">
                                  <effect>
                                     <InnerShadow />
                                  </effect>
                                  <font>
                                     <Font name="Arial Black" size="19.0" />
                                  </font>
+                              </Label>
+                              <Label fx:id="score4" layoutX="970.0" layoutY="240.0" prefHeight="30.0" prefWidth="189.0" text="" textFill="#510909">
+                                 <font>
+                                    <Font name="Arial Black" size="19.0" />
+                                 </font>
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect>
                               </Label>
                             <AnchorPane layoutX="840.0" layoutY="290.0" minHeight="0.0" minWidth="0.0" prefHeight="187.0" prefWidth="159.0">
                                  <children>

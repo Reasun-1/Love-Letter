@@ -93,6 +93,8 @@ public class Client extends Application{
         return handcard[playerindex];
     }
 
+    public IntegerProperty getTOKENS(int playerindex){return TOKENS[playerindex];}
+
     public IntegerProperty getDrawnCard(int playerindex) {
         return handcard[playerindex];
     }
@@ -125,8 +127,8 @@ public class Client extends Application{
 
         for (int i=0;i<4;i++){
             PLAYERS[i] = new SimpleStringProperty();
-            handcard[i] = new SimpleIntegerProperty();
-            drawncard[i] = new SimpleIntegerProperty();
+            handcard[i] = new SimpleIntegerProperty(9);
+            drawncard[i] = new SimpleIntegerProperty(9);
             TOKENS[i] = new SimpleIntegerProperty();
         }
         // The first input from the Server will be info about a Game existing/running on this Server
