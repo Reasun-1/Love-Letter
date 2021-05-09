@@ -9,8 +9,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
-// import javafx.util.StringConverter;
-// import client.controller.Client;
 
 /**
  * This class is the controller class for the End of Game fxml file and it represents the end of game pop-up window.
@@ -38,6 +36,9 @@ public class EndOfGameController {
     private Label winnerName;
 
     @FXML
+    private Text personalPlayer;
+
+    @FXML
     private Text secondPlayer;
 
     @FXML
@@ -47,7 +48,7 @@ public class EndOfGameController {
     private Text fourthPlayer;
 
     @FXML
-    private Label yourScore;
+    private Label personalScore;
 
     @FXML
     private Label secondScore;
@@ -60,15 +61,16 @@ public class EndOfGameController {
 
 
     /**
-     * Method to be called from WindowLauncher to write the needed info based on the context.
-     *
+     * This method initializes the players and the winner in the end of game window using data binding.
      * @param client
      */
     public void init(Client client, String winner) {
+        personalPlayer.textProperty().bindBidirectional(client.getPlayers(0));
         secondPlayer.textProperty().bindBidirectional(client.getPlayers(1));
         thirdPlayer.textProperty().bindBidirectional(client.getPlayers(2));
         fourthPlayer.textProperty().bindBidirectional(client.getPlayers(3));
-        yourScore.textProperty().bindBidirectional(client.getTOKENS(0), new StringConverter<Number>() {
+
+        personalScore.textProperty().bindBidirectional(client.getTOKENS(0), new StringConverter<Number>() {
             @Override
             public String toString(Number number) {
                 return number.toString();
@@ -125,50 +127,6 @@ public class EndOfGameController {
         Stage stage = (Stage) doneButton.getScene().getWindow();
         stage.close();
 
-//        yourScore.textProperty().bindBidirectional(client.getTOKENS(0), new StringConverter<Number>() {
-//            @Override
-//            public String toString(Number number) {
-//                return number.toString();
-//            }
-//
-//            @Override
-//            public Integer fromString(String s) {
-//                return null;
-//            }
-//        });
-//        secondScore.textProperty().bindBidirectional(client.getTOKENS(1), new StringConverter<Number>() {
-//            @Override
-//            public String toString(Number number) {
-//                return number.toString();
-//            }
-//
-//            @Override
-//            public Integer fromString(String s) {
-//                return null;
-//            }
-//        });
-//        thirdScore.textProperty().bindBidirectional(client.getTOKENS(2), new StringConverter<Number>() {
-//            @Override
-//            public String toString(Number number) {
-//                return number.toString();
-//            }
-//
-//            @Override
-//            public Integer fromString(String s) {
-//                return null;
-//            }
-//        });
-//        fourthScore.textProperty().bindBidirectional(client.getTOKENS(3), new StringConverter<Number>() {
-//            @Override
-//            public String toString(Number number) {
-//                return number.toString();
-//            }
-//
-//            @Override
-//            public Integer fromString(String s) {
-//                return null;
-//            }
-//        });
     }
 }
 

@@ -1,5 +1,6 @@
 package client.viewmodel;
 
+import client.controller.Client;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -10,4 +11,5 @@ import javafx.beans.property.StringProperty;
  */
 
 public class EndOfGameViewModel {
+
 }
