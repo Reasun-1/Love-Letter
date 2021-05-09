@@ -142,6 +142,7 @@ public class Server {
     }
 
     public void playCard(String cardName){
+        System.out.println("testFlagPlayCardServer");
         for (Card card : Card.values()) {
             if (card.getType().equals(cardName)) {
                 try{
