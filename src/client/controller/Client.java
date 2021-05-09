@@ -383,7 +383,7 @@ public class Client extends Application{
             TOKENS[i].set(info.charAt(i));
             endofgameinfo = endofgameinfo + String.format("%-20.20s %2d" , PLAYERS[i].get(), TOKENS[i].get()) + "\n";
         }
-        LAUNCHER.launchEndOfGame(endofgameinfo);
+        LAUNCHER.launchEndOfGame(this, winner);
         // Reset the game panels
         playerinturnid = 0;
         for (int i = 0; i < numberofplayers; i++) {
@@ -449,10 +449,10 @@ public class Client extends Application{
                     LAUNCHER.launchError(order.substring(1));
                     break;
                 case '2': // open Question Window to ask for a player
-                    LAUNCHER.launchQuestion(client, "Please choose a Player:");
+                    LAUNCHER.launchQuestion(client, order.substring(1));
                     break;
                 case '3': // open Question Window to ask for a card
-                    LAUNCHER.launchQuestion(client, "Please enter your card guess:");
+                    // disabled: LAUNCHER.launchQuestion(client, "Please enter your card guess:");
                     break;
                 case '4': // start Game
                     startGameInfo(order.substring(1));
@@ -500,8 +500,7 @@ public class Client extends Application{
         //LAUNCHER.launchQuestion(this, "Please enter your card guess:");
 
         // Only for tests
-        //LAUNCHER.launchEndOfGame("Winner: Pascal\n\n Score:\n" + String.format("%-20.20s %2.2s" , "Pascal", "12") + "\n" + String.format("%-20.20s %2.2s" , "Elisabeth", "10") + "\n" + String.format("%-20.20s %2.2s" , "Can", "3") + "\n" + String.format("%-20.20s %2.2s" , "John", "5") + "\n");
-
+        LAUNCHER.launchEndOfGame(this, "Pascal");
 
         // Open chat and game window after logging in successfully
         LAUNCHER.launchChatAndGame(this);

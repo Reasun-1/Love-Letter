@@ -168,6 +168,28 @@ public class Game {
 
     }
 
+    public void guessType(String cardname){
+        // TODO
+    }
+
+
+    public void choosePlayer(String playername) throws IOException{
+        switch (playedcard[playerinturn]){
+            case KING:
+                if(playername.equals(playernames.get(playerinturn))){
+                    Server.getServer().question(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
+                } else if (status[playernames.indexOf(playername)] == 2) {
+                    Server.getServer().question(playernames.get(playerinturn), "the chosen player is protected, choose another player");
+                } else if (status[playernames.indexOf(playername)] == 0) {
+                    Server.getServer().question(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
+                } else {
+                    int targetindex = playernames.indexOf(playername);
+                    Card.KING.function(playerinturn, targetindex);
+                    endOfTurn();
+                }
+                break;
+        }
+    }
 
     /**
      * This method is applied for other class (server) to invoke.
@@ -192,12 +214,14 @@ public class Game {
                 if (playedcard[playerinturn] != handcard[playerinturn] && playedcard[playerinturn] != drawncard[playerinturn]) {
                     System.out.println("TestWrongCard");
                     Server.getServer().exception(playernames.get(playerinturn), "You don´t have this card in your hand, choose one in hand.");
+                    return;
                     // if player has king or prince and also a countess in hand, countess must be played
                 } else if (playedcard[playerinturn] != Card.COUNTESS
                         && (((handcard[playerinturn] == Card.PRINCE || handcard[playerinturn] == Card.KING) && drawncard[playerinturn] == Card.COUNTESS)
                         || ((drawncard[playerinturn] == Card.PRINCE || drawncard[playerinturn] == Card.KING) && handcard[playerinturn] == Card.COUNTESS))) {
                     System.out.println("TestWrongCard2");
                     Server.getServer().exception(playernames.get(playerinturn), "You have royal member in your hand, the countess must be played.");
+                    return;
                 } else {
                     System.out.println("TestWrongCard3");
                     // update the handcard and drawncard
@@ -216,14 +240,15 @@ public class Game {
 
             case PRINCESS:
                 Card.PRINCESS.function(playerinturn);
+                endOfTurn();
                 break;
 
             case COUNTESS:
                 Card.COUNTESS.function(playerinturn);
+                endOfTurn();
                 break;
 
             case KING:
-                waitingforchooseplayer = true;
                 String targetname1;
                 int targetindex1 = playerinturn; // initialize the target as self
 
@@ -232,27 +257,8 @@ public class Game {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
                     Card.KING.function(playerinturn, targetindex1); // nothing happens, just change the card with self.
                 } else { // if there are unprotected active players in this round, choose one
-
+                    Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
-
-                    while (waitingforchooseplayer) {
-
-                        targetname1 = Server.getServer().choosePlayer(playerinturn);
-
-                        if (targetname1 == null) {
-                            continue;
-                        } else if(targetname1.equals(playernames.get(playerinturn))){
-                            Server.getServer().exception(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
-                        } else if (status[playernames.indexOf(targetname1)] == 2) {
-                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is protected, choose another player");
-                        } else if (status[playernames.indexOf(targetname1)] == 0) {
-                            Server.getServer().exception(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
-                        } else {
-                            targetindex1 = playernames.indexOf(targetname1);
-                            Card.KING.function(playerinturn, targetindex1);
-                            waitingforchooseplayer = false;
-                        }
-                    }
                 }
                 break;
 
@@ -425,7 +431,9 @@ public class Game {
                 //***********brauchen wir hier Exceptions eg.? Mir ist nichts aufgefallen********
                 break;
         }
+    }
 
+    public void endOfTurn(){
         // playedcard refresh to null for next round check
         playedcard[playerinturn] = null;
 

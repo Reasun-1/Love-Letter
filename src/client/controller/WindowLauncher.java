@@ -113,14 +113,14 @@ public class WindowLauncher {
      * @param info
      * @throws IOException
      */
-    public void launchEndOfGame(String info) throws IOException{
+    public void launchEndOfGame(Client client, String winner) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("End of Game");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/client/view/EndOfGameWindow.fxml"));
         Parent root = loader.load();
         EndOfGameController ctrl = loader.getController();
-        ctrl.init(info);
+        ctrl.init(client, winner);
         stage.setScene(new Scene(root, 600, 400));
         stage.showAndWait();
     }

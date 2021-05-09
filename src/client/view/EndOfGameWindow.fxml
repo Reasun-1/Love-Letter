@@ -16,7 +16,7 @@
      * @author Xheneta, Pascal
       -->
 
-<fx:root fx:id="endRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600" type="AnchorPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.viewmodel.EndOfGameController">
+<AnchorPane fx:id="endRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.viewmodel.EndOfGameController">
     <children>
         <AnchorPane fx:id="backgroundPane" layoutX="139.0" layoutY="34.0" prefHeight="400.0" prefWidth="600.0" />
         <ImageView fitHeight="400.0" fitWidth="600.0">
@@ -28,7 +28,7 @@
             <children>
             <ImageView fitHeight="93.0" fitWidth="143.0" layoutX="443.0" layoutY="294.0" pickOnBounds="true">
                <image>
-                  <Image url="@../../../../../SEP/Cards/Token%20Lizo.jpg" />
+                  <Image url="@../resources/token.jpg" />
                </image>
             </ImageView>
             <Text fill="#d3ba2d" layoutX="344.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="And the winner is:" wrappingWidth="221.748046875">
@@ -77,4 +77,4 @@
             </children>
         </AnchorPane>
     </children>
-</fx:root>
+</AnchorPane>

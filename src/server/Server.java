@@ -158,35 +158,8 @@ public class Server {
             clientList.get(name).receiveOrder("1" + msg);
     }
 
-    public String choosePlayer(int playerID) throws IOException{
-        //ask the active player to choose another player
-            clientList.get(playerList.get(playerID)).receiveOrder("2");
-            while(answer.isEmpty()) {
-                continue;
-            }
-        String chosenPlayer = answer;
-            answer = "";
-            while (!playerList.contains(chosenPlayer)) {
-                exception(playerList.get(playerID), "The chosen player doesn't exist!");
-                clientList.get(playerList.get(playerID)).receiveOrder("2");
-                while(answer.isEmpty()) {
-                    continue;
-                }
-                chosenPlayer = answer;
-                answer = "";
-            }
-            return chosenPlayer;
-        }
-
-    public String guessCardType(int playerID) throws IOException{
-        //ask the active player to choose a card (no error handling yet)
-        clientList.get(playerList.get(playerID)).receiveOrder("3");
-        while (answer.isEmpty()){
-            continue;
-        }
-        String cardType = answer;
-        answer = "";
-        return cardType;
+    public void question(String name, String msg) throws IOException{
+        clientList.get(name).receiveOrder("2" + msg);
     }
 
 
@@ -216,8 +189,22 @@ public class Server {
             }
     }
 
-    public void receiveAnswer(String answer){
-        this.answer = answer;
+    public void receiveAnswer(String answer, String name) throws IOException{
+        Boolean flag = true;
+        if (playerList.contains(answer)){
+            flag = false;
+            Game.getInstance().choosePlayer(answer);
+        } else {
+            for (Card card : Card.values()) {
+                if (card.getType().equals(answer)) {
+                    flag = false;
+                    Game.getInstance().guessType(answer);
+                }
+            }
+        }
+        if (flag){
+            question(name, "The chosen player/card doesn't exist. Please choose another one:");
+        }
     }
 
 

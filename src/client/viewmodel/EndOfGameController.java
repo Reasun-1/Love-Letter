@@ -1,11 +1,13 @@
 package client.viewmodel;
 
+import client.controller.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.StringConverter;
 // import javafx.util.StringConverter;
 // import client.controller.Client;
 
@@ -35,6 +37,15 @@ public class EndOfGameController {
     private Label winnerName;
 
     @FXML
+    private Label secondPlayer;
+
+    @FXML
+    private Label thirdPlayer;
+
+    @FXML
+    private Label fourthPlayer;
+
+    @FXML
     private Label yourScore;
 
     @FXML
@@ -50,10 +61,57 @@ public class EndOfGameController {
     /**
      * Method to be called from WindowLauncher to write the needed info based on the context.
      *
-     * @param info
+     * @param client
      */
-    public void init(String info) {
-        infoField.setText(info);
+    public void init(Client client, String winner) {
+        secondPlayer.textProperty().bindBidirectional(client.getPlayers(1));
+        thirdPlayer.textProperty().bindBidirectional(client.getPlayers(2));
+        fourthPlayer.textProperty().bindBidirectional(client.getPlayers(3));
+        yourScore.textProperty().bindBidirectional(client.getTOKENS(0), new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                return number.toString();
+            }
+
+            @Override
+            public Integer fromString(String s) {
+                return null;
+            }
+        });
+        secondScore.textProperty().bindBidirectional(client.getTOKENS(1), new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                return number.toString();
+            }
+
+            @Override
+            public Integer fromString(String s) {
+                return null;
+            }
+        });
+        thirdScore.textProperty().bindBidirectional(client.getTOKENS(2), new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                return number.toString();
+            }
+
+            @Override
+            public Integer fromString(String s) {
+                return null;
+            }
+        });
+        fourthScore.textProperty().bindBidirectional(client.getTOKENS(3), new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                return number.toString();
+            }
+
+            @Override
+            public Integer fromString(String s) {
+                return null;
+            }
+        });
+        winnerName.setText(winner);
     }
 
     @FXML

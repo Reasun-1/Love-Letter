@@ -153,7 +153,7 @@ public class ServerThread implements Runnable {
                 System.out.println("cardPlayed2");
                 break;
             case '6':
-                Server.getServer().receiveAnswer(order.substring(1));
+                Server.getServer().receiveAnswer(order.substring(1), clientName);
                 break;
         }
     }
