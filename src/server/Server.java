@@ -189,6 +189,7 @@ public class Server {
             }
             System.out.println(startInfo);
             clientList.get(playerList.get(i)).receiveOrder(startInfo);
+            System.out.println("recieveOrder completed.");
         }
     }
 

@@ -93,9 +93,10 @@ public class Game {
 
         // Welcome info. for all: how many players are in this game, and what their names are
         Server.getServer().startGameInfo();
-
+        System.out.println("testFlagGame00");
         // game begins
         while (!gameover) {
+            System.out.println("testFlagGame01");
             game.newRound();
             checkGameOver();
         }
