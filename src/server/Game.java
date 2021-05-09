@@ -11,15 +11,12 @@ package server;
  * @version 1.0-SNAPSHOT
  */
 
-import javafx.beans.property.IntegerProperty;
-
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.*;
 
 public class Game {
 
-    private volatile static Game game;
+    private final static Game game = new Game();
 
     int countplayer;
     List<String> playernames; // IMPORTANT:index of the arrayList stands for the players´ index of this round
@@ -49,13 +46,6 @@ public class Game {
      * @return only one instance of the Game
      */
     public static Game getInstance() {
-        if (game == null) {
-            synchronized (Game.class) {
-                if (game == null) {
-                    game = new Game();
-                }
-            }
-        }
         return game;
     }
 
@@ -95,24 +85,9 @@ public class Game {
         Server.getServer().startGameInfo();
         System.out.println("testFlagGame00");
         // game begins
-        while (!gameover) {
             System.out.println("testFlagGame01");
             game.newRound();
-            checkGameOver();
-        }
 
-        // check who won the game
-        Integer maxTokens = Collections.max(tokens.values());
-        String finalwinner = "";
-        for (String player : tokens.keySet()) {
-            if (tokens.get(player) == maxTokens){
-                finalwinner = player;
-                break;
-            }
-        }
-        // tell everyone who won the game
-        Server.getServer().gameOver(tokens, finalwinner);
-        Server.getServer().sendMessageToAll("The final winner of this game is " + finalwinner);
     }
 
     /**
@@ -184,42 +159,6 @@ public class Game {
             Server.getServer().drawncard(i, handcard[i]);
         }
 
-        while (!roundover) {
-
-            playCard();
-            playerinturn++;
-            if (playerinturn == countplayer) playerinturn = 0;
-            // find the active player in next turn
-            while (status[playerinturn] == 0) {
-                playerinturn++;
-                if (playerinturn == countplayer) playerinturn = 0;
-            }
-
-            checkRoundOver();
-        }
-        String winnername = updateScoresAndTokensAndWinnersForThisRound();
-        Server.getServer().roundOver(scores, winnername);
-    }
-
-
-    /**
-     * This method is applied for other class (server) to invoke.
-     * @param card is given from client side and via server in the game transported
-     */
-    public void cardPlayed(Card card) {
-        System.out.println("TestFlagPlayCard2");
-        playedcard[playerinturn] = card;
-        System.out.println(playedcard[playerinturn].getType());
-    }
-
-    /**
-     * This method playCard() checks first whether the played card is valid in respect of the game rules.
-     * In the while-loop, the type of the played card will be selected and the according function of the
-     * played card will be applied.
-     * @throws IOException
-     */
-    public void playCard() throws IOException {
-
         drawncard[playerinturn] = deck.pop();
 
         // inform player which card he/she has drawn
@@ -227,38 +166,51 @@ public class Game {
         // tell all players that the player in turn is playing
         Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " has drawn one card and is playing...");
 
-        waitingforcard = true;
-        System.out.println("TestFlagPlayCard1");
-        while (waitingforcard) {
+    }
 
-            if (playedcard[playerinturn] == null) {
-                continue;
+
+    /**
+     * This method is applied for other class (server) to invoke.
+     * @param card is given from client side and via server in the game transported
+
+    public void cardPlayed(Card card) {
+        System.out.println("TestFlagPlayCard2");
+        playedcard[playerinturn] = card;
+        System.out.println(playedcard[playerinturn].getType());
+    }*/
+
+    /**
+     * This method playCard() checks first whether the played card is valid in respect of the game rules.
+     * In the while-loop, the type of the played card will be selected and the according function of the
+     * played card will be applied.
+     * @throws IOException
+     */
+    public void playCard(Card card) throws IOException {
+
+        playedcard[playerinturn] = card;
                 // check whether the played card if one of the handcard and drawncard
-            } else if (playedcard[playerinturn] != handcard[playerinturn] && playedcard[playerinturn] != drawncard[playerinturn]) {
-                System.out.println("TestWrongCard");
-                Server.getServer().exception(playernames.get(playerinturn), "You don´t have this card in your hand, choose one in hand.");
-                // if player has king or prince and also a countess in hand, countess must be played
-            } else if (playedcard[playerinturn] != Card.COUNTESS
-                    && (((handcard[playerinturn] == Card.PRINCE || handcard[playerinturn] == Card.KING) && drawncard[playerinturn] == Card.COUNTESS)
-                    || ((drawncard[playerinturn] == Card.PRINCE || drawncard[playerinturn] == Card.KING) && handcard[playerinturn] == Card.COUNTESS))) {
-                System.out.println("TestWrongCard2");
-                Server.getServer().exception(playernames.get(playerinturn), "You have royal member in your hand, the countess must be played.");
-            } else {
-                System.out.println("TestWrongCard3");
-                // update the handcard and drawncard
-                if (playedcard[playerinturn] == handcard[playerinturn]) {
-                    handcard[playerinturn] = drawncard[playerinturn];
-                    drawncard[playerinturn] = null;
-                    waitingforcard = false;
+                if (playedcard[playerinturn] != handcard[playerinturn] && playedcard[playerinturn] != drawncard[playerinturn]) {
+                    System.out.println("TestWrongCard");
+                    Server.getServer().exception(playernames.get(playerinturn), "You don´t have this card in your hand, choose one in hand.");
+                    // if player has king or prince and also a countess in hand, countess must be played
+                } else if (playedcard[playerinturn] != Card.COUNTESS
+                        && (((handcard[playerinturn] == Card.PRINCE || handcard[playerinturn] == Card.KING) && drawncard[playerinturn] == Card.COUNTESS)
+                        || ((drawncard[playerinturn] == Card.PRINCE || drawncard[playerinturn] == Card.KING) && handcard[playerinturn] == Card.COUNTESS))) {
+                    System.out.println("TestWrongCard2");
+                    Server.getServer().exception(playernames.get(playerinturn), "You have royal member in your hand, the countess must be played.");
                 } else {
-                    drawncard[playerinturn] = null;
-                    waitingforcard = false;
+                    System.out.println("TestWrongCard3");
+                    // update the handcard and drawncard
+                    if (playedcard[playerinturn] == handcard[playerinturn]) {
+                        handcard[playerinturn] = drawncard[playerinturn];
+                        drawncard[playerinturn] = null;
+                    } else {
+                        drawncard[playerinturn] = null;
+                    }
                 }
-            }
-        }
         System.out.println("TestFlagPlayCard3");
         // inform all the players who has played which card
-        Server.getServer().playedCard(playernames.get(playerinturn), playedcard[playerinturn]);
+        Server.getServer().playedCard(playedcard[playerinturn]);
         // apply the card function
         switch (playedcard[playerinturn]) {
 
@@ -476,6 +428,47 @@ public class Game {
 
         // playedcard refresh to null for next round check
         playedcard[playerinturn] = null;
+
+        playerinturn++;
+        if (playerinturn == countplayer) playerinturn = 0;
+        // find the active player in next turn
+        while (status[playerinturn] == 0) {
+            playerinturn++;
+            if (playerinturn == countplayer) playerinturn = 0;
+        }
+
+        checkRoundOver();
+
+        if(!roundover) {
+            drawncard[playerinturn] = deck.pop();
+            // inform player which card he/she has drawn
+            Server.getServer().drawncard(playerinturn, drawncard[playerinturn]);
+            // tell all players that the player in turn is playing
+            Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " has drawn one card and is playing...");
+        }
+        else{
+            String winnername = updateScoresAndTokensAndWinnersForThisRound();
+            Server.getServer().roundOver(scores, winnername);
+            checkGameOver();
+            if (!gameover){
+                newRound();
+            }
+            else
+            {
+                //check who won the game
+                Integer maxTokens = Collections.max(tokens.values());
+                String finalwinner = "";
+                for (String player : tokens.keySet()) {
+                    if (tokens.get(player) == maxTokens){
+                        finalwinner = player;
+                        break;
+                    }
+                }
+                // tell everyone who won the game
+                Server.getServer().gameOver(tokens, finalwinner);
+                Server.getServer().sendMessageToAll("The final winner of this game is " + finalwinner);
+            }
+        }
     }
 
     public void checkRoundOver() {

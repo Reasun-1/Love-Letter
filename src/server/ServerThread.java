@@ -38,7 +38,7 @@ public class ServerThread implements Runnable {
             // Create reader for messages from the client
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             // Create writer for messages to the client
-            PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             out.println(Server.getServer().gameExists() + Server.getServer().gameRunning());
 
@@ -62,33 +62,32 @@ public class ServerThread implements Runnable {
             // print the list of client names to the terminal (for testing)
             System.out.println(Server.clientList);
 
-            // wait for messages from the client
-            boolean flag = true;
-            while (flag) {
-                //wait for the output Stream from Client
-                String line = in.readLine();
-                // if no message from the client, then wait
-                if (line == null) {
-                    flag = false;
-                    continue;
+                    // wait for messages from the client
+                    boolean flag = true;
+                    while (flag) {
+                        //wait for the output Stream from Client
+                        String line = in.readLine();
+                        // if no message from the client, then wait
+                        if (line != null) {
+                            if (line.charAt(0) == '/') {
+                                executeOrder(line.substring(1));
+                            } else {
+                                String msg = "$" + clientName + ": " + line.substring(1);
+                                // give the message to all clients online
+                                sendMessage(msg);
+                            }
+                        }
+
+                    }
+                    // close the connection
+                    closeConnect();
+                } catch (IOException e) {
+                    try {
+                        closeConnect();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
-                if (line.charAt(0) == '/'){
-                    executeOrder(line.substring(1));
-                } else {
-                    String msg = "$" + clientName + ": " + line.substring(1);
-                    // give the message to all clients online
-                    sendMessage(msg);
-                }
-            }
-            // close the connection
-            closeConnect();
-        } catch (IOException e) {
-            try {
-                closeConnect();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
     }
 
     //create the method to send message to all the clients online

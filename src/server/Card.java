@@ -71,7 +71,7 @@ public enum Card {
             if (targetDiscard.getType() == Card.PRINCESS.getType()) {
                 Game.getInstance().status[targetIndex] = 0;
                 // inform all players that the target player has played a PRINCESS
-                Server.getServer().playedCard(Game.getInstance().playernames.get(targetIndex), Card.PRINCESS);
+                Server.getServer().playedCard(Card.PRINCESS);
                 // inform all players that the target player is out of game
                 Server.getServer().outOfRound(Game.getInstance().playernames.get(targetIndex));
                 //Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");

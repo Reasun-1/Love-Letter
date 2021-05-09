@@ -280,6 +280,7 @@ public class Client extends Application{
                     GAMERUNNING.set(true);
                // }
            // });
+        OUTOFROUND.set("");
 
     }
 
@@ -301,13 +302,14 @@ public class Client extends Application{
      */
     public void setPlayedCard(String cardname){
         // If it is someone else's turn, show the played card in the drawn card slot
+        System.out.println(cardname);
         if (playerinturnid != 0){
             drawncard[playerinturnid].set(CARDS.indexOf(cardname));
         }
         // Reset the drawn card's slot of the last player
-        int previousplayer = (playerinturnid - 1) % numberofplayers;
+        int previousplayer = (playerinturnid - 1 + numberofplayers) % numberofplayers;
         while (OUTOFROUND.get().contains(PLAYERS[previousplayer].get())){
-            previousplayer = (previousplayer - 1) % numberofplayers;
+            previousplayer = (previousplayer - 1 + numberofplayers) % numberofplayers;
         }
         drawncard[previousplayer].set(9);
         // Add the played card to the discarded card pile

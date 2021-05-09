@@ -1,5 +1,9 @@
 package server;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableBooleanValue;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -11,7 +15,7 @@ import java.util.List;
 
 public class Server {
 
-    private volatile static Server server;
+    private final static Server server = new Server();
     // a set (here is a vector type) for the accepted ServerThreads
     protected static Hashtable<Integer, String> playerList = new Hashtable<Integer, String>();
     // a set for checking clients´ names
@@ -28,13 +32,6 @@ public class Server {
 
     //Singleton with DCL (double-checked locking)
     public static Server getServer() {
-        if (server == null) {
-            synchronized (Server.class) {
-                if (server == null) {
-                    server = new Server();
-                }
-            }
-        }
         return server;
     }
 
@@ -147,7 +144,11 @@ public class Server {
     public void playCard(String cardName){
         for (Card card : Card.values()) {
             if (card.getType().equals(cardName)) {
-                Game.getInstance().cardPlayed(card);
+                try{
+                    Game.getInstance().playCard(card);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
             }
         }
         System.out.println("cardPlayed1");
@@ -230,11 +231,11 @@ public class Server {
     }
 
     // inform the players about the card played by playerName
-    public void playedCard(String playerName, Card card){
+    public void playedCard(Card card){
 
         try{
                 for (int i = 0; i < playerList.size(); i++) {
-                   clientList.get(playerList.get(i)).receiveOrder("6" + playerName + "/" + card.getType());
+                   clientList.get(playerList.get(i)).receiveOrder("6" + card.getType());
             }
         } catch (IOException e){
             e.printStackTrace();
