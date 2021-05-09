@@ -1,5 +1,10 @@
 package client.viewmodel;
 
+/**
+ * Controller for the end-of-round window
+ * @author Pascal Stucky
+ */
+
 import client.controller.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

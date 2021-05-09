@@ -1,5 +1,11 @@
 package client.viewmodel;
 
+/**
+ * Controller for question window
+ *
+ * @author Pascal Stucky
+ */
+
 import client.controller.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +30,11 @@ public class QuestionController {
 
     private Client client;
 
-
+    /**
+     * store the client to transmit the answer and display the question
+     * @param client
+     * @param message
+     */
     public void init(Client client, String message) {
         this.client = client;
         questionField.setText(message);

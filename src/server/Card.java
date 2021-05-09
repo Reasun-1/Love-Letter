@@ -67,6 +67,7 @@ public enum Card {
             Game.getInstance().handcard[targetIndex] = null;
             // inform everyone that target player dropped a card
             Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " has dropped a " + targetDiscard);
+            Server.getServer().dropCard(Game.getInstance().playernames.get(targetIndex));
             // if the discarded hand card is princess -> target player out of game
             if (targetDiscard.getType() == Card.PRINCESS.getType()) {
                 Game.getInstance().status[targetIndex] = 0;

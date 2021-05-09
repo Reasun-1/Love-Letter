@@ -13,6 +13,7 @@ import javafx.stage.Stage;
  * It is connected with the FXML ErrorWindow File and with ErrorViewModel in order to complete the
  * conditions of a MVVM model
  * @author Rajna Fani
+ * @author Pascal Stucky
  * @version 1.0-SNAPSHOT
  */
 

@@ -276,4 +276,8 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+    public void dropCard(String playername) throws IOException {
+        clientList.get(playername).receiveOrder("3");
+    }
 }

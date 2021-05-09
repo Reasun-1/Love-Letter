@@ -425,9 +425,7 @@ public class Game {
             if (playerinturn == countplayer) playerinturn = 0;
         }
 
-        checkRoundOver();
-
-        if(!roundover) {
+        if(!checkRoundOver()) {
             drawncard[playerinturn] = deck.pop();
             // inform player which card he/she has drawn
             Server.getServer().drawncard(playerinturn, drawncard[playerinturn]);
@@ -438,8 +436,7 @@ public class Game {
             String winnername = updateScoresAndTokensAndWinnersForThisRound();
             System.out.println(scores);
             Server.getServer().roundOver(scores, winnername);
-            checkGameOver();
-            if (!gameover){
+            if (!checkGameOver()){
                 newRound();
             }
             else
@@ -462,16 +459,14 @@ public class Game {
 
 
 
-    public void checkRoundOver() {
+    public boolean checkRoundOver() {
         int numActivePlayer = 0;
         for (int i = 0; i < countplayer; i++) {
             if (status[i] != 0) {
                 numActivePlayer++;
             }
         }
-        if (numActivePlayer == 1 || deck.size() == 0) {
-            roundover = true;
-        }
+            return (numActivePlayer == 1 || deck.size() == 0);
     }
 
 
@@ -563,26 +558,27 @@ public class Game {
      * This method checkGameOver() will check whether the condition of game over accomplished in
      * respect of the game rules.
      */
-    public void checkGameOver() {
+    public boolean checkGameOver() {
         if (countplayer == 2) {
             for (String name : playernames) {
                 if (tokens.get(name) == 7) {
-                    gameover = true;
+                    return true;
                 }
             }
         } else if (countplayer == 3) {
             for (String name : playernames) {
                 if (tokens.get(name) == 5) {
-                    gameover = true;
+                    return true;
                 }
             }
         } else {
             for (String name : playernames) {
                 if (tokens.get(name) == 4) {
-                    gameover = true;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
 

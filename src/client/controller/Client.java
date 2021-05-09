@@ -413,6 +413,13 @@ public class Client extends Application{
     }
 
     /**
+     * drop the current handcard without playing its effect
+     */
+    public void dropCard() {
+        handcard[0].set(9);
+    }
+
+    /**
      * Send message to the server, quit if logout order is given
      * @param message
      */
@@ -462,12 +469,11 @@ public class Client extends Application{
                 case '2': // open Question Window to ask for a player
                     LAUNCHER.launchQuestion(client, order.substring(1));
                     break;
-                case '3': // open Question Window to ask for a card
-                    // disabled: LAUNCHER.launchQuestion(client, "Please enter your card guess:");
+                case '3': // drop handcard
+                    dropCard();
                     break;
                 case '4': // start Game
                     startGameInfo(order.substring(1));
-                    System.out.println(client.getName() + " completed.");
                     break;
                 case '5': // show the drawn card
                     setDrawnCard(order.substring(1));
