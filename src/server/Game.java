@@ -325,10 +325,10 @@ public class Game {
                         drawncard[playerinturn] = null;
                     }
                 }
-        System.out.println(playernames.get(playerinturn) + "played " + card.getType());
+        System.out.println(playernames.get(playerinturn) + " played " + card.getType());
         // inform all the players who has played which card
         Server.getServer().playedCard(playedcard[playerinturn]);
-        Server.getServer().sendMessageToAll(playernames.get(playerinturn) + "played " + card.getType());
+        Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " played " + card.getType());
         // apply the card function
         switch (playedcard[playerinturn]) {
 
@@ -350,6 +350,7 @@ public class Game {
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
                     Card.KING.function(playerinturn, targetindex1); // nothing happens, just change the card with self.
+                    endOfTurn();
                 } else { // if there are unprotected active players in this round, choose one
                     Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
@@ -365,6 +366,7 @@ public class Game {
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, drop a card and draw a new one.");
                     Card.PRINCE.function(playerinturn, targetindex2);
+                    endOfTurn();
                 } else { // if there are unprotected active players in this round, choose one
                     Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
@@ -386,6 +388,7 @@ public class Game {
                      // nothing happens, drop the card
                     int countdiscarded = Game.getInstance().countdiscarded[playerinturn]++;
                     Game.getInstance().discardedcard[playerinturn][countdiscarded] = Card.BARON;
+                    endOfTurn();
                 } else { // if there are unprotected active players in this round, choose one
                     Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
@@ -401,6 +404,7 @@ public class Game {
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
                     Card.PRIEST.function(playerinturn, targetindex4); // nothing happens
+                    endOfTurn();
                 } else { // if there are unprotected active players in this round, choose one
                     Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
@@ -417,6 +421,7 @@ public class Game {
                 if (allPlayersProtected()) {
                     Card.GUARD.function(playerinturn, targetindex5, guesscard); // nothing happens
                     Server.getServer().sendMessageToAll("All players are protected, nothing happens, play continues.");
+                    endOfTurn();
                 } else { // if there are unprotected active players in this round, choose one
                     Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
