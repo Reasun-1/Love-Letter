@@ -492,8 +492,8 @@ public class Client extends Application{
         //LAUNCHER.launchEndOfGame("Winner: Pascal\n\n Score:\n" + String.format("%-20.20s %2.2s" , "Pascal", "12") + "\n" + String.format("%-20.20s %2.2s" , "Elisabeth", "10") + "\n" + String.format("%-20.20s %2.2s" , "Can", "3") + "\n" + String.format("%-20.20s %2.2s" , "John", "5") + "\n");
 
 
-        // Open chat after logging in successfully
-        LAUNCHER.launchChat(this);
+        // Open chat and game window after logging in successfully
+        LAUNCHER.launchChatAndGame(this);
         new Thread(() -> {
             try {
                 String line;

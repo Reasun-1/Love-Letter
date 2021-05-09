@@ -9,6 +9,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 
+/**
+ * This class is the ViewModel class for the Chat and Game Window.
+ * @author Xheneta, Rajna
+ */
+
 public class ChatAndGameViewModel {/*
     private Client client;
     private TextArea chatInput;

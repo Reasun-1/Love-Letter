@@ -49,7 +49,7 @@ public class WindowLauncher {
         Parent root = loader.load();
         ErrorController ctrl = loader.getController();
         ctrl.init(message);
-        stage.setScene(new Scene(root, 600, 400));
+        stage.setScene(new Scene(root, 388, 186));
         stage.showAndWait();
         stage.setOnCloseRequest((event) -> Platform.exit());
     }
@@ -59,7 +59,7 @@ public class WindowLauncher {
      * @param client
      * @throws IOException
      */
-    public void launchChat(Client client) throws IOException{
+    public void launchChatAndGame(Client client) throws IOException{
         Stage stage = new Stage();
         stage.setTitle("Chat: " + client.getName());
         FXMLLoader loader = new FXMLLoader();
@@ -67,7 +67,7 @@ public class WindowLauncher {
         Parent root = loader.load();
         ChatAndGameController ctrl = loader.getController();
         ctrl.init(client);
-        stage.setScene(new Scene(root, 600, 400));
+        stage.setScene(new Scene(root, 1000, 600));
         stage.show();
         stage.setOnCloseRequest((event) -> Platform.exit());
     }

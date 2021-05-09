@@ -6,6 +6,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+/**
+ * This class is the controller class for the End of Game xfml file and represents the end of game window.
+ * @author Pascal, Xheneta
+ */
+
 public class EndOfGameController {
 
     @FXML

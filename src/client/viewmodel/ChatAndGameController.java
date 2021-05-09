@@ -27,10 +27,13 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
-// Controller Class for the Chat and Game Window connected with the fxml file via data binding
+/**
+ * This class is the controller class for the Chat and Game Window connected with the fxml file via data binding.
+ * @author Rajna, Xheneta
+ */
+
 
 public class ChatAndGameController {
-
 
     @FXML
     private BorderPane chatSplitting;
