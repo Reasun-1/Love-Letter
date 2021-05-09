@@ -16,15 +16,15 @@
      * @author Xheneta, Pascal
       -->
 
-<AnchorPane fx:id="endofgameRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.viewmodel.EndOfGameController">
+<fx:root fx:id="endRootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600" type="AnchorPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.viewmodel.EndOfGameController">
     <children>
-        <AnchorPane fx:id="background" layoutX="139.0" layoutY="34.0" prefHeight="400.0" prefWidth="600.0" />
+        <AnchorPane fx:id="backgroundPane" layoutX="139.0" layoutY="34.0" prefHeight="400.0" prefWidth="600.0" />
         <ImageView fitHeight="400.0" fitWidth="600.0">
             <image>
                 <Image url="@../resources/redvelvet.jpg" />
             </image>
         </ImageView>
-        <AnchorPane fx:id="background2" prefHeight="400.0" prefWidth="600.0">
+        <AnchorPane fx:id="displayPane" prefHeight="400.0" prefWidth="600.0">
             <children>
             <ImageView fitHeight="93.0" fitWidth="143.0" layoutX="443.0" layoutY="294.0" pickOnBounds="true">
                <image>
@@ -41,7 +41,7 @@
                         <Font name="Chalkduster" size="22.0" />
                     </font>
                 </Label>
-                <Button fx:id="okButton" defaultButton="true" layoutX="258.0" layoutY="349.0" mnemonicParsing="false" onAction="#confirm" opacity="0.63" prefHeight="26.0" prefWidth="85.0" text="Done!" textAlignment="CENTER" textFill="#540707" />
+                <Button fx:id="doneButton" defaultButton="true" layoutX="258.0" layoutY="349.0" mnemonicParsing="false" onAction="#confirm" opacity="0.63" prefHeight="26.0" prefWidth="85.0" text="Done!" textAlignment="CENTER" textFill="#540707" />
             <Text fill="#d3ba2d" layoutX="30.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game end results:" wrappingWidth="221.748046875">
                <font>
                   <Font name="Bodoni 72 Smallcaps Book" size="30.0" />
@@ -71,10 +71,10 @@
                </font>
             </Text>
             <Label fx:id="yourScore" layoutX="141.0" layoutY="88.0" prefHeight="37.0" prefWidth="73.0" textAlignment="CENTER" textFill="#d3ba2d" />
-            <Label fx:id="playertwoScore" layoutX="141.0" layoutY="139.0" prefHeight="37.0" prefWidth="73.0" textAlignment="CENTER" textFill="#d3ba2d" />
-            <Label fx:id="playerthreeScore" layoutX="141.0" layoutY="195.0" prefHeight="37.0" prefWidth="73.0" textAlignment="CENTER" textFill="#d3ba2d" />
-            <Label fx:id="playerfourScore" layoutX="141.0" layoutY="250.0" prefHeight="37.0" prefWidth="73.0" textAlignment="CENTER" textFill="#d3ba2d" />
+            <Label fx:id="secondScore" layoutX="141.0" layoutY="139.0" prefHeight="37.0" prefWidth="73.0" textAlignment="CENTER" textFill="#d3ba2d" />
+            <Label fx:id="thirdScore" layoutX="141.0" layoutY="195.0" prefHeight="37.0" prefWidth="73.0" textAlignment="CENTER" textFill="#d3ba2d" />
+            <Label fx:id="fourthScore" layoutX="141.0" layoutY="250.0" prefHeight="37.0" prefWidth="73.0" textAlignment="CENTER" textFill="#d3ba2d" />
             </children>
         </AnchorPane>
     </children>
-</AnchorPane>
+</fx:root>
