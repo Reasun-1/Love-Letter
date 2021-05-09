@@ -141,7 +141,7 @@ public class Client extends Application{
         // Initialize the list of cards
         CARDS.add("back");
         CARDS.add("guard");
-        CARDS.add("spy");
+        CARDS.add("priest");
         CARDS.add("baron");
         CARDS.add("handmaid");
         CARDS.add("prince");
@@ -204,6 +204,7 @@ public class Client extends Application{
      * Join an existing Game (only possible if a Game exists and there are less than 4 players registered). Order Code: 3
      */
     public void joinGame() {
+        //handcard[0].set(0);
         OUT.println("/3");
     }
 
@@ -258,7 +259,7 @@ public class Client extends Application{
                     String rest = info.substring(2) + '0';
                     System.out.println(rest);
 
-                    for (int i = 1; i < numberofplayers; i++) {
+                    for (int i = 0; i < numberofplayers; i++) {
                         System.out.println("startGameInfoFlag01");
                         //PLAYERS[i].set(rest.substring(1, info.indexOf('/')));
                         PLAYERS[i].set(rest.substring(0, rest.indexOf('/')));
@@ -287,7 +288,7 @@ public class Client extends Application{
      * @param cardname
      */
     public void setDrawnCard(String cardname){
-        if (handcard[0].get() == 9) {
+        if (handcard[0].get() == 0) {
             handcard[0].set(CARDS.indexOf(cardname));
         } else {
             drawncard[0].set(CARDS.indexOf(cardname));

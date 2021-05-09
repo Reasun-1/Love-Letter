@@ -207,6 +207,7 @@ public class Game {
      * @param card is given from client side and via server in the game transported
      */
     public void cardPlayed(Card card) {
+        System.out.println("TestFlagPlayCard2");
         playedcard[playerinturn] = card;
     }
 
@@ -226,20 +227,23 @@ public class Game {
         Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " has drawn one card and is playing...");
 
         waitingforcard = true;
-
+        System.out.println("TestFlagPlayCard1");
         while (waitingforcard) {
 
             if (playedcard[playerinturn] == null) {
                 continue;
                 // check whether the played card if one of the handcard and drawncard
             } else if (playedcard[playerinturn] != handcard[playerinturn] && playedcard[playerinturn] != drawncard[playerinturn]) {
+                System.out.println("TestWrongCard");
                 Server.getServer().exception(playernames.get(playerinturn), "You don´t have this card in your hand, choose one in hand.");
                 // if player has king or prince and also a countess in hand, countess must be played
             } else if (playedcard[playerinturn] != Card.COUNTESS
                     && (((handcard[playerinturn] == Card.PRINCE || handcard[playerinturn] == Card.KING) && drawncard[playerinturn] == Card.COUNTESS)
                     || ((drawncard[playerinturn] == Card.PRINCE || drawncard[playerinturn] == Card.KING) && handcard[playerinturn] == Card.COUNTESS))) {
+                System.out.println("TestWrongCard2");
                 Server.getServer().exception(playernames.get(playerinturn), "You have royal member in your hand, the countess must be played.");
             } else {
+                System.out.println("TestWrongCard3");
                 // update the handcard and drawncard
                 if (playedcard[playerinturn] == handcard[playerinturn]) {
                     handcard[playerinturn] = drawncard[playerinturn];
@@ -251,7 +255,7 @@ public class Game {
                 }
             }
         }
-
+        System.out.println("TestFlagPlayCard3");
         // inform all the players who has played which card
         Server.getServer().playedCard(playernames.get(playerinturn), playedcard[playerinturn]);
         // apply the card function
