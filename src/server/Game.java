@@ -303,7 +303,7 @@ public class Game {
                     Server.getServer().exception(playernames.get(playerinturn), "You have royal member in your hand, the countess must be played.");
                     return;
                 } else {
-                    System.out.println("TestWrongCard3");
+                    System.out.println("valid card played");
                     // update the handcard and drawncard
                     if (playedcard[playerinturn] == handcard[playerinturn]) {
                         handcard[playerinturn] = drawncard[playerinturn];
@@ -344,8 +344,7 @@ public class Game {
                 break;
 
             case PRINCE:
-                waitingforchooseplayer = true;
-                String targetname2;
+
                 int targetindex2 = playerinturn; // initialize the target as self
                 status[playerinturn] = 1; // reset the status from 2 to 1, if status was 2.
 
@@ -365,14 +364,13 @@ public class Game {
                 break;
 
             case BARON:
-                waitingforchooseplayer = true;
-                String targetname3;
+
                 int targetindex3 = playerinturn; // initialize the target as self
 
                 // if all players are protected, the function goes to self = nothing happens
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
-                    Card.BARON.function(playerinturn, targetindex3); // nothing happens, just compare the card with self
+                    //Card.BARON.function(playerinturn, targetindex3); // nothing happens, just compare the card with self
                 } else { // if there are unprotected active players in this round, choose one
                     Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
@@ -381,8 +379,7 @@ public class Game {
                 break;
 
             case PRIEST:
-                waitingforchooseplayer = true;
-                String targetname4;
+
                 int targetindex4 = playerinturn; // initialize the target as self
 
                 // if all players are protected, the function goes to self = nothing happens
@@ -397,10 +394,7 @@ public class Game {
                 break;
 
             case GUARD:
-                waitingforchooseplayer = true;
-                waitingforguesstyp = true;
-                String targetname5;
-                String guesscardtype;
+
                 Card guesscard = Card.GUARD; // intitialize the target as self
                 int targetindex5 = playerinturn; // initialize the target as self
 

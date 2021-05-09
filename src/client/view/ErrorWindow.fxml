@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+* ErrorWindow.fxml represents the design of the window that shows up when an error occurs.
+*It is made with the help of Scene Builder.
+* @author Rajna Fani
+* @version 1.0-SNAPSHOT
+-->
+
 <?import javafx.scene.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
@@ -62,7 +69,7 @@
                         <Cursor fx:constant="SW_RESIZE" />
                      </cursor>
                   </Button>
-                    <Label fx:id="errorField" alignment="CENTER" layoutX="38.0" layoutY="123.0" prefHeight="55.0" prefWidth="286.0" textAlignment="CENTER" textFill="#b5aaaa">
+                    <Label fx:id="errorField" alignment="CENTER" layoutX="38.0" layoutY="123.0" prefHeight="79.0" prefWidth="285.0" textAlignment="CENTER" textFill="#b5aaaa">
                      <font>
                         <Font name="Arial Black" size="16.0" />
                      </font></Label>
