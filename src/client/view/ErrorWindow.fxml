@@ -54,7 +54,7 @@
                         </ImageView>
                      </children>
                   </AnchorPane>
-                  <Button layoutX="339.0" layoutY="153.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="56.0" text="OK" textOverrun="CENTER_ELLIPSIS">
+                  <Button fx:id="okButton" layoutX="339.0" layoutY="153.0" mnemonicParsing="false" onAction="#okButtonClicked" defaultButton="true" prefHeight="20.0" prefWidth="56.0" text="OK" textOverrun="CENTER_ELLIPSIS">
                      <effect>
                         <Glow level="0.26" />
                      </effect>
