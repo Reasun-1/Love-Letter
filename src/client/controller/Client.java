@@ -294,8 +294,9 @@ public class Client extends Application{
      * @param cardname
      */
     public void setDrawnCard(String cardname){
-        if (handcard[0].get() == 0) {
+        if (handcard[0].get() == 0 || handcard[0].get() == 9) {
             handcard[0].set(CARDS.indexOf(cardname));
+            drawncard[0].set(9);
         } else {
             drawncard[0].set(CARDS.indexOf(cardname));
         }
@@ -361,7 +362,7 @@ public class Client extends Application{
      * @throws IOException
      */
     public void endOfRound(String info) throws IOException{
-        String winneroflastround = info.substring(2*numberofplayers + 1);
+        String winneroflastround = info.substring(2*numberofplayers);
         String endofroundinfo = "Winner: " + winneroflastround + "\n\n" + "Score: \n";
         int[] score = new int[numberofplayers];
         for (int i = 0; i < numberofplayers; i++) {
