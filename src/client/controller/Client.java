@@ -19,6 +19,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Scanner;
 
 public class Client extends Application{
     // Socket for the TCP connection
@@ -219,11 +220,15 @@ public class Client extends Application{
      * Play your hand card (only possible if this client is player in turn in the current game). Order Code: 5
      */
     public void playHandCard() {
+
+        System.out.println("/5" + CARDS.get(handcard[0].get()));
         OUT.println("/5" + CARDS.get(handcard[0].get()));
+        System.out.println("testFlagplayHandCardClient");
         Integer playedcard = handcard[0].get();
         handcard[0].set(drawncard[0].get());
         drawncard[0].set(playedcard);
         INTURN.set(false);
+
     }
 
     /**
@@ -528,7 +533,6 @@ public class Client extends Application{
                             //CHATHISTORY.concat(line.substring(1) + "\n");
 
                                 CHATHISTORY.set(CHATHISTORY.get() + line.substring(1) + "\n");
-                                System.out.println(CHATHISTORY.get());
 
                         }
                     }
