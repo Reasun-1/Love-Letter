@@ -53,8 +53,11 @@
                               </ImageView>
                               <ScrollPane layoutX="16.0" layoutY="47.0" prefHeight="390.0" prefWidth="239.0">
                                 <content>
-                                   <TextArea fx:id="messagesHistory" layoutX="16.0" layoutY="47.0" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"></TextArea>
-                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                                   <TextArea fx:id="messagesHistory" layoutX="16.0" layoutY="47.0" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" />
+                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="-1.0" prefHeight="390.0" prefWidth="239.0" />
+                                       </children></AnchorPane>
                                 </content>
                                  <effect>
                                     <SepiaTone />
@@ -62,7 +65,7 @@
                               </ScrollPane>
                               <TextField fx:id="messageField" alignment="CENTER" layoutX="39.0" layoutY="442.0" prefHeight="42.0" prefWidth="177.0" promptText="Type your message here..." />
                               <TextField fx:id="sendTo" layoutX="11.0" layoutY="515.0" prefHeight="34.0" prefWidth="103.0" promptText="Send to" />
-                              <Button fx:id="sendButton" layoutX="136.0" layoutY="514.0" mnemonicParsing="false" prefHeight="34.0" onAction="#send" prefWidth="114.0" text="Send">
+                              <Button fx:id="sendButton" layoutX="136.0" layoutY="514.0" mnemonicParsing="false" onAction="#send" prefHeight="34.0" prefWidth="114.0" text="Send">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
@@ -93,8 +96,8 @@
                                                 </ImageView>
                                              </children>
                                           </AnchorPane>
-                                          <Button fx:id="playHandCardYou" layoutX="9.0" layoutY="235.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="105.0" onAction="#playHandCard" text="Play handcard" />
-                                          <Button fx:id="playDrawnCardYou" layoutX="141.0" layoutY="236.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="105.0" onAction="#playDrawnCard" text="Play drawncard" />
+                                          <Button fx:id="playHandCardYou" layoutX="9.0" layoutY="235.0" mnemonicParsing="false" onAction="#playHandCard" prefHeight="31.0" prefWidth="105.0" text="Play handcard" />
+                                          <Button fx:id="playDrawnCardYou" layoutX="141.0" layoutY="236.0" mnemonicParsing="false" onAction="#playDrawnCard" prefHeight="32.0" prefWidth="105.0" text="Play drawncard" />
                                           <ImageView fx:id="yourDrawnCard" fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
@@ -241,7 +244,7 @@
                                  <children>
                                     <ScrollPane layoutX="-36.0" layoutY="36.0" prefHeight="168.0" prefWidth="189.0">
                                        <content>
-                                          <TextArea fx:id="outOfRoundCards" layoutX="-36.0" layoutY="36.0" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"></TextArea>
+                                          <TextArea fx:id="outOfRoundCards" layoutX="-36.0" layoutY="36.0" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" />
                                        </content>
                                        <effect>
                                           <SepiaTone />
@@ -249,8 +252,8 @@
                                     </ScrollPane>
                                  </children>
                               </AnchorPane>
-                              <Button layoutX="798.0" layoutY="560.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="98.0" onAction="#createGame" text="Create Game" />
-                              <Button layoutX="902.0" layoutY="559.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="92.0" onAction="#joinGame" text="Join Game" />
+                              <Button layoutX="798.0" layoutY="560.0" mnemonicParsing="false" onAction="#createGame" prefHeight="34.0" prefWidth="98.0" text="Create Game" />
+                              <Button layoutX="902.0" layoutY="559.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="34.0" prefWidth="92.0" text="Join Game" />
                            </children>
                         </AnchorPane>
                      </children>

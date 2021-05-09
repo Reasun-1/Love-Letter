@@ -17,8 +17,6 @@
 
 <AnchorPane fx:id="errorRootPane" layoutY="6.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="180.0" prefWidth="220.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.viewmodel.ErrorController">
     <children>
-        <Label fx:id="errorField" alignment="CENTER" layoutX="212.0" layoutY="249.0" prefHeight="30.0" prefWidth="176.0">
-        </Label>
       <AnchorPane layoutX="25.0" layoutY="31.0" prefHeight="180.0" prefWidth="217.0">
          <children>
             <Pane layoutX="-45.0" layoutY="-40.0" prefHeight="96.0" prefWidth="154.0">
@@ -43,11 +41,6 @@
                   </Text>
                   <AnchorPane layoutX="159.0" layoutY="56.0" prefHeight="79.0" prefWidth="154.0">
                      <children>
-                        <Text fill="#f8eeee" layoutX="-44.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A cute problem is hanging at the moment!" textAlignment="CENTER" wrappingWidth="224.06494140625">
-                           <font>
-                              <Font size="21.0" />
-                           </font>
-                        </Text>
                         <ImageView fitHeight="66.0" fitWidth="155.0" layoutX="-9.0" layoutY="-11.0">
                            <image>
                               <Image url="@../resources/sloth.jpg" />
@@ -69,6 +62,10 @@
                         <Cursor fx:constant="SW_RESIZE" />
                      </cursor>
                   </Button>
+                    <Label fx:id="errorField" alignment="CENTER" layoutX="124.0" layoutY="123.0" prefHeight="49.0" prefWidth="200.0" textAlignment="CENTER" textFill="#b5aaaa">
+                     <font>
+                        <Font name="Arial Black" size="18.0" />
+                     </font></Label>
                </children>
             </Pane>
          </children>
