@@ -24,8 +24,10 @@ import javafx.scene.control.TextArea;
 import javafx.util.StringConverter;
 
 import java.awt.*;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * This class is the controller class for the Chat and Game Window connected with the fxml file via data binding.
@@ -45,7 +47,7 @@ public class ChatAndGameController {
     private ScrollPane chatPane;
 
     @FXML
-    private TextArea messagesHistory; //registers the written messages on TextField
+    private TextArea outOfRoundCards1; //registers the written messages on TextField
 
     @FXML
     private TextField messageField; //bind the typed message with message history scroll pane
@@ -170,7 +172,7 @@ public class ChatAndGameController {
         //ChatAndGameViewModel chgvm = new ChatAndGameViewModel();
         //connects the send button and the message field together (if message field is empty then u can't press the send button)
         sendButton.disableProperty().bind(messageField.textProperty().isEmpty());
-        messagesHistory.textProperty().bindBidirectional(client.getChatHistory());
+        outOfRoundCards1.textProperty().bindBidirectional(client.getChatHistory());
         yourHandCard.imageProperty().bind(Bindings.createObjectBinding(() -> images.get(client.getHandCard(0).getValue()),
                 client.getHandCard(0)));
         yourDrawnCard.imageProperty().bind(Bindings.createObjectBinding(() -> images.get(client.getDrawnCard(0).getValue()),
@@ -257,6 +259,8 @@ public class ChatAndGameController {
         sendTo.clear();
     }
 
+
+
     @FXML
     private void playHandCard(){
         client.playHandCard();
@@ -278,8 +282,12 @@ public class ChatAndGameController {
     }
 
     @FXML
-    private void startGame(){
+    private void startGame(ActionEvent event){
         client.startGame();
     }
 
+
+    /*public TextField getPlayer2Score() {
+        return client.score[2];
+    }*/
 }
