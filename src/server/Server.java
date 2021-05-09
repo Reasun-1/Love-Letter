@@ -100,7 +100,7 @@ public class Server {
         else {
             Game.getInstance();
             gameexists = true;
-            sendMessageToAll(clientName + "created a new Game");
+            sendMessageToAll(clientName + " created a new Game");
         }
     }
 

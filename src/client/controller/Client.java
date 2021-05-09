@@ -125,6 +125,8 @@ public class Client extends Application{
         // Start with an empty name, will be set during Login
         name = "";
 
+        CHATHISTORY.set("");
+
         for (int i=0;i<4;i++){
             PLAYERS[i] = new SimpleStringProperty();
             handcard[i] = new SimpleIntegerProperty(9);
@@ -244,12 +246,12 @@ public class Client extends Application{
         System.out.println(numberofplayers);
         // The second character encodes the start player
         //playerinturnid = (- (int) info.charAt(1)) % numberofplayers;
-        playerinturnid = Integer.valueOf(Character.toString((char) info.charAt(1)));
+        playerinturnid = (- Integer.valueOf(Character.toString((char) info.charAt(1))) % numberofplayers);
 
         // GUI cannot be directly updated from a non-application thread, here a Runnable object is needed.
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
+            //Platform.runLater(new Runnable() {
+              //  @Override
+                //public void run() {
                     // The rest of the String contains the names of the other players separated by a '/'
                     //String rest = info.substring(1);
                     String rest = info.substring(2) + '0';
@@ -273,8 +275,8 @@ public class Client extends Application{
                         INTURN.set(true);
                     }
                     GAMERUNNING.set(true);
-                }
-            });
+               // }
+           // });
 
     }
 
@@ -428,74 +430,55 @@ public class Client extends Application{
      */
     public void executeOrder(String order) throws IOException {
         Client client = this;
-        switch (order.charAt(0)) {
-            case '0': // terminate the connection
-                OUT.println("done");
-                socket.close();
-                break;
-            case '1': // open Error Window
-                OUT.println("done");
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            LAUNCHER.launchError(order.substring(1));
-                        } catch (IOException e){
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                break;
-            case '2': // open Question Window to ask for a player
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            LAUNCHER.launchQuestion(client, "Please choose a Player:");
-                        } catch (IOException e){
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                break;
-            case '3': // open Question Window to ask for a card
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            LAUNCHER.launchQuestion(client, "Please enter your card guess:");
-                        } catch (IOException e){
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                break;
-            case '4': // start Game
-                startGameInfo(order.substring(1));
-                System.out.println(client.getName() + " completed.");
-                //OUT.println("done");
-                OUT.println("$done");
-                break;
-            case '5': // show the drawn card
-                setDrawnCard(order.substring(1));
-                OUT.println("done");
-                break;
-            case '6': // show the played card
-                setPlayedCard(order.substring(1));
-                OUT.println("done");
-                break;
-            case '7': // end round
-                endOfRound(order.substring(1));
-                OUT.println("done");
-                break;
-            case '8': // end game
-                endOfGame(order.substring(1));
-                OUT.println("done");
-                break;
-            case '9': // out of round
-                outOfRound(order.substring(1));
-                OUT.println("done");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    switch (order.charAt(0)) {
+                case '0': // terminate the connection
+                    OUT.println("done");
+                    socket.close();
+                    break;
+                case '1': // open Error Window
+                    OUT.println("done");
+                    LAUNCHER.launchError(order.substring(1));
+                    break;
+                case '2': // open Question Window to ask for a player
+                    LAUNCHER.launchQuestion(client, "Please choose a Player:");
+                    break;
+                case '3': // open Question Window to ask for a card
+                    LAUNCHER.launchQuestion(client, "Please enter your card guess:");
+                    break;
+                case '4': // start Game
+                    startGameInfo(order.substring(1));
+                    System.out.println(client.getName() + " completed.");
+                    //OUT.println("done");
+                    OUT.println("$done");
+                    break;
+                case '5': // show the drawn card
+                    setDrawnCard(order.substring(1));
+                    OUT.println("done");
+                    break;
+                case '6': // show the played card
+                    setPlayedCard(order.substring(1));
+                    OUT.println("done");
+                    break;
+                case '7': // end round
+                    endOfRound(order.substring(1));
+                    OUT.println("done");
+                    break;
+                case '8': // end game
+                    endOfGame(order.substring(1));
+                    OUT.println("done");
+                    break;
+                case '9': // out of round
+                    outOfRound(order.substring(1));
+                    OUT.println("done");
+            }}catch (IOException e){
+                    e.printStackTrace();
         }
+        }
+        });
     }
 
     /**
