@@ -30,7 +30,6 @@ import java.util.List;
 
 public class ChatAndGameController {
 
-
     @FXML
     private BorderPane chatSplitting;
 
