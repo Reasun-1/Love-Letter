@@ -96,7 +96,7 @@ public class Client extends Application{
     public IntegerProperty getTOKENS(int playerindex){return TOKENS[playerindex];}
 
     public IntegerProperty getDrawnCard(int playerindex) {
-        return handcard[playerindex];
+        return drawncard[playerindex];
     }
 
     public StringProperty getDiscardedCards() {return DISCARDEDCARDS;}

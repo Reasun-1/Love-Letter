@@ -104,8 +104,11 @@ public class ServerThread implements Runnable {
 
     public String receiveOrder(String order) throws IOException{
         new PrintWriter(socket.getOutputStream(),true).println("/" + order);
-        //return new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
-        return null;
+        String answer = "";
+        while(answer.isEmpty()){
+            answer = new BufferedReader(new InputStreamReader(socket.getInputStream())).readLine();
+        }
+        return answer;
     }
 
     //close socket connection
