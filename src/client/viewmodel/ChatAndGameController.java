@@ -31,7 +31,8 @@ import java.util.ResourceBundle;
 
 /**
  * This class is the controller class for the Chat and Game Window connected with the fxml file via data binding.
- * @author Rajna, Xheneta
+ * @author Rajna Fani
+ * @author Xheneta Krasniqi
  */
 
 
@@ -170,9 +171,14 @@ public class ChatAndGameController {
         //clientName.setText(client.getName());
         //create the view model of Chat and Game Room
         //ChatAndGameViewModel chgvm = new ChatAndGameViewModel();
+
         //connects the send button and the message field together (if message field is empty then u can't press the send button)
         sendButton.disableProperty().bind(messageField.textProperty().isEmpty());
+
+        //binds the button of sending a message with the chat TextArea that saves all the messages(chat history)
         outOfRoundCards1.textProperty().bindBidirectional(client.getChatHistory());
+
+        //adapting the hand and drawn cards and their methods from Client class with the card images
         yourHandCard.imageProperty().bind(Bindings.createObjectBinding(() -> images.get(client.getHandCard(0).getValue()),
                 client.getHandCard(0)));
         yourDrawnCard.imageProperty().bind(Bindings.createObjectBinding(() -> images.get(client.getDrawnCard(0).getValue()),
@@ -189,18 +195,33 @@ public class ChatAndGameController {
                 client.getHandCard(3)));
         player4DrawnCard.imageProperty().bind(Bindings.createObjectBinding(() -> images.get(client.getDrawnCard(3).getValue()),
                 client.getDrawnCard(3)));
+
+        // Text area will be bonded with getDiscardedCards() method from Client Class and will list
+        //the cards that are played and aren't available  anymore to play
         outOfRoundCards.textProperty().bindBidirectional(client.getDiscardedCards());
+
+        //Methods from client class that give the options of playing the cards that are drawn or that are on the hand
         playHandCardYou.disableProperty().bind(client.getInTurn().not());
         playDrawnCardYou.disableProperty().bind(client.getInTurn().not());
+
+        //the name of the clients(players) will be written on these text areas
         secPlayerText.textProperty().bind(client.getPlayers(1));
         thirdPlayerText.textProperty().bind(client.getPlayers(2));
         fourthPlayerText.textProperty().bind(client.getPlayers(3));
         player2.textProperty().bind(client.getPlayers(1));
         player3.textProperty().bind(client.getPlayers(2));
         player4.textProperty().bind(client.getPlayers(3));
+
+        //binding the createGame button if there is no other game created by the server
         createGame.disableProperty().bind(client.getGameExists());
+
+        //binding the joinGame button with the getGameRunning() method on Client class to join the game if it has already been started
         joinGame.disableProperty().bind(client.getGameExists().not().or(client.getGameRunning()));
+
+        //binding the startGame button with the getGameRunning() method on Client class to start the game if it has not been started
         startGame.disableProperty().bind(client.getGameExists().not().or(client.getGameRunning()));
+
+        // binds the score textarea with the actual score during the game
         score1.textProperty().bindBidirectional(client.getTOKENS(0), new StringConverter<Number>() {
             @Override
             public String toString(Number number) {
@@ -259,35 +280,27 @@ public class ChatAndGameController {
         sendTo.clear();
     }
 
-
-
     @FXML
     private void playHandCard(){
         client.playHandCard();
-    }
+    } // method that provides playing the Cards on the hand
 
     @FXML
     private void playDrawnCard(){
         client.playDrawnCard();
-    }
+    } // method for playing drawn cards
 
     @FXML
     private void joinGame(){
         client.joinGame();
-    }
+    } //method for joining the game
 
     @FXML
-    private void createGame(){
-        client.createGame();
-    }
+    private void createGame(){ client.createGame(); } //method for creating a game
 
     @FXML
     private void startGame(ActionEvent event){
         client.startGame();
-    }
+    } //method for starting a game
 
-
-    /*public TextField getPlayer2Score() {
-        return client.score[2];
-    }*/
 }
