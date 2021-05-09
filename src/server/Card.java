@@ -24,7 +24,7 @@ public enum Card {
             Game.getInstance().discardedcard[myIndex][countdiscarded] = Card.PRINCESS;
             Game.getInstance().status[myIndex] = 0; // when princess played, out of game
             Server.getServer().outOfRound(Game.getInstance().playernames.get(myIndex));
-            //Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(myIndex) + " is out of game.");
+            Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(myIndex) + " is out of game.");
         }
 
     },
@@ -151,7 +151,7 @@ public enum Card {
                 if (Game.getInstance().handcard[targetIndex].getType() == guessCard.getType()) {
                     Game.getInstance().status[targetIndex] = 0;
                     Server.getServer().outOfRound(Game.getInstance().playernames.get(targetIndex));
-                    //Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
+                    Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
                 }else{
                     Server.getServer().sendMessageToAll("Nothing happened, play continues.");
                 }

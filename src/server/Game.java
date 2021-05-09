@@ -291,6 +291,8 @@ public class Game {
                 // check whether the played card if one of the handcard and drawncard
                 if (playedcard[playerinturn] != handcard[playerinturn] && playedcard[playerinturn] != drawncard[playerinturn]) {
                     System.out.println("TestWrongCard");
+                    System.out.println("playedCard " + card.getType());
+                    System.out.println("handCard " + handcard[playerinturn] + " drawnCard " + drawncard[playerinturn]);
                     Server.getServer().exception(playernames.get(playerinturn), "You don´t have this card in your hand, choose one in hand.");
                     return;
                     // if player has king or prince and also a countess in hand, countess must be played
@@ -359,6 +361,7 @@ public class Game {
 
             case HANDMAID:
                 Card.HANDMAID.function(playerinturn);
+                endOfTurn();
                 break;
 
             case BARON:
@@ -439,6 +442,7 @@ public class Game {
         }
         else{
             String winnername = updateScoresAndTokensAndWinnersForThisRound();
+            System.out.println(scores);
             Server.getServer().roundOver(scores, winnername);
             checkGameOver();
             if (!gameover){
