@@ -7,6 +7,7 @@ package server;
  * storage of all the information of the cards and players during the game.
  *
  * @author can ren
+ * @author pascal stucky
  * @author yuliia shaparenko
  * @version 1.0-SNAPSHOT
  */
@@ -169,6 +170,12 @@ public class Game {
 
     }
 
+    /**
+     * This method will be invoked by client via server.
+     * Because only guard card type needs a guessType function, therefore this is only for playing guard card
+     * @param cardname
+     * @throws IOException
+     */
     public void guessType(String cardname) throws IOException {
         // only Guard needs this function
 
@@ -195,6 +202,12 @@ public class Game {
 
     }
 
+    /**
+     * This method will be invoked by client via server.
+     * It will check which card is played and give the parameter to this card function.
+     * @param playername
+     * @throws IOException
+     */
 
     public void choosePlayer(String playername) throws IOException{
         switch (playedcard[playerinturn]){
@@ -370,7 +383,9 @@ public class Game {
                 // if all players are protected, the function goes to self = nothing happens
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
-                    //Card.BARON.function(playerinturn, targetindex3); // nothing happens, just compare the card with self
+                     // nothing happens, drop the card
+                    int countdiscarded = Game.getInstance().countdiscarded[playerinturn]++;
+                    Game.getInstance().discardedcard[playerinturn][countdiscarded] = Card.BARON;
                 } else { // if there are unprotected active players in this round, choose one
                     Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
@@ -408,11 +423,14 @@ public class Game {
                 }
                 break;
             default:
-                //***********brauchen wir hier Exceptions eg.? Mir ist nichts aufgefallen********
                 break;
         }
     }
 
+    /**
+     * If a card is played by one player, then his/her turn is over. Next player is in turn.
+     * @throws IOException
+     */
     public void endOfTurn() throws IOException {
         // playedcard refresh to null for next round check
         playedcard[playerinturn] = null;
@@ -425,7 +443,9 @@ public class Game {
             if (playerinturn == countplayer) playerinturn = 0;
         }
 
-        if(!checkRoundOver()) {
+        checkRoundOver();
+
+        if(!roundover) {
             drawncard[playerinturn] = deck.pop();
             // inform player which card he/she has drawn
             Server.getServer().drawncard(playerinturn, drawncard[playerinturn]);
@@ -436,7 +456,8 @@ public class Game {
             String winnername = updateScoresAndTokensAndWinnersForThisRound();
             System.out.println(scores);
             Server.getServer().roundOver(scores, winnername);
-            if (!checkGameOver()){
+            checkGameOver();
+            if (!gameover){
                 newRound();
             }
             else
@@ -458,15 +479,19 @@ public class Game {
     }
 
 
-
-    public boolean checkRoundOver() {
+    /**
+     * If there are no cards in the deck, or only one player left, then round over.
+     */
+    public void checkRoundOver() {
         int numActivePlayer = 0;
         for (int i = 0; i < countplayer; i++) {
             if (status[i] != 0) {
                 numActivePlayer++;
             }
         }
-            return (numActivePlayer == 1 || deck.size() == 0);
+        if (numActivePlayer == 1 || deck.size() == 0) {
+            roundover = true;
+        }
     }
 
 
@@ -558,27 +583,26 @@ public class Game {
      * This method checkGameOver() will check whether the condition of game over accomplished in
      * respect of the game rules.
      */
-    public boolean checkGameOver() {
+    public void checkGameOver() {
         if (countplayer == 2) {
             for (String name : playernames) {
                 if (tokens.get(name) == 7) {
-                    return true;
+                    gameover = true;
                 }
             }
         } else if (countplayer == 3) {
             for (String name : playernames) {
                 if (tokens.get(name) == 5) {
-                    return true;
+                    gameover = true;
                 }
             }
         } else {
             for (String name : playernames) {
                 if (tokens.get(name) == 4) {
-                    return true;
+                    gameover = true;
                 }
             }
         }
-        return false;
     }
 
 
