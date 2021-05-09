@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import client.controller.Client;
 import javafx.scene.control.TextArea;
+import javafx.util.StringConverter;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -195,6 +196,50 @@ public class ChatAndGameController {
         createGame.disableProperty().bind(client.getGameExists());
         joinGame.disableProperty().bind(client.getGameExists().not().or(client.getGameRunning()));
         startGame.disableProperty().bind(client.getGameExists().not().or(client.getGameRunning()));
+        score1.textProperty().bindBidirectional(client.getTOKENS(0), new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                return number.toString();
+            }
+
+            @Override
+            public Integer fromString(String s) {
+                return null;
+            }
+        });
+        score2.textProperty().bindBidirectional(client.getTOKENS(1), new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                return number.toString();
+            }
+
+            @Override
+            public Integer fromString(String s) {
+                return null;
+            }
+        });
+        score3.textProperty().bindBidirectional(client.getTOKENS(2), new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                return number.toString();
+            }
+
+            @Override
+            public Integer fromString(String s) {
+                return null;
+            }
+        });
+        score4.textProperty().bindBidirectional(client.getTOKENS(3), new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                return number.toString();
+            }
+
+            @Override
+            public Integer fromString(String s) {
+                return null;
+            }
+        });
     }
 
     @FXML
