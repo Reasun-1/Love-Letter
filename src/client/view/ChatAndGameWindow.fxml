@@ -53,7 +53,11 @@
                               </ImageView>
                               <ScrollPane layoutX="16.0" layoutY="47.0" prefHeight="390.0" prefWidth="239.0">
                                 <content>
-                                   <TextArea fx:id="messagesHistory" layoutX="16.0" layoutY="47.0" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"></TextArea>
+                                   <TextArea fx:id="messagesHistory" layoutX="16.0" layoutY="47.0" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" />
+                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="-1.0" prefHeight="390.0" prefWidth="239.0" />
+                                       </children></AnchorPane>
                                 </content>
                                  <effect>
                                     <SepiaTone />
@@ -92,8 +96,8 @@
                                                 </ImageView>
                                              </children>
                                           </AnchorPane>
-                                          <Button fx:id="playHandCardYou" layoutX="9.0" layoutY="235.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="105.0" onAction="#playHandCard" text="Play handcard" />
-                                          <Button fx:id="playDrawnCardYou" layoutX="141.0" layoutY="236.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="105.0" onAction="#playDrawnCard" text="Play drawncard" />
+                                          <Button fx:id="playHandCardYou" layoutX="9.0" layoutY="235.0" mnemonicParsing="false" onAction="#playHandCard" prefHeight="31.0" prefWidth="105.0" text="Play handcard" />
+                                          <Button fx:id="playDrawnCardYou" layoutX="141.0" layoutY="236.0" mnemonicParsing="false" onAction="#playDrawnCard" prefHeight="32.0" prefWidth="105.0" text="Play drawncard" />
                                           <ImageView fx:id="yourDrawnCard" fitHeight="180.0" fitWidth="124.0" layoutX="131.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../resources/Card_Back_Red.jpg" />
@@ -240,7 +244,7 @@
                                  <children>
                                     <ScrollPane layoutX="-36.0" layoutY="36.0" prefHeight="168.0" prefWidth="189.0">
                                        <content>
-                                          <TextArea fx:id="outOfRoundCards" layoutX="-36.0" layoutY="36.0" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"></TextArea>
+                                          <TextArea fx:id="outOfRoundCards" layoutX="-36.0" layoutY="36.0" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" />
                                        </content>
                                        <effect>
                                           <SepiaTone />

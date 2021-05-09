@@ -38,6 +38,9 @@ public class ChatAndGameController {
     //private Label clientName; //must be bonded with the logInWindow (clientName)
 
     @FXML
+    private ScrollPane chatPane;
+
+    @FXML
     private TextArea messagesHistory; //registers the written messages on TextField
 
     @FXML
