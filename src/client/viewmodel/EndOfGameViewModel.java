@@ -1,5 +1,8 @@
 package client.viewmodel;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  * This class is the ViewModel class for the End of Game window.
  *
