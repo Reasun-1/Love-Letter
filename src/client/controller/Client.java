@@ -234,16 +234,28 @@ public class Client extends Application{
      */
     public void startGameInfo(String info){
         // The first character is the number of players
-        numberofplayers = info.charAt(0);
+        //numberofplayers = info.charAt(0); // war ASCII 2 => heißt war 50
+
+        numberofplayers = Integer.valueOf(Character.toString((char) info.charAt(0)));
+
+        System.out.println(info);
+        System.out.println(numberofplayers);
         // The second character encodes the start player
         playerinturnid = (- (int) info.charAt(1)) % numberofplayers;
         // The rest of the String contains the names of the other players separated by a '/'
-        String rest = info.substring(1);
+        //String rest = info.substring(1);
+        String rest = info.substring(2) + '0';
+        System.out.println(rest);
         for (int i = 0; i < numberofplayers; i++) {
-            PLAYERS[i].set(rest.substring(1, info.indexOf('/')));
+            //PLAYERS[i].set(rest.substring(1, info.indexOf('/')));
+            PLAYERS[i].set(rest.substring(0, rest.indexOf('/')));
+            System.out.println(PLAYERS[i].get());
             TOKENS[i].set(0);
-            rest = rest.substring(info.indexOf('/'));
+            //rest = rest.substring(info.indexOf('/'));
+            rest = rest.substring(rest.indexOf('/')+1);
+            System.out.println(rest);
         }
+        System.out.println("end of for-loop");
         // Set the name of the player in turn
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
         if (playerinturnid == 0){

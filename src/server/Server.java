@@ -179,15 +179,19 @@ public class Server {
     //}
 
     // Tell the players how many players will participate and what are the names
+
     public void startGameInfo() throws IOException{
         for(int i=0;i<playerList.size();i++) {
             String startInfo = "4" + playerList.size() + i;
+
             for (int j = 0; j < playerList.size(); j++) {
                 startInfo = startInfo + playerList.get((i + j) % playerList.size()) + "/";
             }
+            System.out.println(startInfo);
             clientList.get(playerList.get(i)).receiveOrder(startInfo);
         }
     }
+
 
     // tells the active player which card was drawn
     public void drawncard(int playerID, Card card){
