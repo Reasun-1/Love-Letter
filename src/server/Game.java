@@ -7,6 +7,7 @@ package server;
  * storage of all the information of the cards and players during the game.
  *
  * @author can ren
+ * @author pascal stucky
  * @author yuliia shaparenko
  * @version 1.0-SNAPSHOT
  */
@@ -169,6 +170,12 @@ public class Game {
 
     }
 
+    /**
+     * This method will be invoked by client via server.
+     * Because only guard card type needs a guessType function, therefore this is only for playing guard card
+     * @param cardname
+     * @throws IOException
+     */
     public void guessType(String cardname) throws IOException {
         // only Guard needs this function
 
@@ -195,6 +202,12 @@ public class Game {
 
     }
 
+    /**
+     * This method will be invoked by client via server.
+     * It will check which card is played and give the parameter to this card function.
+     * @param playername
+     * @throws IOException
+     */
 
     public void choosePlayer(String playername) throws IOException{
         switch (playedcard[playerinturn]){
@@ -370,7 +383,9 @@ public class Game {
                 // if all players are protected, the function goes to self = nothing happens
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
-                    //Card.BARON.function(playerinturn, targetindex3); // nothing happens, just compare the card with self
+                     // nothing happens, drop the card
+                    int countdiscarded = Game.getInstance().countdiscarded[playerinturn]++;
+                    Game.getInstance().discardedcard[playerinturn][countdiscarded] = Card.BARON;
                 } else { // if there are unprotected active players in this round, choose one
                     Server.getServer().question(playernames.get(playerinturn), "Please choose a Player:");
                     Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is choosing a target player.");
@@ -408,11 +423,14 @@ public class Game {
                 }
                 break;
             default:
-                //***********brauchen wir hier Exceptions eg.? Mir ist nichts aufgefallen********
                 break;
         }
     }
 
+    /**
+     * If a card is played by one player, then his/her turn is over. Next player is in turn.
+     * @throws IOException
+     */
     public void endOfTurn() throws IOException {
         // playedcard refresh to null for next round check
         playedcard[playerinturn] = null;
@@ -461,7 +479,9 @@ public class Game {
     }
 
 
-
+    /**
+     * If there are no cards in the deck, or only one player left, then round over.
+     */
     public void checkRoundOver() {
         int numActivePlayer = 0;
         for (int i = 0; i < countplayer; i++) {
