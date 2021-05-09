@@ -184,9 +184,7 @@ public class Server {
                 for (int j = 0; j < playerList.size(); j++) {
                     startInfo = startInfo + playerList.get((i + j) % playerList.size()) + "/";
                 }
-                System.out.println(startInfo);
                 clientList.get(playerList.get(i)).receiveOrder(startInfo);
-                System.out.println("recieveOrder completed.");
             }
     }
 
