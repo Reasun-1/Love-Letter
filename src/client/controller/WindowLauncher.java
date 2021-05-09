@@ -110,7 +110,8 @@ public class WindowLauncher {
 
     /**
      * Create a Window displaying the results of a finished game
-     * @param info
+     * @param client
+     * @param winner
      * @throws IOException
      */
     public void launchEndOfGame(Client client, String winner) throws IOException{

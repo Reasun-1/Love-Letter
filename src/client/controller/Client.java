@@ -364,12 +364,12 @@ public class Client extends Application{
     public void endOfRound(String info) throws IOException{
         String winneroflastround = info.substring(2*numberofplayers);
         String endofroundinfo = "Winner: " + winneroflastround + "\n\n" + "Score: \n";
-        int[] score = new int[numberofplayers];
+        String[] score = new String[numberofplayers];
         for (int i = 0; i < numberofplayers; i++) {
             handcard[i].set(0);
-            score[i] = Integer.parseInt(info.substring(2*i,2*i+1));
+            score[i] = info.substring(2*i,2*i+1);
 
-            endofroundinfo = endofroundinfo + String.format("%-20.20s %2d" , PLAYERS[i].get(), score[i]) + "\n";
+            endofroundinfo = endofroundinfo + String.format("%-20.20s %2.2s" , PLAYERS[i].get(), score[i]) + "\n";
             if(PLAYERS[i].get().equals(winneroflastround)){
                 TOKENS[i].set(TOKENS[i].get()+1);
                 playerinturnid = i;

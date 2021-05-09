@@ -9,37 +9,36 @@ import java.util.Enumeration;
 
 /**
  * server thread for several client request
+ *
+ * @author Can Ren
+ * @author Pascal Stucky
  */
 public class ServerThread implements Runnable {
 
-    private final Socket socket;
+    private final Socket SOCKET;
     private String clientName;
 
-    //HashSet<String> threadList = server.Server.getClientList();
-    //protected List<server.ServerThread> threads = server.Server.getThreads();
 
-
-    // combine the client socket to the serverThread Constructor
+    /**
+     * Constructor combines the client socket with the ServerThread socket
+     * @param socket
+     */
     public ServerThread(Socket socket) {
-        this.socket = socket;
+        SOCKET = socket;
     }
 
     public Socket getSocket(){
-        return socket;
+        return SOCKET;
     }
-
-    //public String getClientName(){
-        //return clientName;
-    //}
 
     @Override
     public void run() {
         try {
             // Create reader for messages from the client
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(SOCKET.getInputStream()));
             // Create writer for messages to the client
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
+            PrintWriter out = new PrintWriter(SOCKET.getOutputStream(), true);
+            // Inform the client about an existing/running game
             out.println(Server.getServer().gameExists() + Server.getServer().gameRunning());
 
             // Receive the name from the client and check it with the client list
@@ -90,22 +89,34 @@ public class ServerThread implements Runnable {
                 }
     }
 
-    //create the method to send message to all the clients online
-    private void sendMessage(String msg) throws IOException {
+    /**
+     * send a message to all clients
+     * @param message
+     * @throws IOException
+     */
+    private void sendMessage(String message) throws IOException {
         //optional, for server terminal print
-        System.out.println(msg);
+        System.out.println(message);
         synchronized (Server.clientList) {
             for (Enumeration<ServerThread> e = Server.clientList.elements(); e.hasMoreElements();) {
-                new PrintWriter(e.nextElement().getSocket().getOutputStream(), true).println(msg);
+                new PrintWriter(e.nextElement().getSocket().getOutputStream(), true).println(message);
             }
         }
     }
 
+    /**
+     * transmit an order from the server to the client
+     * @param order
+     * @throws IOException
+     */
     public void receiveOrder(String order) throws IOException{
-        new PrintWriter(socket.getOutputStream(),true).println("/" + order);
+        new PrintWriter(SOCKET.getOutputStream(),true).println("/" + order);
     }
 
-    //close socket connection
+    /**
+     * terminate the connection to the client
+     * @throws IOException
+     */
     public void closeConnect() throws IOException {
         //remove the socket from the set
         synchronized (Server.clientList) {
@@ -114,45 +125,51 @@ public class ServerThread implements Runnable {
         //server.Server.clientList.remove(clientName);
         // inform the other clients
         sendMessage("$" + clientName + " has left the room.");
-        socket.close();
+        SOCKET.close();
     }
 
-    //**********************new**************************
-    //send direkt Message to a or several players
-    public void sendPrivateMessage(String name, String msg){
-        Server.getServer().sendTo(name, msg);
+    /**
+     * send a message only to one client
+     * @param name
+     * @param message
+     */
+    public void sendPrivateMessage(String name, String message){
+        Server.getServer().sendTo(name, message);
     }
 
+    /**
+     * transmit an order from the client to the server depending on the order code
+     * @param order
+     * @throws IOException
+     */
     public void executeOrder(String order) throws IOException{
         switch (order.charAt(0)){
-            case '0':
+            case '0': // terminate the connection
                 break;
-            case '1':
+            case '1': // send private message
                 String name = order.substring(1,order.indexOf('/'));
                 System.out.println(name);
                 if (Server.clientList.containsKey(name)) {
                     String msg = order.substring(order.indexOf('/') + 1);
                     sendPrivateMessage(name,  "$" + clientName + "[private]: " + msg);
-                    new PrintWriter(socket.getOutputStream(),true).println("$" + clientName + "[private]: " + msg);
+                    new PrintWriter(SOCKET.getOutputStream(),true).println("$" + clientName + "[private]: " + msg);
                 } else {
                     receiveOrder("1There is no client with this name!");
                 }
                 break;
-            case '2':
+            case '2': // create a new game
                 Server.getServer().createGame(clientName);
                 break;
-            case '3':
+            case '3': // join an existing game
                 Server.getServer().addPlayer(clientName);
                 break;
-            case '4':
+            case '4': // start an existing game
                 Server.getServer().startGame(clientName);
                 break;
-            case '5':
-                System.out.println(order.substring(1));
+            case '5': // play a card
                 Server.getServer().playCard(order.substring(1));
-                System.out.println("cardPlayed2");
                 break;
-            case '6':
+            case '6': // transmit an answer of a question window
                 Server.getServer().receiveAnswer(order.substring(1), clientName);
                 break;
         }
