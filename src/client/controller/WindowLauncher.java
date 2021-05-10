@@ -93,7 +93,7 @@ public class WindowLauncher {
 
     /**
      * Create a Window displaying the results of a finished round
-     * @param info
+     * @param client
      * @throws IOException
      */
     public void launchEndOfRound(Client client, String winner) throws IOException{

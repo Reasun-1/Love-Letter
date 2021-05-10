@@ -82,9 +82,7 @@ public class Game {
 
         // Welcome info. for all: how many players are in this game, and what their names are
         Server.getServer().startGameInfo();
-        System.out.println("testFlagGame00");
         // game begins
-            System.out.println("testFlagGame01");
             game.newRound();
 
     }
@@ -298,11 +296,9 @@ public class Game {
                 } else if (playedcard[playerinturn] != Card.COUNTESS
                         && (((handcard[playerinturn] == Card.PRINCE || handcard[playerinturn] == Card.KING) && drawncard[playerinturn] == Card.COUNTESS)
                         || ((drawncard[playerinturn] == Card.PRINCE || drawncard[playerinturn] == Card.KING) && handcard[playerinturn] == Card.COUNTESS))) {
-                    System.out.println("TestWrongCard2");
                     Server.getServer().exception(playernames.get(playerinturn), "You have royal member in your hand, the countess must be played.");
                     return;
                 } else {
-                    System.out.println("valid card played");
                     // update the handcard and drawncard
                     if (playedcard[playerinturn] == handcard[playerinturn]) {
                         handcard[playerinturn] = drawncard[playerinturn];
@@ -311,7 +307,6 @@ public class Game {
                         drawncard[playerinturn] = null;
                     }
                 }
-        System.out.println(playernames.get(playerinturn) + " played " + card.getType());
         // inform all the players who has played which card
         Server.getServer().playedCard(playedcard[playerinturn]);
         Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " played " + card.getType());
@@ -442,7 +437,6 @@ public class Game {
         }
         else{
             String winnername = updateScoresAndTokensAndWinnersForThisRound();
-            System.out.println(scores);
             Server.getServer().roundOver(scores, winnername);
             checkGameOver();
             if (!gameover){

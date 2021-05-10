@@ -58,8 +58,6 @@ public class ServerThread implements Runnable {
                 }
             }
 
-            // print the list of client names to the terminal (for testing)
-            System.out.println(Server.clientList);
 
                     // wait for messages from the client
                     boolean flag = true;
@@ -146,7 +144,6 @@ public class ServerThread implements Runnable {
                 break;
             case '1': // send private message
                 String name = order.substring(1,order.indexOf('/'));
-                System.out.println(name);
                 if (Server.clientList.containsKey(name)) {
                     String msg = order.substring(order.indexOf('/') + 1);
                     sendPrivateMessage(name,  "$" + clientName + "[private]: " + msg);
