@@ -1,5 +1,10 @@
 package client.viewmodel;
 
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  * logInVieModel Class represents the UI state and it should provide the properties included in the FXML
  * file of the LogIn Window, in order to bind with the LoginController
@@ -7,13 +12,6 @@ package client.viewmodel;
  * @author Rajna Fani
  * @version 1.0-SNAPSHOT
  */
-
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanWrapper;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
-
 public class LoginViewModel {
 
     private final static StringProperty USERNAME = new SimpleStringProperty();

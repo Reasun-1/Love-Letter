@@ -1,5 +1,8 @@
 package server;
 
+import java.io.IOException;
+import java.util.*;
+
 /**
  * Game class is the central component of the server side,
  * which contents the total logical functions of the Game Love Letter.
@@ -11,10 +14,6 @@ package server;
  * @author yuliia shaparenko
  * @version 1.0-SNAPSHOT
  */
-
-import java.io.IOException;
-import java.util.*;
-
 public class Game {
 
     private final static Game game = new Game();

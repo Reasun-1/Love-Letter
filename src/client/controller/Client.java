@@ -1,14 +1,5 @@
 package client.controller;
 
-/**
- * Client class is responsible for the connection to the server and for storing the properties connected with the GUI.
- * It also holds the main method which starts the Application.
- *
- * @author Pascal Stucky
- * @author Can Ren
- * @version 1.0-SNAPSHOT
- */
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.*;
@@ -19,6 +10,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Client class is responsible for the connection to the server and for storing the properties connected with the GUI.
+ * It also holds the main method which starts the Application.
+ *
+ * @author Pascal Stucky
+ * @author Can Ren
+ * @version 1.0-SNAPSHOT
+ */
 public class Client extends Application {
     // Socket for the TCP connection
     private volatile Socket socket;

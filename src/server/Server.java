@@ -1,12 +1,5 @@
 package server;
 
-/**
- * server class listens for incoming clients and manages the communication with the clients
- *
- * @author: Can Ren
- * @author: Pascal Stucky
- */
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -16,6 +9,13 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+/**
+ * server class listens for incoming clients and manages the communication with the clients
+ *
+ * @author Can Ren
+ * @author Pascal Stucky
+ * @version 1.0-SNAPSHOT
+ */
 public class Server {
 
     private final static Server server = new Server();

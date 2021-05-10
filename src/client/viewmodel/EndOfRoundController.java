@@ -16,9 +16,10 @@ import javafx.stage.Stage;
 
 /**
  * This class is the controller class for the End of Game fxml file and it represents the end of game pop-up window.
+ *
  * @author Xheneta, Pascal
+ * @version 1.0-SNAPSHOT
  */
-
 public class EndOfRoundController {
 
     @FXML

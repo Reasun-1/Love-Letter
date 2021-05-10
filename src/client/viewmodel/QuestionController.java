@@ -1,11 +1,5 @@
 package client.viewmodel;
 
-/**
- * Controller for question window
- *
- * @author Pascal Stucky
- */
-
 import client.controller.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +8,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Controller for question window
+ *
+ * @author Pascal Stucky
+ * @version 1.0-SNAPSHOT
+ */
 public class QuestionController {
 
     @FXML

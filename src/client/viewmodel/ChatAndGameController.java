@@ -23,9 +23,8 @@ import java.util.List;
  * @author Rajna Fani
  * @author Xheneta Krasniqi
  * @author Pascal Stucky
+ * @version 1.0-SNAPSHOT
  */
-
-
 public class ChatAndGameController {
 
     @FXML

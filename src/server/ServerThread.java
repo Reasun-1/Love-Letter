@@ -12,6 +12,7 @@ import java.util.Enumeration;
  *
  * @author Can Ren
  * @author Pascal Stucky
+ * @version 1.0-SNAPSHOT
  */
 public class ServerThread implements Runnable {
 

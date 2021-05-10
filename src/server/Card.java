@@ -1,5 +1,9 @@
 package server;
 
+import java.io.IOException;
+import java.util.Random;
+import java.util.Stack;
+
 /**
  * Card is an enum class, which contents all the information about the cards in this game.
  * For each type of card, the card name, value, count and function of this card is defined
@@ -9,11 +13,6 @@ package server;
  * @author yuliia shaparenko
  * @version 1.0-SNAPSHOT
  */
-
-import java.io.IOException;
-import java.util.Random;
-import java.util.Stack;
-
 public enum Card {
 
     //status of a player: 0=out, 1=in game, 2= protected

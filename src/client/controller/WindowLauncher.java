@@ -1,12 +1,5 @@
 package client.controller;
 
-/**
- * class for creating the stages and opening the windows
- *
- * @author Pascal Stucky
- * @version 1.0-SNAPSHOT
- */
-
 import client.viewmodel.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +9,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * class for creating the stages and opening the windows
+ *
+ * @author Pascal Stucky
+ * @version 1.0-SNAPSHOT
+ */
 public class WindowLauncher {
 
     /**
