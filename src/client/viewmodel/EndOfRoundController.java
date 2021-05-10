@@ -2,6 +2,7 @@ package client.viewmodel;
 
 /**
  * Controller for the end-of-round window
+ *
  * @author Pascal Stucky
  */
 

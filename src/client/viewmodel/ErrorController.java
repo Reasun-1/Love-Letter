@@ -11,6 +11,7 @@ import javafx.stage.Stage;
  * ErrorController Class is responsible for the Error Window that pops up when an error occurs.
  * It is connected with the FXML ErrorWindow File and with ErrorViewModel in order to complete the
  * conditions of a MVVM model
+ *
  * @author Rajna Fani
  * @author Pascal Stucky
  * @version 1.0-SNAPSHOT
@@ -27,6 +28,7 @@ public class ErrorController {
 
     /**
      * Method to be called from WindowLauncher to set the error that happens.
+     *
      * @param msg
      */
     public void init(String msg) {

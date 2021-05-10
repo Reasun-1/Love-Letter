@@ -19,6 +19,7 @@ import java.util.List;
 
 /**
  * This class is the controller class for the Chat and Game Window connected with the fxml file via data binding.
+ *
  * @author Rajna Fani
  * @author Xheneta Krasniqi
  * @author Pascal Stucky
@@ -131,7 +132,7 @@ public class ChatAndGameController {
      * ChatAndGameController.
      * @param client
      */
-    public void init(Client client){
+    public void init(Client client) {
         this.client = client;
 
         //connects the send button and the message field together (if message field is empty then u can't press the send button)
@@ -232,7 +233,7 @@ public class ChatAndGameController {
 
     @FXML
     //send method makes the message get sent from message field to messages History(ScrollPane)
-    private void send(){
+    private void send() {
         if (sendTo.getText().isEmpty()) {
             client.sendMessage(messageField.getText());
         } else {
@@ -243,25 +244,27 @@ public class ChatAndGameController {
     }
 
     @FXML
-    private void playHandCard(){
+    private void playHandCard() {
         client.playHandCard();
     } // method that provides playing the Cards on the hand
 
     @FXML
-    private void playDrawnCard(){
+    private void playDrawnCard() {
         client.playDrawnCard();
     } // method for playing drawn cards
 
     @FXML
-    private void joinGame(){
+    private void joinGame() {
         client.joinGame();
     } //method for joining the game
 
     @FXML
-    private void createGame(){ client.createGame(); } //method for creating a game
+    private void createGame() {
+        client.createGame();
+    } //method for creating a game
 
     @FXML
-    private void startGame(ActionEvent event){
+    private void startGame(ActionEvent event) {
         client.startGame();
     } //method for starting a game
 

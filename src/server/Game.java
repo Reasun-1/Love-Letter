@@ -42,6 +42,7 @@ public class Game {
     /**
      * constructor Game:
      * With singleton (DCL), the constructor will return only one instance of the class Game.
+     *
      * @return only one instance of the Game
      */
     public static Game getInstance() {
@@ -52,6 +53,7 @@ public class Game {
      * This method startGame() will start a new game for the players.
      * In the while-loop, the game-over condition will be checked. If not enough tokens are gained
      * by the players, the game will continue to a new round, till the game-over condition is accomplished.
+     *
      * @throws IOException
      */
     public void startGame() throws IOException {
@@ -83,7 +85,7 @@ public class Game {
         // Welcome info. for all: how many players are in this game, and what their names are
         Server.getServer().startGameInfo();
         // game begins
-            game.newRound();
+        game.newRound();
 
     }
 
@@ -167,31 +169,31 @@ public class Game {
     /**
      * This method will be invoked by client via server.
      * Because only guard card type needs a guessType function, therefore this is only for playing guard card
+     *
      * @param cardname
      * @throws IOException
      */
     public void guessType(String cardname) throws IOException {
         // only Guard needs this function
 
-            Card guesscard = null;
+        Card guesscard = null;
 
-            for (Card c : Card.values()) {
-                if (c.getType().equals(cardname)) {
-                    guesscard = c;
-                }
+        for (Card c : Card.values()) {
+            if (c.getType().equals(cardname)) {
+                guesscard = c;
             }
+        }
 
-            if (guesscard == null) {
-                Server.getServer().question(playernames.get(playerinturn), "This card type does not exist. Choose again.");
+        if (guesscard == null) {
+            Server.getServer().question(playernames.get(playerinturn), "This card type does not exist. Choose again.");
 
-            } else if (guesscard == Card.GUARD) {
-                Server.getServer().question(playernames.get(playerinturn), "You can´t guess guard, guess another card type.");
+        } else if (guesscard == Card.GUARD) {
+            Server.getServer().question(playernames.get(playerinturn), "You can´t guess guard, guess another card type.");
 
-            } else {
-                Card.GUARD.function(playerinturn, targetIndexForGuard, guesscard);
-                endOfTurn();
-            }
-
+        } else {
+            Card.GUARD.function(playerinturn, targetIndexForGuard, guesscard);
+            endOfTurn();
+        }
 
 
     }
@@ -199,14 +201,15 @@ public class Game {
     /**
      * This method will be invoked by client via server.
      * It will check which card is played and give the parameter to this card function.
+     *
      * @param playername
      * @throws IOException
      */
 
-    public void choosePlayer(String playername) throws IOException{
-        switch (playedcard[playerinturn]){
+    public void choosePlayer(String playername) throws IOException {
+        switch (playedcard[playerinturn]) {
             case KING:
-                if(playername.equals(playernames.get(playerinturn))){
+                if (playername.equals(playernames.get(playerinturn))) {
                     Server.getServer().question(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
                 } else if (status[playernames.indexOf(playername)] == 2) {
                     Server.getServer().question(playernames.get(playerinturn), "the chosen player is protected, choose another player");
@@ -219,59 +222,59 @@ public class Game {
                 }
                 break;
             case PRINCE:
-                    if (status[playernames.indexOf(playername)] == 2) {
-                        Server.getServer().question(playernames.get(playerinturn), "the chosen player is protected, choose another player");
-                    } else if (status[playernames.indexOf(playername)] == 0) {
-                        Server.getServer().question(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
-                    } else {
-                        int targetIndex = playernames.indexOf(playername);
-                        Card.PRINCE.function(playerinturn, targetIndex);
-                        endOfTurn();
-                    }
+                if (status[playernames.indexOf(playername)] == 2) {
+                    Server.getServer().question(playernames.get(playerinturn), "the chosen player is protected, choose another player");
+                } else if (status[playernames.indexOf(playername)] == 0) {
+                    Server.getServer().question(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
+                } else {
+                    int targetIndex = playernames.indexOf(playername);
+                    Card.PRINCE.function(playerinturn, targetIndex);
+                    endOfTurn();
+                }
                 break;
 
             case BARON:
-                    if(playername.equals(playernames.get(playerinturn))){
-                        Server.getServer().question(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
-                    } else if (status[playernames.indexOf(playername)] == 2) {
-                        Server.getServer().question(playernames.get(playerinturn), "the chosen player is protected, choose another player");
-                    } else if (status[playernames.indexOf(playername)] == 0) {
-                        Server.getServer().question(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
-                    } else {
-                        int targetindex = playernames.indexOf(playername);
-                        Card.BARON.function(playerinturn, targetindex);
-                        endOfTurn();
-                    }
+                if (playername.equals(playernames.get(playerinturn))) {
+                    Server.getServer().question(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
+                } else if (status[playernames.indexOf(playername)] == 2) {
+                    Server.getServer().question(playernames.get(playerinturn), "the chosen player is protected, choose another player");
+                } else if (status[playernames.indexOf(playername)] == 0) {
+                    Server.getServer().question(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
+                } else {
+                    int targetindex = playernames.indexOf(playername);
+                    Card.BARON.function(playerinturn, targetindex);
+                    endOfTurn();
+                }
                 break;
             case PRIEST:
 
-                if(playername.equals(playernames.get(playerinturn))){
-                        Server.getServer().question(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
-                    } else if (status[playernames.indexOf(playername)] == 2) {
-                        Server.getServer().question(playernames.get(playerinturn), "the chosen player is protected, choose another player");
-                    } else if (status[playernames.indexOf(playername)] == 0) {
-                        Server.getServer().question(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
-                    } else {
-                        int targetindex = playernames.indexOf(playername);
-                        Card.PRIEST.function(playerinturn, targetindex);
-                        endOfTurn();
-                    }
+                if (playername.equals(playernames.get(playerinturn))) {
+                    Server.getServer().question(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
+                } else if (status[playernames.indexOf(playername)] == 2) {
+                    Server.getServer().question(playernames.get(playerinturn), "the chosen player is protected, choose another player");
+                } else if (status[playernames.indexOf(playername)] == 0) {
+                    Server.getServer().question(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
+                } else {
+                    int targetindex = playernames.indexOf(playername);
+                    Card.PRIEST.function(playerinturn, targetindex);
+                    endOfTurn();
+                }
                 break;
 
             case GUARD:
 
-                    if(playername.equals(playernames.get(playerinturn))){
-                        Server.getServer().question(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
-                    } else if (status[playernames.indexOf(playername)] == 2) {
-                        Server.getServer().question(playernames.get(playerinturn), "the chosen player is protected, choose another player");
-                    } else if (status[playernames.indexOf(playername)] == 0) {
-                        Server.getServer().question(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
-                    } else {
-                        Server.getServer().question(playernames.get(playerinturn), "Please guess a card type:");
-                        Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is guessing the card type");
-                        // a global variable for the index of target player of guard, which goes into guessType method
-                        targetIndexForGuard= playernames.indexOf(playername);
-                    }
+                if (playername.equals(playernames.get(playerinturn))) {
+                    Server.getServer().question(playernames.get(playerinturn), "You can´t choose yourself, choose another player.");
+                } else if (status[playernames.indexOf(playername)] == 2) {
+                    Server.getServer().question(playernames.get(playerinturn), "the chosen player is protected, choose another player");
+                } else if (status[playernames.indexOf(playername)] == 0) {
+                    Server.getServer().question(playernames.get(playerinturn), "the chosen player is already out of game, choose another player");
+                } else {
+                    Server.getServer().question(playernames.get(playerinturn), "Please guess a card type:");
+                    Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is guessing the card type");
+                    // a global variable for the index of target player of guard, which goes into guessType method
+                    targetIndexForGuard = playernames.indexOf(playername);
+                }
                 break;
         }
     }
@@ -280,33 +283,34 @@ public class Game {
      * This method playCard() checks first whether the played card is valid in respect of the game rules.
      * In the switch-case, the type of the played card will be selected and the according function of the
      * played card will be applied.
+     *
      * @throws IOException
      */
     public void playCard(Card card) throws IOException {
 
         playedcard[playerinturn] = card;
-                // check whether the played card if one of the handcard and drawncard
-                if (playedcard[playerinturn] != handcard[playerinturn] && playedcard[playerinturn] != drawncard[playerinturn]) {
-                    System.out.println("TestWrongCard");
-                    System.out.println("playedCard " + card.getType());
-                    System.out.println("handCard " + handcard[playerinturn] + " drawnCard " + drawncard[playerinturn]);
-                    Server.getServer().exception(playernames.get(playerinturn), "You don´t have this card in your hand, choose one in hand.");
-                    return;
-                    // if player has king or prince and also a countess in hand, countess must be played
-                } else if (playedcard[playerinturn] != Card.COUNTESS
-                        && (((handcard[playerinturn] == Card.PRINCE || handcard[playerinturn] == Card.KING) && drawncard[playerinturn] == Card.COUNTESS)
-                        || ((drawncard[playerinturn] == Card.PRINCE || drawncard[playerinturn] == Card.KING) && handcard[playerinturn] == Card.COUNTESS))) {
-                    Server.getServer().exception(playernames.get(playerinturn), "You have royal member in your hand, the countess must be played.");
-                    return;
-                } else {
-                    // update the handcard and drawncard
-                    if (playedcard[playerinturn] == handcard[playerinturn]) {
-                        handcard[playerinturn] = drawncard[playerinturn];
-                        drawncard[playerinturn] = null;
-                    } else {
-                        drawncard[playerinturn] = null;
-                    }
-                }
+        // check whether the played card if one of the handcard and drawncard
+        if (playedcard[playerinturn] != handcard[playerinturn] && playedcard[playerinturn] != drawncard[playerinturn]) {
+            System.out.println("TestWrongCard");
+            System.out.println("playedCard " + card.getType());
+            System.out.println("handCard " + handcard[playerinturn] + " drawnCard " + drawncard[playerinturn]);
+            Server.getServer().exception(playernames.get(playerinturn), "You don´t have this card in your hand, choose one in hand.");
+            return;
+            // if player has king or prince and also a countess in hand, countess must be played
+        } else if (playedcard[playerinturn] != Card.COUNTESS
+                && (((handcard[playerinturn] == Card.PRINCE || handcard[playerinturn] == Card.KING) && drawncard[playerinturn] == Card.COUNTESS)
+                || ((drawncard[playerinturn] == Card.PRINCE || drawncard[playerinturn] == Card.KING) && handcard[playerinturn] == Card.COUNTESS))) {
+            Server.getServer().exception(playernames.get(playerinturn), "You have royal member in your hand, the countess must be played.");
+            return;
+        } else {
+            // update the handcard and drawncard
+            if (playedcard[playerinturn] == handcard[playerinturn]) {
+                handcard[playerinturn] = drawncard[playerinturn];
+                drawncard[playerinturn] = null;
+            } else {
+                drawncard[playerinturn] = null;
+            }
+        }
         // inform all the players who has played which card
         Server.getServer().playedCard(playedcard[playerinturn]);
         Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " played " + card.getType());
@@ -363,7 +367,7 @@ public class Game {
                 // if all players are protected, the function goes to self = nothing happens
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
-                     // nothing happens, drop the card
+                    // nothing happens, drop the card
                     int countdiscarded = Game.getInstance().countdiscarded[playerinturn]++;
                     Game.getInstance().discardedcard[playerinturn][countdiscarded] = Card.BARON;
                     endOfTurn();
@@ -412,6 +416,7 @@ public class Game {
 
     /**
      * If a card is played by one player, then his/her turn is over. Next player is in turn.
+     *
      * @throws IOException
      */
     public void endOfTurn() throws IOException {
@@ -428,27 +433,24 @@ public class Game {
 
         checkRoundOver();
 
-        if(!roundover) {
+        if (!roundover) {
             drawncard[playerinturn] = deck.pop();
             // inform player which card he/she has drawn
             Server.getServer().drawncard(playerinturn, drawncard[playerinturn]);
             // tell all players that the player in turn is playing
             Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " has drawn one card and is playing...");
-        }
-        else{
+        } else {
             String winnername = updateScoresAndTokensAndWinnersForThisRound();
             Server.getServer().roundOver(scores, winnername);
             checkGameOver();
-            if (!gameover){
+            if (!gameover) {
                 newRound();
-            }
-            else
-            {
+            } else {
                 //check who won the game
                 Integer maxTokens = Collections.max(tokens.values());
                 String finalwinner = "";
                 for (String player : tokens.keySet()) {
-                    if (tokens.get(player).equals(maxTokens)){
+                    if (tokens.get(player).equals(maxTokens)) {
                         finalwinner = player;
                         break;
                     }
@@ -480,6 +482,7 @@ public class Game {
     /**
      * This method will update the scores, tokens and winner name at the end of
      * every round.
+     *
      * @return winner name of this round will be returned
      */
     public String updateScoresAndTokensAndWinnersForThisRound() {
@@ -507,7 +510,7 @@ public class Game {
             List<Integer> playerindexwithmax = new ArrayList<>();
             // get the max. value of hand card
             for (int i = 0; i < countplayer; i++) {
-                if(handcard[i] != null && status[i] != 0){
+                if (handcard[i] != null && status[i] != 0) {
                     max = Math.max(max, handcard[i].getValue());
                 }
             }
@@ -527,7 +530,7 @@ public class Game {
                 for (int i = 0; i < countplayer; i++) {
                     String clientName = playernames.get(i);
                     // the player out of game has no score
-                    if(status[i] != 0){
+                    if (status[i] != 0) {
                         int score = handcard[i].getValue();
                         scores.put(clientName, score);
                     }
@@ -536,12 +539,12 @@ public class Game {
                 for (int i = 0; i < countplayer; i++) {
                     String clientname = playernames.get(i);
                     int totalScore = 0;
-                    if(status[i] != 0){
+                    if (status[i] != 0) {
                         if (handcard[i] != null) {
                             totalScore = handcard[i].getValue();
                         }
                         for (int j = 0; j < 16; j++) {
-                            if(discardedcard[i][j] != null){
+                            if (discardedcard[i][j] != null) {
                                 totalScore += discardedcard[i][j].getValue();
                             }
                         }
@@ -593,6 +596,7 @@ public class Game {
     /**
      * This method allPlayersProtected() checked whether all the other active players in this
      * round are protected by handmaid.
+     *
      * @return false when not all the active players are protected by handmaids, otherwise return true.
      */
     public boolean allPlayersProtected() {

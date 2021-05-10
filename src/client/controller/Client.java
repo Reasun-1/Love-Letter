@@ -19,7 +19,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Client extends Application{
+public class Client extends Application {
     // Socket for the TCP connection
     private volatile Socket socket;
     // Writer for outgoing messages
@@ -71,51 +71,76 @@ public class Client extends Application{
 
     private final List<String> CARDS = new ArrayList<>(9);
 
-    public Socket getSocket() { return socket; }
+    public Socket getSocket() {
+        return socket;
+    }
 
-    public BufferedReader getIn(){ return IN; }
+    public BufferedReader getIn() {
+        return IN;
+    }
 
-    public PrintWriter getOut(){ return OUT; }
+    public PrintWriter getOut() {
+        return OUT;
+    }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public StringProperty getChatHistory() {return CHATHISTORY;}
+    public StringProperty getChatHistory() {
+        return CHATHISTORY;
+    }
 
     public StringProperty getPlayers(int playerindex) {
         return PLAYERS[playerindex];
     }
 
-    public StringProperty getPlayerInTurn() {return PLAYERINTURN;}
+    public StringProperty getPlayerInTurn() {
+        return PLAYERINTURN;
+    }
 
-    public StringProperty getOutOfRound() {return OUTOFROUND;}
+    public StringProperty getOutOfRound() {
+        return OUTOFROUND;
+    }
 
     public IntegerProperty getHandCard(int playerindex) {
         return HANDCARD[playerindex];
     }
 
-    public IntegerProperty getTOKENS(int playerindex){return TOKENS[playerindex];}
+    public IntegerProperty getTOKENS(int playerindex) {
+        return TOKENS[playerindex];
+    }
 
-    public StringProperty getScore(int playerindex){return SCORE[playerindex];}
+    public StringProperty getScore(int playerindex) {
+        return SCORE[playerindex];
+    }
 
     public IntegerProperty getDrawnCard(int playerindex) {
         return DRAWNCARD[playerindex];
     }
 
-    public StringProperty getDiscardedCards() {return DISCARDEDCARDS;}
+    public StringProperty getDiscardedCards() {
+        return DISCARDEDCARDS;
+    }
 
-    public BooleanProperty getGameExists(){ return GAMEEXISTS;}
+    public BooleanProperty getGameExists() {
+        return GAMEEXISTS;
+    }
 
-    public BooleanProperty getGameRunning() {return GAMERUNNING;}
+    public BooleanProperty getGameRunning() {
+        return GAMERUNNING;
+    }
 
-    public BooleanProperty getInTurn() {return INTURN;}
+    public BooleanProperty getInTurn() {
+        return INTURN;
+    }
 
     /**
      * Constructor establishes the TCP-Connection and initializes the remaining variables
+     *
      * @throws IOException
      */
-    public Client() throws IOException{
+    public Client() throws IOException {
 
         // Always connect to localhost and fixed port (maybe ask for ip and port?)
         socket = new Socket("127.0.0.1", 5200);
@@ -131,7 +156,7 @@ public class Client extends Application{
 
         CHATHISTORY.set("");
 
-        for (int i=0;i<4;i++){
+        for (int i = 0; i < 4; i++) {
             PLAYERS[i] = new SimpleStringProperty();
             HANDCARD[i] = new SimpleIntegerProperty(9);
             DRAWNCARD[i] = new SimpleIntegerProperty(9);
@@ -157,6 +182,7 @@ public class Client extends Application{
 
     /**
      * Method to be called from LoginWindowController to check the entered name.
+     *
      * @param temp_name
      */
     public void checkName(String temp_name) {
@@ -181,17 +207,18 @@ public class Client extends Application{
                     //LAUNCHER.launchChat();
                 }
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Send a message to only one client. The name and the message are separated by '/'. Order Code: 1
+     *
      * @param name
      * @param message
      */
-    public void sendPersonalMessage(String name, String message){
+    public void sendPersonalMessage(String name, String message) {
         OUT.println("/1" + name + "/" + message);
     }
 
@@ -241,9 +268,10 @@ public class Client extends Application{
 
     /**
      * Receive the Game info from the Server
+     *
      * @param info
      */
-    public void startGameInfo(String info){
+    public void startGameInfo(String info) {
         // The first character is the number of players
         //numberofplayers = info.charAt(0); // war ASCII 2 => heißt war 50
 
@@ -253,36 +281,37 @@ public class Client extends Application{
         //playerinturnid = (- (int) info.charAt(1)) % numberofplayers;
         playerinturnid = (numberofplayers - Integer.valueOf(Character.toString((char) info.charAt(1)))) % numberofplayers;
         // GUI cannot be directly updated from a non-application thread, here a Runnable object is needed.
-            //Platform.runLater(new Runnable() {
-              //  @Override
-                //public void run() {
-                    // The rest of the String contains the names of the other players separated by a '/'
-                    //String rest = info.substring(1);
-                    String rest = info.substring(2) + '0';
+        //Platform.runLater(new Runnable() {
+        //  @Override
+        //public void run() {
+        // The rest of the String contains the names of the other players separated by a '/'
+        //String rest = info.substring(1);
+        String rest = info.substring(2) + '0';
 
-                    for (int i = 0; i < numberofplayers; i++) {
-                        PLAYERS[i].set(rest.substring(0, rest.indexOf('/')));
-                        TOKENS[i].set(0);
-                        rest = rest.substring(rest.indexOf('/')+1);
-                        HANDCARD[i].set(0);
-                    }
-                    // Set the name of the player in turn
-                    PLAYERINTURN.set(PLAYERS[playerinturnid].get());
-                    if (playerinturnid == 0){
-                        INTURN.set(true);
-                    }
-                    GAMERUNNING.set(true);
-               // }
-           // });
+        for (int i = 0; i < numberofplayers; i++) {
+            PLAYERS[i].set(rest.substring(0, rest.indexOf('/')));
+            TOKENS[i].set(0);
+            rest = rest.substring(rest.indexOf('/') + 1);
+            HANDCARD[i].set(0);
+        }
+        // Set the name of the player in turn
+        PLAYERINTURN.set(PLAYERS[playerinturnid].get());
+        if (playerinturnid == 0) {
+            INTURN.set(true);
+        }
+        GAMERUNNING.set(true);
+        // }
+        // });
         OUTOFROUND.set("");
 
     }
 
     /**
      * Assign the drawn card to the correct slot
+     *
      * @param cardname
      */
-    public void setDrawnCard(String cardname){
+    public void setDrawnCard(String cardname) {
         if (HANDCARD[0].get() == 0 || HANDCARD[0].get() == 9) {
             HANDCARD[0].set(CARDS.indexOf(cardname));
             DRAWNCARD[0].set(9);
@@ -293,17 +322,18 @@ public class Client extends Application{
 
     /**
      * Show the card played by the player in turn
+     *
      * @param cardname
      */
-    public void setPlayedCard(String cardname){
+    public void setPlayedCard(String cardname) {
         // If it is someone else's turn, show the played card in the drawn card slot
-        if (playerinturnid != 0){
+        if (playerinturnid != 0) {
             DRAWNCARD[playerinturnid].set(CARDS.indexOf(cardname));
             HANDCARD[playerinturnid].set(0);
         }
         // Reset the drawn card's slot of the last player
         int previousplayer = (playerinturnid - 1 + numberofplayers) % numberofplayers;
-        while (OUTOFROUND.get().contains(PLAYERS[previousplayer].get())){
+        while (OUTOFROUND.get().contains(PLAYERS[previousplayer].get())) {
             previousplayer = (previousplayer - 1 + numberofplayers) % numberofplayers;
         }
         DRAWNCARD[previousplayer].set(9);
@@ -311,11 +341,11 @@ public class Client extends Application{
         DISCARDEDCARDS.set(DISCARDEDCARDS.get() + cardname + " - " + PLAYERINTURN.get() + "\n");
         // Change the player in turn
         playerinturnid = (playerinturnid + 1) % numberofplayers;
-        while (OUTOFROUND.get().contains(PLAYERS[playerinturnid].get())){
+        while (OUTOFROUND.get().contains(PLAYERS[playerinturnid].get())) {
             playerinturnid = (playerinturnid + 1) % numberofplayers;
         }
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
-        if (playerinturnid == 0){
+        if (playerinturnid == 0) {
             INTURN.set(true);
         }
         // Show a hidden card in the active player's drawn card slot
@@ -324,17 +354,18 @@ public class Client extends Application{
 
     /**
      * Add the given Player to the Out-Of-Round-List and clear the corresponding player panel
+     *
      * @param name
      */
-    public void outOfRound(String name){
+    public void outOfRound(String name) {
         OUTOFROUND.set(OUTOFROUND.get() + name + "\n");
-        for(int i=0; i<numberofplayers; i++){
-            if (PLAYERS[i].get().equals(name)){
+        for (int i = 0; i < numberofplayers; i++) {
+            if (PLAYERS[i].get().equals(name)) {
                 HANDCARD[i].set(9);
                 DRAWNCARD[i].set(9);
             }
         }
-        while (OUTOFROUND.get().contains(PLAYERS[playerinturnid].get())){
+        while (OUTOFROUND.get().contains(PLAYERS[playerinturnid].get())) {
             playerinturnid = (playerinturnid + 1) % numberofplayers;
         }
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
@@ -343,16 +374,17 @@ public class Client extends Application{
 
     /**
      * Display the results of this round in a Window and reset the player panels for the next round
+     *
      * @param info
      * @throws IOException
      */
-    public void endOfRound(String info) throws IOException{
-        String winneroflastround = info.substring(2*numberofplayers);
+    public void endOfRound(String info) throws IOException {
+        String winneroflastround = info.substring(2 * numberofplayers);
         for (int i = 0; i < numberofplayers; i++) {
             HANDCARD[i].set(0);
-            SCORE[i].set(info.substring(2*i,2*i+2));
-            if(PLAYERS[i].get().equals(winneroflastround)){
-                TOKENS[i].set(TOKENS[i].get()+1);
+            SCORE[i].set(info.substring(2 * i, 2 * i + 2));
+            if (PLAYERS[i].get().equals(winneroflastround)) {
+                TOKENS[i].set(TOKENS[i].get() + 1);
                 playerinturnid = i;
             }
         }
@@ -365,15 +397,16 @@ public class Client extends Application{
 
     /**
      * Display the game results in a Window and reset the game panels
+     *
      * @param info
      * @throws IOException
      */
-    public void endOfGame(String info) throws IOException{
-        String winner = info.substring(2*numberofplayers + 1);
+    public void endOfGame(String info) throws IOException {
+        String winner = info.substring(2 * numberofplayers + 1);
         String endofgameinfo = "Winner: " + winner + "\n\n" + "Tokens: \n";
         for (int i = 0; i < numberofplayers; i++) {
             TOKENS[i].set(info.charAt(i));
-            endofgameinfo = endofgameinfo + String.format("%-20.20s %2d" , PLAYERS[i].get(), TOKENS[i].get()) + "\n";
+            endofgameinfo = endofgameinfo + String.format("%-20.20s %2d", PLAYERS[i].get(), TOKENS[i].get()) + "\n";
         }
         LAUNCHER.launchEndOfGame(this, winner);
         // Reset the game panels
@@ -402,9 +435,10 @@ public class Client extends Application{
 
     /**
      * Send message to the server, quit if logout order is given
+     *
      * @param message
      */
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         // Check logout condition
         if (message.equals("bye")) {
             OUT.println("/0quit");
@@ -425,15 +459,15 @@ public class Client extends Application{
         }
     }
 
-    public void sendAnswer(String answer){
+    public void sendAnswer(String answer) {
         OUT.println("/6" + answer);
     }
 
-    public void seeCard(String info){
-        String playername = info.substring(0,info.indexOf('/'));
-        String cardname = info.substring(info.indexOf('/')+1);
-        for (int i=0; i<numberofplayers; i++){
-            if (PLAYERS[i].get().equals(playername)){
+    public void seeCard(String info) {
+        String playername = info.substring(0, info.indexOf('/'));
+        String cardname = info.substring(info.indexOf('/') + 1);
+        for (int i = 0; i < numberofplayers; i++) {
+            if (PLAYERS[i].get().equals(playername)) {
                 HANDCARD[i].set(CARDS.indexOf(cardname));
             }
         }
@@ -441,6 +475,7 @@ public class Client extends Application{
 
     /**
      * Execute an order from the server by checking the order code and calling the correct method
+     *
      * @param order
      * @throws IOException
      */
@@ -449,7 +484,7 @@ public class Client extends Application{
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     switch (order.charAt(0)) {
                         case '0' -> // terminate the connection
                                 socket.close();
@@ -475,15 +510,16 @@ public class Client extends Application{
                         case 'b' -> HANDCARD[0].set(CARDS.indexOf(order.substring(1)));
                         case 'c' -> seeCard(order.substring(1));
                     }
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
-        }
-        }
+                }
+            }
         });
     }
 
     /**
      * Starts the application on the client side
+     *
      * @param primaryStage
      * @throws Exception
      */
@@ -497,25 +533,25 @@ public class Client extends Application{
         new Thread(() -> {
             try {
                 String line;
-                while (!socket.isClosed()){
+                while (!socket.isClosed()) {
                     // Client socket waits for the input from the server
                     line = IN.readLine();
                     //if(!line.isEmpty()) { // NullPointerException
-                    if(line != null) {
+                    if (line != null) {
                         // Pass an order to the corresponding method or a message to the ChatWindow
                         if (line.charAt(0) == '/') {
                             executeOrder(line.substring(1));
                         } else {
 
 
-                                CHATHISTORY.set(CHATHISTORY.get() + line.substring(1) + "\n");
+                            CHATHISTORY.set(CHATHISTORY.get() + line.substring(1) + "\n");
 
                         }
                     }
                 }
                 Platform.exit();
             } catch (IOException e) {
-                try{
+                try {
                     socket.close();
                     Platform.exit();
                 } catch (IOException e1) {
@@ -525,7 +561,7 @@ public class Client extends Application{
         }).start();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         launch(args);
     }
 

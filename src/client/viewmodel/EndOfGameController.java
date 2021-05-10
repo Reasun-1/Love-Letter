@@ -11,6 +11,7 @@ import javafx.util.StringConverter;
 
 /**
  * This class is the controller class for the End of Game fxml file and it represents the end of game pop-up window.
+ *
  * @author Xheneta, Pascal
  */
 
@@ -49,6 +50,7 @@ public class EndOfGameController {
 
     /**
      * This method initializes the players and the winner in the end of game window using data binding.
+     *
      * @param client
      */
     public void init(Client client, String winner) {

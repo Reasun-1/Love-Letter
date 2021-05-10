@@ -21,13 +21,14 @@ public class ServerThread implements Runnable {
 
     /**
      * Constructor combines the client socket with the ServerThread socket
+     *
      * @param socket
      */
     public ServerThread(Socket socket) {
         SOCKET = socket;
     }
 
-    public Socket getSocket(){
+    public Socket getSocket() {
         return SOCKET;
     }
 
@@ -59,34 +60,35 @@ public class ServerThread implements Runnable {
             }
 
 
-                    // wait for messages from the client
-                    boolean flag = true;
-                    while (flag) {
-                        //wait for the output Stream from Client
-                        String line = in.readLine();
-                        // if no message from the client, then wait
-                        if (line != null) {
-                            if (line.charAt(0) == '/') {
-                                executeOrder(line.substring(1));
-                            } else {
-                                String msg = "$" + clientName + ": " + line.substring(1);
-                                // give the message to all clients online
-                                sendMessage(msg);
-                            }
-                        }
-
-                    }
-        } catch (IOException e) {
-                    try {
-                        closeConnect();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
+            // wait for messages from the client
+            boolean flag = true;
+            while (flag) {
+                //wait for the output Stream from Client
+                String line = in.readLine();
+                // if no message from the client, then wait
+                if (line != null) {
+                    if (line.charAt(0) == '/') {
+                        executeOrder(line.substring(1));
+                    } else {
+                        String msg = "$" + clientName + ": " + line.substring(1);
+                        // give the message to all clients online
+                        sendMessage(msg);
                     }
                 }
+
+            }
+        } catch (IOException e) {
+            try {
+                closeConnect();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     /**
      * send a message to all clients
+     *
      * @param message
      * @throws IOException
      */
@@ -94,7 +96,7 @@ public class ServerThread implements Runnable {
         //optional, for server terminal print
         System.out.println(message);
         synchronized (Server.clientList) {
-            for (Enumeration<ServerThread> e = Server.clientList.elements(); e.hasMoreElements();) {
+            for (Enumeration<ServerThread> e = Server.clientList.elements(); e.hasMoreElements(); ) {
                 new PrintWriter(e.nextElement().getSocket().getOutputStream(), true).println(message);
             }
         }
@@ -102,15 +104,17 @@ public class ServerThread implements Runnable {
 
     /**
      * transmit an order from the server to the client
+     *
      * @param order
      * @throws IOException
      */
-    public void receiveOrder(String order) throws IOException{
-        new PrintWriter(SOCKET.getOutputStream(),true).println("/" + order);
+    public void receiveOrder(String order) throws IOException {
+        new PrintWriter(SOCKET.getOutputStream(), true).println("/" + order);
     }
 
     /**
      * terminate the connection to the client
+     *
      * @throws IOException
      */
     public void closeConnect() throws IOException {
@@ -126,28 +130,30 @@ public class ServerThread implements Runnable {
 
     /**
      * send a message only to one client
+     *
      * @param name
      * @param message
      */
-    public void sendPrivateMessage(String name, String message){
+    public void sendPrivateMessage(String name, String message) {
         Server.getServer().sendTo(name, message);
     }
 
     /**
      * transmit an order from the client to the server depending on the order code
+     *
      * @param order
      * @throws IOException
      */
-    public void executeOrder(String order) throws IOException{
-        switch (order.charAt(0)){
+    public void executeOrder(String order) throws IOException {
+        switch (order.charAt(0)) {
             case '0': // terminate the connection
                 break;
             case '1': // send private message
-                String name = order.substring(1,order.indexOf('/'));
+                String name = order.substring(1, order.indexOf('/'));
                 if (Server.clientList.containsKey(name)) {
                     String msg = order.substring(order.indexOf('/') + 1);
-                    sendPrivateMessage(name,  "$" + clientName + "[private]: " + msg);
-                    new PrintWriter(SOCKET.getOutputStream(),true).println("$" + clientName + "[private]: " + msg);
+                    sendPrivateMessage(name, "$" + clientName + "[private]: " + msg);
+                    new PrintWriter(SOCKET.getOutputStream(), true).println("$" + clientName + "[private]: " + msg);
                 } else {
                     receiveOrder("1There is no client with this name!");
                 }

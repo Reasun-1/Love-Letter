@@ -20,10 +20,11 @@ public class WindowLauncher {
 
     /**
      * Create a Login-Window and init the controller with a handle on the client
+     *
      * @param client
      * @throws IOException
      */
-    public void launchLogin(Client client) throws IOException{
+    public void launchLogin(Client client) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("Login");
         FXMLLoader loader = new FXMLLoader();
@@ -38,10 +39,11 @@ public class WindowLauncher {
 
     /**
      * Create an Error-Window and init the controller with the message to display
+     *
      * @param message
      * @throws IOException
      */
-    public void launchError(String message) throws IOException{
+    public void launchError(String message) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("Error");
         FXMLLoader loader = new FXMLLoader();
@@ -56,10 +58,11 @@ public class WindowLauncher {
 
     /**
      * Create a Chat&Game-Window and init the controller with a handle on the client
+     *
      * @param client
      * @throws IOException
      */
-    public void launchChatAndGame(Client client) throws IOException{
+    public void launchChatAndGame(Client client) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("Chat: " + client.getName());
         FXMLLoader loader = new FXMLLoader();
@@ -75,11 +78,12 @@ public class WindowLauncher {
     /**
      * Create a Question-Window and init the controller with a handle on the client
      * and the message to display
+     *
      * @param client
      * @param message
      * @throws IOException
      */
-    public void launchQuestion(Client client, String message) throws IOException{
+    public void launchQuestion(Client client, String message) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("Question");
         FXMLLoader loader = new FXMLLoader();
@@ -93,10 +97,11 @@ public class WindowLauncher {
 
     /**
      * Create a Window displaying the results of a finished round
+     *
      * @param client
      * @throws IOException
      */
-    public void launchEndOfRound(Client client, String winner) throws IOException{
+    public void launchEndOfRound(Client client, String winner) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("End of Round");
         FXMLLoader loader = new FXMLLoader();
@@ -110,11 +115,12 @@ public class WindowLauncher {
 
     /**
      * Create a Window displaying the results of a finished game
+     *
      * @param client
      * @param winner
      * @throws IOException
      */
-    public void launchEndOfGame(Client client, String winner) throws IOException{
+    public void launchEndOfGame(Client client, String winner) throws IOException {
         Stage stage = new Stage();
         stage.setTitle("End of Game");
         FXMLLoader loader = new FXMLLoader();

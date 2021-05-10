@@ -3,6 +3,7 @@ package client.viewmodel;
  * LoginController Class is responsible for the LogIn Window that appears at the beginning of the game
  * It is connected with the FXML LogInWindow File and with logInViewModel in order to complete the
  * conditions of a MVVM model
+ *
  * @author Rajna Fani
  * @version 1.0-SNAPSHOT
  */
@@ -29,7 +30,7 @@ public class LoginController {
      * Method to be called from WindowLauncher to check the entered name.
      * @param client
      */
-    public void init(Client client){
+    public void init(Client client) {
         this.client = client;
         //connect the viewModel
         new LoginViewModel();

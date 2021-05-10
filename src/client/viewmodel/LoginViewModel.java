@@ -3,6 +3,7 @@ package client.viewmodel;
 /**
  * logInVieModel Class represents the UI state and it should provide the properties included in the FXML
  * file of the LogIn Window, in order to bind with the LoginController
+ *
  * @author Rajna Fani
  * @version 1.0-SNAPSHOT
  */
@@ -11,7 +12,6 @@ import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
 
 
 public class LoginViewModel {
@@ -25,7 +25,7 @@ public class LoginViewModel {
     /**
      * Constructor establishes the connection between the client's name and the LogIn Window
      */
-    public LoginViewModel(){
+    public LoginViewModel() {
         //create the connection if the username textField is not empty
         LOGININDEED.bind(USERNAME.isNotEmpty());
     }
@@ -43,7 +43,7 @@ public class LoginViewModel {
     }
 
     //represents if the login is possible based on the condition that the username is not empty
-    public static ReadOnlyBooleanProperty loginPossibleProperty(){
+    public static ReadOnlyBooleanProperty loginPossibleProperty() {
         return LOGININDEED.getReadOnlyProperty();
     }
 

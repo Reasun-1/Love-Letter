@@ -9,6 +9,7 @@ package server;
  * @author yuliia shaparenko
  * @version 1.0-SNAPSHOT
  */
+
 import java.io.IOException;
 import java.util.Random;
 import java.util.Stack;
@@ -133,7 +134,7 @@ public enum Card {
             Game.getInstance().discardedcard[myIndex][countdiscarded] = Card.PRIEST;
             Game.getInstance().status[myIndex] = 1;
 
-            if(myIndex != targetIndex){
+            if (myIndex != targetIndex) {
                 Game.getInstance().seencard[myIndex] = targetIndex;
                 Card seencard = Game.getInstance().handcard[targetIndex];
                 String message = "$" + Game.getInstance().playernames.get(targetIndex) + " has a " + seencard.getType();
@@ -151,12 +152,12 @@ public enum Card {
             Game.getInstance().discardedcard[myIndex][countdiscarded] = Card.GUARD;
             Game.getInstance().status[myIndex] = 1;
 
-            if(myIndex != targetIndex){
+            if (myIndex != targetIndex) {
                 if (Game.getInstance().handcard[targetIndex].getType().equals(guessCard.getType())) {
                     Game.getInstance().status[targetIndex] = 0;
                     Server.getServer().outOfRound(Game.getInstance().playernames.get(targetIndex));
                     Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
-                }else{
+                } else {
                     Server.getServer().sendMessageToAll("Nothing happened, play continues.");
                 }
             }
@@ -169,7 +170,8 @@ public enum Card {
 
     /**
      * constructor of class Card, which needs card type, value and count as parameters
-     * @param type the name of the card type
+     *
+     * @param type  the name of the card type
      * @param value the point of the card
      * @param count the total count of the card in one round
      */
@@ -181,6 +183,7 @@ public enum Card {
 
     /**
      * getter of card type
+     *
      * @return String type the card tye will be returned
      */
     public String getType() {
@@ -189,6 +192,7 @@ public enum Card {
 
     /**
      * setter of card type
+     *
      * @param type the card type will be set
      */
     public void setType(String type) {
@@ -197,12 +201,16 @@ public enum Card {
 
     /**
      * getter of card value
+     *
      * @return int value the card value will be returned
      */
-    public int getValue() { return value;}
+    public int getValue() {
+        return value;
+    }
 
     /**
      * setter of card value
+     *
      * @param value the card value will be set
      */
     public void setValue(int value) {
@@ -211,6 +219,7 @@ public enum Card {
 
     /**
      * getter of the count of the card
+     *
      * @return int count the count of the card will be returned
      */
     public int getCount() {
@@ -219,6 +228,7 @@ public enum Card {
 
     /**
      * setter of the count of the card
+     *
      * @param count the count of the card will be set
      */
     public void setCount(int count) {
@@ -227,6 +237,7 @@ public enum Card {
 
     /**
      * This method is a basic function, which is in PRINCESS, COUNTESS and HANDMAID overridden
+     *
      * @param myIndex is the player index, who plays in turn
      */
     void function(int myIndex) throws IOException {
@@ -234,7 +245,8 @@ public enum Card {
 
     /**
      * This method is a basic function, which is in KING, PRINCE, BARON and PRIEST overridden
-     * @param myIndex is the player index, who plays in turn
+     *
+     * @param myIndex     is the player index, who plays in turn
      * @param targetIndex is the index of the target player, whom the player in turn chooses
      */
     void function(int myIndex, int targetIndex) throws IOException {
@@ -242,15 +254,17 @@ public enum Card {
 
     /**
      * This method is a basic function, which is in GUARD overridden
-     * @param myIndex is the player index, who plays in turn
+     *
+     * @param myIndex     is the player index, who plays in turn
      * @param targetIndex is the index of the target player, whom the player in turn chooses
-     * @param guessCard is the type of the card, which the player in turn guesses
+     * @param guessCard   is the type of the card, which the player in turn guesses
      */
     void function(int myIndex, int targetIndex, Card guessCard) throws IOException {
     }
 
     /**
      * This method shuffle() is applied to shuffle the card at the beginning of each new round
+     *
      * @return Stack<Card> deck the shuffled the cards will be put in a stack for each player to draw the card
      */
     public static Stack<Card> shuffle() {
