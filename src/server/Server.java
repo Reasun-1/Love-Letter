@@ -219,18 +219,6 @@ public class Server {
         clientList.get(name).receiveOrder("2" + message);
     }
 
-    /**
-     * update the player list due to the updated sorting from the client
-     *
-     * @param updatedList
-     */
-    public void updatePlayerIndex(List<String> updatedList) {
-
-        for (int i = 0; i < updatedList.size(); i++) {
-            playerList.put(i, updatedList.get(i));
-        }
-    }
-
 
     /**
      * Tell the players how many players will participate and what are the names
@@ -277,12 +265,12 @@ public class Server {
     /**
      * tells the active player which card was drawn
      *
-     * @param playerID
+     * @param playername
      * @param card
      */
-    public void drawncard(int playerID, Card card) {
+    public void drawncard(String playername, Card card) {
         try {
-            clientList.get(playerList.get(playerID)).receiveOrder("5" + card.getType());
+            clientList.get(playername).receiveOrder("5" + card.getType());
         } catch (IOException e) {
             e.printStackTrace();
         }

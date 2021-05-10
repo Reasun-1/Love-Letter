@@ -10,37 +10,43 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.effect.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.viewmodel.QuestionController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="600" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="client.viewmodel.QuestionController">
     <children>
-        <AnchorPane fx:id="background" layoutX="139.0" layoutY="34.0" prefHeight="400.0" prefWidth="600.0" />
+        <AnchorPane fx:id="background" layoutX="139.0" layoutY="34.0" prefHeight="400.0" prefWidth="600.0"/>
         <ImageView fitHeight="400.0" fitWidth="600.0">
             <image>
-                <Image url="@../resources/redvelvet.jpg" />
+                <Image url="@../resources/redvelvet.jpg"/>
             </image>
         </ImageView>
         <AnchorPane fx:id="background2" prefHeight="400.0" prefWidth="600.0">
             <children>
-                <Label fx:id="questionField" alignment="CENTER" layoutX="71.0" layoutY="66.0" prefHeight="149.0" prefWidth="460.0" textAlignment="JUSTIFY" textFill="#fcfafad9">
+                <Label fx:id="questionField" alignment="CENTER" layoutX="71.0" layoutY="66.0" prefHeight="149.0"
+                       prefWidth="460.0" textAlignment="JUSTIFY" textFill="#fcfafad9">
                     <font>
-                        <Font name="Chalkduster" size="29.0" />
+                        <Font name="Chalkduster" size="29.0"/>
                     </font>
                 </Label>
-                <TextField fx:id="answer" alignment="CENTER" layoutX="151.0" layoutY="233.0" prefHeight="30.0" prefWidth="300.0" promptText="Enter Your Answer...">
+                <TextField fx:id="answer" alignment="CENTER" layoutX="151.0" layoutY="233.0" prefHeight="30.0"
+                           prefWidth="300.0" promptText="Enter Your Answer...">
                     <font>
-                        <Font size="14.0" />
+                        <Font size="14.0"/>
                     </font>
                     <effect>
                         <Lighting>
                             <bumpInput>
-                                <Shadow />
+                                <Shadow/>
                             </bumpInput>
                             <light>
-                                <Light.Distant />
+                                <Light.Distant/>
                             </light>
                         </Lighting>
                     </effect>
                 </TextField>
-                <Button fx:id="sendButton" defaultButton="true" layoutX="259.0" layoutY="291.0" mnemonicParsing="false" onAction="#send" opacity="0.63" prefHeight="26.0" prefWidth="85.0" text="Send" textAlignment="CENTER" textFill="#540707" />
+                <Button fx:id="sendButton" defaultButton="true" layoutX="259.0" layoutY="291.0" mnemonicParsing="false"
+                        onAction="#send" opacity="0.63" prefHeight="26.0" prefWidth="85.0" text="Send"
+                        textAlignment="CENTER" textFill="#540707"/>
             </children>
         </AnchorPane>
     </children>

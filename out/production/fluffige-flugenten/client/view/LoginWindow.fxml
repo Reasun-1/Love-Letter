@@ -13,65 +13,71 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.viewmodel.LoginController">
-   <children>
-      <AnchorPane fx:id="background" layoutX="139.0" layoutY="34.0" prefHeight="197.0" prefWidth="190.0">
-         <children>
-            <AnchorPane layoutX="26.0" layoutY="-11.0" prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <AnchorPane layoutX="14.0" layoutY="-64.0" prefHeight="200.0" prefWidth="200.0" />
-               </children>
-            </AnchorPane>
-         </children>
-      </AnchorPane>
-      <ImageView fitHeight="400.0" fitWidth="600.0">
-         <image>
-            <Image url="@../resources/redvelvet.jpg" />
-         </image>
-      </ImageView>
-      <AnchorPane fx:id="logo" layoutX="200.0" prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <ImageView fitHeight="125.0" fitWidth="200.0" layoutY="14.0">
-               <image>
-                  <Image url="@../resources/crown.jpg" />
-               </image>
-            </ImageView>
-            <Text fill="#1e0101c2" fontSmoothingType="LCD" layoutX="-138.0" layoutY="180.0" strokeLineCap="BUTT" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to our Love Letter Game!" textAlignment="CENTER" wrappingWidth="492.0">
-               <font>
-                  <Font name="Chalkduster" size="29.0" />
-               </font>
-               <effect>
-                  <Glow />
-               </effect>
-            </Text>
-         </children>
-      </AnchorPane>
-      <TextField fx:id="name" alignment="CENTER" layoutX="212.0" layoutY="249.0" prefHeight="30.0" prefWidth="176.0" promptText="What's your hero name?">
-         <font>
-            <Font size="14.0" />
-         </font>
-         <effect>
-            <Lighting diffuseConstant="1.31" specularConstant="0.78" specularExponent="26.67" surfaceScale="2.21">
-               <bumpInput>
-                  <Shadow />
-               </bumpInput>
-               <light>
-                  <Light.Distant azimuth="120.0" color="#793131" elevation="42.86" />
-               </light>
-            </Lighting>
-         </effect>
-      </TextField>
-      <Button fx:id="startButton" defaultButton="true" layoutX="257.0" layoutY="308.0" mnemonicParsing="false" onAction="#loginButton" prefHeight="30.0" prefWidth="86.0" text="Start" textFill="#391212">
-         <effect>
-            <Lighting>
-               <bumpInput>
-                  <Shadow />
-               </bumpInput>
-               <light>
-                  <Light.Distant color="#ae3939" />
-               </light>
-            </Lighting>
-         </effect>
-      </Button>
-   </children>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="client.viewmodel.LoginController">
+    <children>
+        <AnchorPane fx:id="background" layoutX="139.0" layoutY="34.0" prefHeight="197.0" prefWidth="190.0">
+            <children>
+                <AnchorPane layoutX="26.0" layoutY="-11.0" prefHeight="200.0" prefWidth="200.0">
+                    <children>
+                        <AnchorPane layoutX="14.0" layoutY="-64.0" prefHeight="200.0" prefWidth="200.0"/>
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+        <ImageView fitHeight="400.0" fitWidth="600.0">
+            <image>
+                <Image url="@../resources/redvelvet.jpg"/>
+            </image>
+        </ImageView>
+        <AnchorPane fx:id="logo" layoutX="200.0" prefHeight="200.0" prefWidth="200.0">
+            <children>
+                <ImageView fitHeight="125.0" fitWidth="200.0" layoutY="14.0">
+                    <image>
+                        <Image url="@../resources/crown.jpg"/>
+                    </image>
+                </ImageView>
+                <Text fill="#1e0101c2" fontSmoothingType="LCD" layoutX="-138.0" layoutY="180.0" strokeLineCap="BUTT"
+                      strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Welcome to our Love Letter Game!" textAlignment="CENTER" wrappingWidth="492.0">
+                    <font>
+                        <Font name="Chalkduster" size="29.0"/>
+                    </font>
+                    <effect>
+                        <Glow/>
+                    </effect>
+                </Text>
+            </children>
+        </AnchorPane>
+        <TextField fx:id="name" alignment="CENTER" layoutX="212.0" layoutY="249.0" prefHeight="30.0" prefWidth="176.0"
+                   promptText="What's your hero name?">
+            <font>
+                <Font size="14.0"/>
+            </font>
+            <effect>
+                <Lighting diffuseConstant="1.31" specularConstant="0.78" specularExponent="26.67" surfaceScale="2.21">
+                    <bumpInput>
+                        <Shadow/>
+                    </bumpInput>
+                    <light>
+                        <Light.Distant azimuth="120.0" color="#793131" elevation="42.86"/>
+                    </light>
+                </Lighting>
+            </effect>
+        </TextField>
+        <Button fx:id="startButton" defaultButton="true" layoutX="257.0" layoutY="308.0" mnemonicParsing="false"
+                onAction="#loginButton" prefHeight="30.0" prefWidth="86.0" text="Start" textFill="#391212">
+            <effect>
+                <Lighting>
+                    <bumpInput>
+                        <Shadow/>
+                    </bumpInput>
+                    <light>
+                        <Light.Distant color="#ae3939"/>
+                    </light>
+                </Lighting>
+            </effect>
+        </Button>
+    </children>
 </Pane>

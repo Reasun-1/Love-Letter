@@ -86,7 +86,7 @@ public enum Card {
                     Game.getInstance().handcard[targetIndex] = Game.getInstance().deck.pop();
                 }
                 // inform the player which card he has drawn
-                Server.getServer().drawncard(targetIndex, Game.getInstance().handcard[targetIndex]);
+                Server.getServer().drawncard(Game.getInstance().playernames.get(targetIndex), Game.getInstance().handcard[targetIndex]);
             }
         }
     },

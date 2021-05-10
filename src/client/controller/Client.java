@@ -191,6 +191,9 @@ public class Client extends Application {
                 // Open error Window, then restart the Login
                 LAUNCHER.launchError("The name must not contain the symbol '/'!");
                 LAUNCHER.launchLogin(this);
+            } else if (CARDS.contains(temp_name)) {
+                LAUNCHER.launchError("That's a card, not a name!");
+                LAUNCHER.launchLogin(this);
             } else {
                 // Send name to Server to check whether it is available
                 OUT.println(temp_name);
@@ -202,8 +205,6 @@ public class Client extends Application {
                 } else {
                     // Store the chosen name
                     name = answer;
-                    // Soon: Open Chat-Window and print welcome-message
-                    //LAUNCHER.launchChat();
                 }
             }
         } catch (IOException e) {
@@ -253,15 +254,12 @@ public class Client extends Application {
         int playedcard = HANDCARD[0].get();
         HANDCARD[0].set(DRAWNCARD[0].get());
         DRAWNCARD[0].set(playedcard);
-        INTURN.set(false);
-
     }
 
     /**
      * Play your hand card (only possible if this client is player in turn in the current game). Order Code: 5
      */
     public void playDrawnCard() {
-        INTURN.set(false);
         OUT.println("/5" + CARDS.get(DRAWNCARD[0].get()));
     }
 
@@ -325,6 +323,8 @@ public class Client extends Application {
      * @param cardname
      */
     public void setPlayedCard(String cardname) {
+        // reset inturn-property
+        INTURN.set(false);
         // If it is someone else's turn, show the played card in the drawn card slot
         if (playerinturnid != 0) {
             DRAWNCARD[playerinturnid].set(CARDS.indexOf(cardname));
@@ -379,14 +379,16 @@ public class Client extends Application {
      */
     public void endOfRound(String info) throws IOException {
         String winneroflastround = info.substring(2 * numberofplayers);
-        for (int i = 0; i < numberofplayers; i++) {
-            HANDCARD[i].set(0);
-            SCORE[i].set(info.substring(2 * i, 2 * i + 2));
-            if (PLAYERS[i].get().equals(winneroflastround)) {
-                TOKENS[i].set(TOKENS[i].get() + 1);
-                playerinturnid = i;
+            for (int i = 0; i < numberofplayers; i++) {
+                HANDCARD[i].set(0);
+                SCORE[i].set(info.substring(2 * i, 2 * i + 2));
+                if (winneroflastround.contains(PLAYERS[i].get())) {
+                    TOKENS[i].set(TOKENS[i].get() + 1);
+                    if (winneroflastround.substring(winneroflastround.lastIndexOf('/') + 1).equals(PLAYERS[i].get())){
+                        playerinturnid = i;
+                    }
+                }
             }
-        }
         DISCARDEDCARDS.set("");
         HANDCARD[0].set(9);
         OUTOFROUND.set("");
@@ -401,11 +403,9 @@ public class Client extends Application {
      * @throws IOException
      */
     public void endOfGame(String info) throws IOException {
-        String winner = info.substring(2 * numberofplayers + 1);
-        String endofgameinfo = "Winner: " + winner + "\n\n" + "Tokens: \n";
+        String winner = info.substring(numberofplayers + 1);
         for (int i = 0; i < numberofplayers; i++) {
-            TOKENS[i].set(info.charAt(i));
-            endofgameinfo = endofgameinfo + String.format("%-20.20s %2d", PLAYERS[i].get(), TOKENS[i].get()) + "\n";
+            TOKENS[i].set(info.charAt(i) - '0');
         }
         LAUNCHER.launchEndOfGame(this, winner);
         // Reset the game panels
@@ -528,6 +528,7 @@ public class Client extends Application {
         LAUNCHER.launchLogin(this);
 
         // Open chat and game window after logging in successfully
+        CHATHISTORY.set("Welcome " + name + "\n");
         LAUNCHER.launchChatAndGame(this);
         new Thread(() -> {
             try {
