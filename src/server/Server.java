@@ -256,6 +256,9 @@ public class Server {
                 }
                 clientList.get(playerList.get(i)).receiveOrder(scoreString + winner);
             }
+            gameexists = false;
+            gamerunning = false;
+            playerList.clear();
     }
 
     public void outOfRound(String name) throws IOException {

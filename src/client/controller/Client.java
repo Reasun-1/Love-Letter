@@ -412,7 +412,7 @@ public class Client extends Application{
         PLAYERINTURN.set("");
         INTURN.set(false);
         GAMERUNNING.set(false);
-        //GAMEEXISTS.set(false);??
+        GAMEEXISTS.set(false);
     }
 
     /**
