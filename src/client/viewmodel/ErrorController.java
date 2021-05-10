@@ -46,4 +46,5 @@ public class ErrorController {
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
     }
+
 }
