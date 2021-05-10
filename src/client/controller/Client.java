@@ -63,6 +63,9 @@ public class Client extends Application{
     // Bindings to list the current tokens of each player
     private final IntegerProperty[] TOKENS = new IntegerProperty[4];
 
+    // Bindings to list the current tokens of each player
+    private final StringProperty[] SCORE = new StringProperty[4];
+
     // Bindings enables/disables certain buttons (see ChatWindowController)
     private final BooleanProperty GAMEEXISTS = new SimpleBooleanProperty();
     private final BooleanProperty GAMERUNNING = new SimpleBooleanProperty();
@@ -95,6 +98,8 @@ public class Client extends Application{
     }
 
     public IntegerProperty getTOKENS(int playerindex){return TOKENS[playerindex];}
+
+    public StringProperty getScore(int playerindex){return SCORE[playerindex];}
 
     public IntegerProperty getDrawnCard(int playerindex) {
         return drawncard[playerindex];
@@ -133,6 +138,7 @@ public class Client extends Application{
             handcard[i] = new SimpleIntegerProperty(9);
             drawncard[i] = new SimpleIntegerProperty(9);
             TOKENS[i] = new SimpleIntegerProperty();
+            SCORE[i] = new SimpleStringProperty("");
         }
         // The first input from the Server will be info about a Game existing/running on this Server
         String gameinfo = IN.readLine();
@@ -364,13 +370,9 @@ public class Client extends Application{
      */
     public void endOfRound(String info) throws IOException{
         String winneroflastround = info.substring(2*numberofplayers);
-        String endofroundinfo = "Winner: " + winneroflastround + "\n\n" + "Score: \n";
-        String[] score = new String[numberofplayers];
         for (int i = 0; i < numberofplayers; i++) {
             handcard[i].set(0);
-            score[i] = info.substring(2*i,2*i+1);
-
-            endofroundinfo = endofroundinfo + String.format("%-20.20s %2.2s" , PLAYERS[i].get(), score[i]) + "\n";
+            SCORE[i].set(info.substring(2*i,2*i+2));
             if(PLAYERS[i].get().equals(winneroflastround)){
                 TOKENS[i].set(TOKENS[i].get()+1);
                 playerinturnid = i;
@@ -380,7 +382,7 @@ public class Client extends Application{
         handcard[0].set(9);
         OUTOFROUND.set("");
         PLAYERINTURN.set(PLAYERS[playerinturnid].get());
-        LAUNCHER.launchEndOfRound(endofroundinfo);
+        LAUNCHER.launchEndOfRound(this, winneroflastround);
     }
 
     /**

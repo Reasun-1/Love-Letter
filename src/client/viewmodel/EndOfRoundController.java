@@ -11,34 +11,89 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+
+/**
+ * This class is the controller class for the End of Game fxml file and it represents the end of game pop-up window.
+ * @author Xheneta, Pascal
+ */
 
 public class EndOfRoundController {
 
     @FXML
-    private Button okButton;
+    private AnchorPane endRootPane;
 
     @FXML
-    private Label infoField;
+    private AnchorPane backgroundPane;
+
+    @FXML
+    private AnchorPane displayPane;
+
+    @FXML
+    private Label infoField; //label provides the change of the text based on the context
+
+    @FXML
+    private Button doneButton;
+
+    @FXML
+    private Label winnerName;
+
+    @FXML
+    private Text personalPlayer;
+
+    @FXML
+    private Text secondPlayer;
+
+    @FXML
+    private Text thirdPlayer;
+
+    @FXML
+    private Text fourthPlayer;
+
+    @FXML
+    private Label personalScore;
+
+    @FXML
+    private Label secondScore;
+
+    @FXML
+    private Label thirdScore;
+
+    @FXML
+    private Label fourthScore;
+
 
     /**
-     * Method to be called from WindowLauncher to write the needed info based on the context.
-     * @param info
+     * This method initializes the players and the winner in the end of game window using data binding.
+     * @param client
      */
-    public void init(String info) {
-        infoField.setText(info);
+    public void init(Client client, String winner) {
+        personalPlayer.textProperty().bindBidirectional(client.getPlayers(0));
+        secondPlayer.textProperty().bindBidirectional(client.getPlayers(1));
+        thirdPlayer.textProperty().bindBidirectional(client.getPlayers(2));
+        fourthPlayer.textProperty().bindBidirectional(client.getPlayers(3));
+
+        personalScore.textProperty().bindBidirectional(client.getScore(0));
+        secondScore.textProperty().bindBidirectional(client.getScore(1));
+        thirdScore.textProperty().bindBidirectional(client.getScore(2));
+        fourthScore.textProperty().bindBidirectional(client.getScore(3));
+        winnerName.setText(winner);
     }
 
     @FXML
     /**
-     * Method that closes the stage after pressing the "ok" button and the other window decided
-     * by WindowLauncher Class will get opened
+     * This method closes the stage after pressing the "Done!" button
+     * signalizing the end of the Game
      * @param event
      */
     private void confirm(ActionEvent event) {
-        Stage stage = (Stage) okButton.getScene().getWindow();
+        Stage stage = (Stage) doneButton.getScene().getWindow();
         stage.close();
-    }
 
+    }
 }
+

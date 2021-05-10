@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
  * This class is the controller class for the Chat and Game Window connected with the fxml file via data binding.
  * @author Rajna Fani
  * @author Xheneta Krasniqi
+ * @author Pascal Stucky
  */
 
 
