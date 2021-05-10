@@ -311,6 +311,7 @@ public class Client extends Application{
         System.out.println(cardname);
         if (playerinturnid != 0){
             drawncard[playerinturnid].set(CARDS.indexOf(cardname));
+            handcard[playerinturnid].set(0);
         }
         // Reset the drawn card's slot of the last player
         int previousplayer = (playerinturnid - 1 + numberofplayers) % numberofplayers;
@@ -448,6 +449,16 @@ public class Client extends Application{
         OUT.println("/6" + answer);
     }
 
+    public void seeCard(String info){
+        String playername = info.substring(0,info.indexOf('/'));
+        String cardname = info.substring(info.indexOf('/')+1);
+        for (int i=0; i<numberofplayers; i++){
+            if (PLAYERS[i].get().equals(playername)){
+                handcard[i].set(CARDS.indexOf(cardname));
+            }
+        }
+    }
+
     /**
      * Execute an order from the server by checking the order code and calling the correct method
      * @param order
@@ -493,6 +504,12 @@ public class Client extends Application{
                     case 'a':
                         GAMEEXISTS.set(true);
                         break;
+                        case 'b':
+                            handcard[0].set(CARDS.indexOf(order.substring(1)));
+                            break;
+                        case 'c':
+                            seeCard(order.substring(1));
+                            break;
             }}catch (IOException e){
                     e.printStackTrace();
         }

@@ -280,4 +280,20 @@ public class Server {
     public void dropCard(String playername) throws IOException {
         clientList.get(playername).receiveOrder("3");
     }
+
+    public void cardsChanged(String player, String card) {
+        try {
+            clientList.get(player).receiveOrder("b" + card);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void seeCard(String player, String target, String card) {
+        try {
+            clientList.get(player).receiveOrder("c" + target + "/" + card);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

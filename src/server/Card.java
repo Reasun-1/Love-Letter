@@ -51,6 +51,8 @@ public enum Card {
             Game.getInstance().handcard[targetIndex] = Game.getInstance().handcard[myIndex];
             Game.getInstance().handcard[myIndex] = tempCard;
             Server.getServer().sendMessageToAll("Cards exchanged.");
+            Server.getServer().cardsChanged(Game.getInstance().playernames.get(myIndex), Game.getInstance().handcard[myIndex].getType());
+            Server.getServer().cardsChanged(Game.getInstance().playernames.get(targetIndex), Game.getInstance().handcard[targetIndex].getType());
         }
     },
 
@@ -134,9 +136,10 @@ public enum Card {
             if(myIndex != targetIndex){
                 Game.getInstance().seencard[myIndex] = targetIndex;
                 Card seencard = Game.getInstance().handcard[targetIndex];
-                String message = Game.getInstance().playernames.get(targetIndex) + " has a " + seencard.getType();
+                String message = "$" + Game.getInstance().playernames.get(targetIndex) + " has a " + seencard.getType();
                 //*******************brauchen wir hier ein besondere Funktion oder kann man so private Nachricht schicken? oder exception?*************
                 Server.getServer().sendTo(Game.getInstance().playernames.get(myIndex), message);
+                Server.getServer().seeCard(Game.getInstance().playernames.get(myIndex), Game.getInstance().playernames.get(targetIndex), seencard.getType());
             }
         }
     },
