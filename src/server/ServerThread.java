@@ -78,9 +78,7 @@ public class ServerThread implements Runnable {
                         }
 
                     }
-                    // close the connection
-                    closeConnect();
-                } catch (IOException e) {
+        } catch (IOException e) {
                     try {
                         closeConnect();
                     } catch (IOException e1) {

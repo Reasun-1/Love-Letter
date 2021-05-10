@@ -38,9 +38,6 @@ public class Game {
     boolean gameover;
     boolean roundover;
     int playerinturn;
-    boolean waitingforcard;
-    boolean waitingforchooseplayer;
-    boolean waitingforguesstyp;
 
     /**
      * constructor Game:
@@ -77,7 +74,7 @@ public class Game {
         topcards = new ArrayList<>();
         winners = new ArrayList<>();
 
-        // initialize the tokesn for all the players
+        // initialize the tokens for all the players
         for (int i = 0; i < countplayer; i++) {
             String name = Server.playerList.get(i);
             tokens.put(name, 0);
@@ -97,13 +94,12 @@ public class Game {
      * In the while-loop, the round-over condition will be checked. If the condition
      * is accomplished, the current round will be over and a new round will be started.
      * Otherwise, round will continue.
-     * @throws IOException
      */
-    public void newRound() throws IOException {
+    public void newRound() {
 
         // reset the round info
-        for (int i = 0; i < discardedcard.length; i++) {
-            Arrays.fill(discardedcard[i], null);
+        for (Card[] cards : discardedcard) {
+            Arrays.fill(cards, null);
         }
         Arrays.fill(countdiscarded, 0);
         Arrays.fill(handcard, null);
@@ -129,8 +125,8 @@ public class Game {
             for (int i = 0; i < lastWinner; i++) {
                 playernames.add(playernames.get(i));
             }
-            for (int i = 0; i < lastWinner; i++) {
-                playernames.remove(0);
+            if (lastWinner > 0) {
+                playernames.subList(0, lastWinner).clear();
             }
             // update the player index in this round
             Server.getServer().updatePlayerIndex(playernames);
@@ -275,7 +271,7 @@ public class Game {
                     } else {
                         Server.getServer().question(playernames.get(playerinturn), "Please guess a card type:");
                         Server.getServer().sendMessageToAll(playernames.get(playerinturn) + " is guessing the card type");
-                        // a global varible for the index of target player of guard, which goes into guessType method
+                        // a global variable for the index of target player of guard, which goes into guessType method
                         targetIndexForGuard= playernames.indexOf(playername);
                     }
                 break;
@@ -283,18 +279,8 @@ public class Game {
     }
 
     /**
-     * This method is applied for other class (server) to invoke.
-     * @param card is given from client side and via server in the game transported
-
-    public void cardPlayed(Card card) {
-        System.out.println("TestFlagPlayCard2");
-        playedcard[playerinturn] = card;
-        System.out.println(playedcard[playerinturn].getType());
-    }*/
-
-    /**
      * This method playCard() checks first whether the played card is valid in respect of the game rules.
-     * In the while-loop, the type of the played card will be selected and the according function of the
+     * In the switch-case, the type of the played card will be selected and the according function of the
      * played card will be applied.
      * @throws IOException
      */
@@ -343,7 +329,6 @@ public class Game {
                 break;
 
             case KING:
-                String targetname1;
                 int targetindex1 = playerinturn; // initialize the target as self
 
                 // if all players are protected, the function goes to self
@@ -380,8 +365,6 @@ public class Game {
 
             case BARON:
 
-                int targetindex3 = playerinturn; // initialize the target as self
-
                 // if all players are protected, the function goes to self = nothing happens
                 if (allPlayersProtected()) {
                     Server.getServer().sendMessageToAll("All the players are protected, nothing happened, play continues.");
@@ -414,7 +397,7 @@ public class Game {
 
             case GUARD:
 
-                Card guesscard = Card.GUARD; // intitialize the target as self
+                Card guesscard = Card.GUARD; // initialize the target as self
                 int targetindex5 = playerinturn; // initialize the target as self
 
                 // if all players are protected, the function goes to self = nothing happens
@@ -471,7 +454,7 @@ public class Game {
                 Integer maxTokens = Collections.max(tokens.values());
                 String finalwinner = "";
                 for (String player : tokens.keySet()) {
-                    if (tokens.get(player) == maxTokens){
+                    if (tokens.get(player).equals(maxTokens)){
                         finalwinner = player;
                         break;
                     }
@@ -560,7 +543,9 @@ public class Game {
                     String clientname = playernames.get(i);
                     int totalScore = 0;
                     if(status[i] != 0){
-                        totalScore = handcard[i].getValue();
+                        if (handcard[i] != null) {
+                            totalScore = handcard[i].getValue();
+                        }
                         for (int j = 0; j < 16; j++) {
                             if(discardedcard[i][j] != null){
                                 totalScore += discardedcard[i][j].getValue();

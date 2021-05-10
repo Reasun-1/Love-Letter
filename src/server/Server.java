@@ -1,8 +1,11 @@
 package server;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableBooleanValue;
+/**
+ * server class listens for incoming clients and manages the communication with the clients
+ *
+ * @author: Can Ren
+ * @author: Pascal Stucky
+ */
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,24 +20,32 @@ public class Server {
 
     private final static Server server = new Server();
     // a set (here is a vector type) for the accepted ServerThreads
-    protected static Hashtable<Integer, String> playerList = new Hashtable<Integer, String>();
+    protected static Hashtable<Integer, String> playerList = new Hashtable<>();
     // a set for checking clients´ names
-    protected static Hashtable<String, ServerThread> clientList = new Hashtable<String, ServerThread>();
+    protected static final Hashtable<String, ServerThread> clientList = new Hashtable<>();
 
     private boolean gamerunning = false;
 
     private boolean gameexists = false;
 
-    private String answer = "";
-
+    /**
+     * private constructor for singleton implementation
+     */
     private Server() {
     }
 
-    //Singleton with DCL (double-checked locking)
+    /**
+     * Singleton access on server
+     * @return server instance
+     */
     public static Server getServer() {
         return server;
     }
 
+    /**
+     *  tells the client whether there is an existing game
+     * @return String to be transmitted to client
+     */
     public String gameExists(){
         if(gameexists){
             return "1";
@@ -44,6 +55,10 @@ public class Server {
         }
     }
 
+    /**
+     *  tells the client whether there is a running game
+     * @return String to be transmitted to client
+     */
     public String gameRunning(){
         if(gamerunning){
             return "1";
@@ -53,10 +68,10 @@ public class Server {
         }
     }
 
-    //public static List<server.ServerThread> getThreads() {
-      //  return threads;
-    //}
-
+    /**
+     * Start the Server socket and listen for incoming connections
+     * @throws IOException
+     */
     public void start() throws IOException {
         // create the server and define the port nr.
         ServerSocket server = new ServerSocket(5200);
@@ -92,12 +107,16 @@ public class Server {
         }
     }
 
+    /**
+     * create a new game
+     * @param clientName
+     * @throws IOException
+     */
     public void createGame(String clientName) throws IOException{
         if(gameexists){
             exception(clientName, "There exists already a Game!");
         }
         else {
-            Game.getInstance();
             gameexists = true;
             sendMessageToAll(clientName + " created a new Game");
                     for (Enumeration<ServerThread> e = clientList.elements(); e.hasMoreElements();) {
@@ -106,6 +125,11 @@ public class Server {
         }
     }
 
+    /**
+     * send a message to a particular client
+     * @param clientName
+     * @param message
+     */
     public void sendTo(String clientName, String message){
         //send message to Client clientName
         try{
@@ -115,6 +139,11 @@ public class Server {
         }
     }
 
+    /**
+     * Add a player to the current game
+     * @param clientName
+     * @throws IOException
+     */
     public void addPlayer(String clientName) throws IOException{
         //add Player to PlayerList
         if(gamerunning){
@@ -129,6 +158,11 @@ public class Server {
         }
     }
 
+    /**
+     * Start the current game with the players who already joined
+     * @param clientName
+     * @throws IOException
+     */
     public void startGame(String clientName) throws IOException{
         if(gamerunning){
             exception(clientName, "There is already a game running!");
@@ -141,8 +175,11 @@ public class Server {
         }
     }
 
+    /**
+     * play a card in the game class
+     * @param cardName
+     */
     public void playCard(String cardName){
-        System.out.println("testFlagPlayCardServer");
         for (Card card : Card.values()) {
             if (card.getType().equals(cardName)) {
                 try{
@@ -152,18 +189,32 @@ public class Server {
                 }
             }
         }
-        System.out.println("cardPlayed1");
     }
 
-    public void exception(String name, String msg) throws IOException {
-            clientList.get(name).receiveOrder("1" + msg);
+    /**
+     * transmit an error to the client
+     * @param name Name of the client
+     * @param message Error message
+     * @throws IOException
+     */
+    public void exception(String name, String message) throws IOException {
+            clientList.get(name).receiveOrder("1" + message);
     }
 
-    public void question(String name, String msg) throws IOException{
-        clientList.get(name).receiveOrder("2" + msg);
+    /**
+     * transmit a question to the client
+     * @param name Name of the client
+     * @param message Question message
+     * @throws IOException
+     */
+    public void question(String name, String message) throws IOException{
+        clientList.get(name).receiveOrder("2" + message);
     }
 
-
+    /**
+     * update the player list due to the updated sorting from the client
+     * @param updatedList
+     */
     public void updatePlayerIndex(List<String> updatedList){
 
         for (int i = 0; i < updatedList.size(); i++) {
@@ -171,12 +222,11 @@ public class Server {
         }
     }
 
-    //public String guessCardType(int playerID){
-      //  return ""; // zu implementieren..
-    //}
 
-    // Tell the players how many players will participate and what are the names
-
+    /**
+     * Tell the players how many players will participate and what are the names
+     * @throws IOException
+     */
     public void startGameInfo() throws IOException{
             for (int i = 0; i < playerList.size(); i++) {
                 String startInfo = "4" + playerList.size() + i;
@@ -188,8 +238,14 @@ public class Server {
             }
     }
 
+    /**
+     * transmit an answer to a sent question from the client to the corresponding game method
+     * @param answer
+     * @param name
+     * @throws IOException
+     */
     public void receiveAnswer(String answer, String name) throws IOException{
-        Boolean flag = true;
+        boolean flag = true;
         if (playerList.contains(answer)){
             flag = false;
             Game.getInstance().choosePlayer(answer);
@@ -207,7 +263,11 @@ public class Server {
     }
 
 
-    // tells the active player which card was drawn
+    /**
+     * tells the active player which card was drawn
+     * @param playerID
+     * @param card
+     */
     public void drawncard(int playerID, Card card){
         try{
                 clientList.get(playerList.get(playerID)).receiveOrder("5" + card.getType());
@@ -216,7 +276,10 @@ public class Server {
         }
     }
 
-    // inform the players about the card played by playerName
+    /**
+     * inform the players about the card played by playerName
+     * @param card
+     */
     public void playedCard(Card card){
 
         try{
@@ -229,13 +292,17 @@ public class Server {
 
     }
 
-    // inform the players about a new round and transmit the current score
-    //************über scores soll mann auch wissen, laut Aufgabestellung***********
+    /**
+     * inform the players about a new round and transmit the score and winner of the last round
+     * @param score
+     * @param winner
+     * @throws IOException
+     */
     public void roundOver(HashMap<String, Integer> score, String winner) throws IOException{
             for (int i = 0; i < playerList.size(); i++) {
                 String scoreString = "7";
                 for (int j = 0; j < playerList.size(); j++) {
-                    String playerscore = "";
+                    String playerscore;
                     if (score.get(playerList.get((i + j) % playerList.size())) < 10) {
                         playerscore = "0" + score.get(playerList.get((i + j) % playerList.size())).toString();
                     } else {
@@ -247,7 +314,12 @@ public class Server {
             }
     }
 
-    // inform the players about the end of the game and transmit the final tokens
+    /**
+     * inform the players about the end of the game and transmit the final tokens
+     * @param tokens
+     * @param winner
+     * @throws IOException
+     */
     public void gameOver(HashMap<String, Integer> tokens, String winner) throws IOException{
             for (int i = 0; i < playerList.size(); i++) {
                 String scoreString = "8";
@@ -261,13 +333,21 @@ public class Server {
             playerList.clear();
     }
 
+    /**
+     * inform the players about a player kicked out ouf the current round
+     * @param name
+     * @throws IOException
+     */
     public void outOfRound(String name) throws IOException {
             for (int i = 0; i < playerList.size(); i++) {
                clientList.get(playerList.get(i)).receiveOrder("9" + name);
             }
     }
 
-    //server sends message to all clients
+    /**
+     * server sends message to all clients
+     * @param message
+     */
     public void sendMessageToAll(String message){
         try{
             synchronized (clientList) {
@@ -280,10 +360,20 @@ public class Server {
         }
     }
 
+    /**
+     * inform the player about dropping its current handcard
+     * @param playername
+     * @throws IOException
+     */
     public void dropCard(String playername) throws IOException {
         clientList.get(playername).receiveOrder("3");
     }
 
+    /**
+     * inform the player about its new handcard due to changing
+     * @param player
+     * @param card
+     */
     public void cardsChanged(String player, String card) {
         try {
             clientList.get(player).receiveOrder("b" + card);
@@ -292,6 +382,12 @@ public class Server {
         }
     }
 
+    /**
+     * inform the player about the handcard of the target
+     * @param player
+     * @param target
+     * @param card
+     */
     public void seeCard(String player, String target, String card) {
         try {
             clientList.get(player).receiveOrder("c" + target + "/" + card);

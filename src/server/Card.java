@@ -71,7 +71,7 @@ public enum Card {
             Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " has dropped a " + targetDiscard);
             Server.getServer().dropCard(Game.getInstance().playernames.get(targetIndex));
             // if the discarded hand card is princess -> target player out of game
-            if (targetDiscard.getType() == Card.PRINCESS.getType()) {
+            if (targetDiscard.getType().equals(Card.PRINCESS.getType())) {
                 Game.getInstance().status[targetIndex] = 0;
                 // inform all players that the target player has played a PRINCESS
                 Server.getServer().playedCard(Card.PRINCESS);
@@ -85,7 +85,7 @@ public enum Card {
                 } else { // when the deck is not empty, draw a card from deck
                     Game.getInstance().handcard[targetIndex] = Game.getInstance().deck.pop();
                 }
-                // inform the player whick card he has drawn
+                // inform the player which card he has drawn
                 Server.getServer().drawncard(targetIndex, Game.getInstance().handcard[targetIndex]);
             }
         }
@@ -152,7 +152,7 @@ public enum Card {
             Game.getInstance().status[myIndex] = 1;
 
             if(myIndex != targetIndex){
-                if (Game.getInstance().handcard[targetIndex].getType() == guessCard.getType()) {
+                if (Game.getInstance().handcard[targetIndex].getType().equals(guessCard.getType())) {
                     Game.getInstance().status[targetIndex] = 0;
                     Server.getServer().outOfRound(Game.getInstance().playernames.get(targetIndex));
                     Server.getServer().sendMessageToAll(Game.getInstance().playernames.get(targetIndex) + " is out of game.");
@@ -266,7 +266,7 @@ public enum Card {
                 j++;
             }
         }
-        //schuffle the deck : change two cards of the deck for 100 times randomly
+        //shuffle the deck : change two cards of the deck for 100 times randomly
         for (int i = 0; i < 100; i++) {
             int indexCard1 = random.nextInt(16);
             int indexCard2 = random.nextInt(16);
