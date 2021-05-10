@@ -58,7 +58,7 @@ public class Client extends Application{
     private IntegerProperty[] drawncard = new IntegerProperty[4];
 
     // Bindings to list the discarded cards of each player
-    private final StringProperty DISCARDEDCARDS = new SimpleStringProperty();
+    private final StringProperty DISCARDEDCARDS = new SimpleStringProperty("");
 
     // Bindings to list the current tokens of each player
     private final IntegerProperty[] TOKENS = new IntegerProperty[4];
@@ -326,7 +326,7 @@ public class Client extends Application{
         }
         drawncard[previousplayer].set(9);
         // Add the played card to the discarded card pile
-        DISCARDEDCARDS.concat(cardname + " - " + PLAYERINTURN.get() + "\n");
+        DISCARDEDCARDS.set(DISCARDEDCARDS.get() + cardname + " - " + PLAYERINTURN.get() + "\n");
         // Change the player in turn
         playerinturnid = (playerinturnid + 1) % numberofplayers;
         while (OUTOFROUND.get().contains(PLAYERS[playerinturnid].get())){

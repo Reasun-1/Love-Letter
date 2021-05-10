@@ -263,12 +263,12 @@
                             <AnchorPane layoutX="840.0" layoutY="290.0" minHeight="0.0" minWidth="0.0" prefHeight="187.0" prefWidth="159.0">
                                  <children>
                                     <ScrollPane layoutX="-36.0" layoutY="36.0" prefHeight="168.0" prefWidth="189.0">
+                                       <content>
+                                          <TextArea fx:id="outOfRoundCards" layoutX="-36.0" layoutY="36.0" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="189.0" />
+                                       </content>
                                        <effect>
                                           <SepiaTone />
                                        </effect>
-                                       <content>
-                                          <TextArea fx:id="outOfRoundCards" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="166.0" prefWidth="189.0" />
-                                       </content>
                                     </ScrollPane>
                                  </children>
                               </AnchorPane>
