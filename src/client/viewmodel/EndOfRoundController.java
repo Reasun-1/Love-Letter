@@ -10,12 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 /**
  * This class is the controller class for the End of Game fxml file and it represents the end of game pop-up window.
@@ -23,18 +19,6 @@ import javafx.util.StringConverter;
  */
 
 public class EndOfRoundController {
-
-    @FXML
-    private AnchorPane endRootPane;
-
-    @FXML
-    private AnchorPane backgroundPane;
-
-    @FXML
-    private AnchorPane displayPane;
-
-    @FXML
-    private Label infoField; //label provides the change of the text based on the context
 
     @FXML
     private Button doneButton;

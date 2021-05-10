@@ -12,16 +12,9 @@ import client.controller.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class LoginController {
-
-    @FXML
-    private AnchorPane logo;
-
-    @FXML
-    private AnchorPane background;
 
     @FXML
     private TextField name;
@@ -38,14 +31,13 @@ public class LoginController {
      */
     public void init(Client client){
         this.client = client;
-        //create the viewModel
-        logInViewModel loginvm = new logInViewModel();
         //connect the viewModel
+        new LoginViewModel();
         /*With bidirectional binding, the two property values are synchronized so that if either
          property changes, the other property is automatically changed as well */
-        name.textProperty().bindBidirectional(logInViewModel.heroNameProperty());
+        name.textProperty().bindBidirectional(LoginViewModel.heroNameProperty());
         //heroNameProperty() is a method declared on the LogInViewModel that returns the username required on the TextField
-        startButton.disableProperty().bind(logInViewModel.loginPossibleProperty().not());
+        startButton.disableProperty().bind(LoginViewModel.loginPossibleProperty().not());
     }
 
     @FXML

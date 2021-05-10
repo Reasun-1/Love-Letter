@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 
 /**
@@ -16,18 +15,6 @@ import javafx.util.StringConverter;
  */
 
 public class EndOfGameController {
-
-    @FXML
-    private AnchorPane endRootPane;
-
-    @FXML
-    private AnchorPane backgroundPane;
-
-    @FXML
-    private AnchorPane displayPane;
-
-    @FXML
-    private Label infoField; //label provides the change of the text based on the context
 
     @FXML
     private Button doneButton;
@@ -70,7 +57,7 @@ public class EndOfGameController {
         thirdPlayer.textProperty().bindBidirectional(client.getPlayers(2));
         fourthPlayer.textProperty().bindBidirectional(client.getPlayers(3));
 
-        personalScore.textProperty().bindBidirectional(client.getTOKENS(0), new StringConverter<Number>() {
+        personalScore.textProperty().bindBidirectional(client.getTOKENS(0), new StringConverter<>() {
             @Override
             public String toString(Number number) {
                 return number.toString();
@@ -81,7 +68,7 @@ public class EndOfGameController {
                 return null;
             }
         });
-        secondScore.textProperty().bindBidirectional(client.getTOKENS(1), new StringConverter<Number>() {
+        secondScore.textProperty().bindBidirectional(client.getTOKENS(1), new StringConverter<>() {
             @Override
             public String toString(Number number) {
                 return number.toString();
@@ -92,7 +79,7 @@ public class EndOfGameController {
                 return null;
             }
         });
-        thirdScore.textProperty().bindBidirectional(client.getTOKENS(2), new StringConverter<Number>() {
+        thirdScore.textProperty().bindBidirectional(client.getTOKENS(2), new StringConverter<>() {
             @Override
             public String toString(Number number) {
                 return number.toString();
@@ -103,7 +90,7 @@ public class EndOfGameController {
                 return null;
             }
         });
-        fourthScore.textProperty().bindBidirectional(client.getTOKENS(3), new StringConverter<Number>() {
+        fourthScore.textProperty().bindBidirectional(client.getTOKENS(3), new StringConverter<>() {
             @Override
             public String toString(Number number) {
                 return number.toString();

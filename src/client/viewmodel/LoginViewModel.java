@@ -7,54 +7,44 @@ package client.viewmodel;
  * @version 1.0-SNAPSHOT
  */
 
-import client.controller.Client;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.io.IOException;
 
 
-public class logInViewModel {
+public class LoginViewModel {
 
-    private static StringProperty userName = new SimpleStringProperty();
+    private final static StringProperty USERNAME = new SimpleStringProperty();
 
     // ReadOnlyBooleanWrapper logInIndeed checks if the input on the "username" textField is a word or empty
-    private static ReadOnlyBooleanWrapper logInIndeed = new ReadOnlyBooleanWrapper();
+    private final static ReadOnlyBooleanWrapper LOGININDEED = new ReadOnlyBooleanWrapper();
     // representing the current input of the text field "username"
-
-    private Client client;
 
     /**
      * Constructor establishes the connection between the client's name and the LogIn Window
      */
-    public logInViewModel(){
-        this.client = client;
+    public LoginViewModel(){
         //create the connection if the username textField is not empty
-        logInIndeed.bind(userName.isNotEmpty());
+        LOGININDEED.bind(USERNAME.isNotEmpty());
     }
 
-
-    //checks if the name of the client is written
-    public void nameEntered() {
-        client.checkName(userName.get());
-    }
 
     //getter Method to get the written name
     public String getUserName() {
 
-        return userName.get();
+        return USERNAME.get();
     }
 
-    //string property helps to create the textfield input
+    //string property helps to create the textField input
     public static StringProperty heroNameProperty() {
-        return userName;
+        return USERNAME;
     }
 
     //represents if the login is possible based on the condition that the username is not empty
     public static ReadOnlyBooleanProperty loginPossibleProperty(){
-        return logInIndeed.getReadOnlyProperty();
+        return LOGININDEED.getReadOnlyProperty();
     }
 
 
