@@ -23,3 +23,13 @@ Then you can click the button 'Join Game' to join this game.
 <br />
 <img src="src/client/resources/joingame.PNG" width="450" />
 
+Now just play one card to continue the game.
+<br />
+<img src="src/client/resources/play game.PNG" width="450" />
+
+When the game is over, the scores of all the players will be showed.
+<br />
+<img src="src/client/resources/game end.PNG" width="450" />
+
+Enjoy!
+
