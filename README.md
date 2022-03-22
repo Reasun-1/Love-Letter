@@ -5,4 +5,6 @@ To launch the game, run server.java first and then multiple client.java.
 
 ## The Game
 
-![](src/client/resources/login.PNG)
+![](src/client/resources/login.PNG = 200)
+
+the
