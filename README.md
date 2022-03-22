@@ -14,5 +14,6 @@ For login, enter your name:
 <br />
 
 Then you can chat with other players via chat-box.
+<br />
 <img src="src/client/resources/chat.PNG" width="450" />
 
